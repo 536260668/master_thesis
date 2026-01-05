@@ -1,0 +1,17 @@
+# LaTeX generated files
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.synctex.gz
+*.thm
+*.fls
+*.fdb_latexmk
+*.bcf
+*.run.xml
+
+# OS files
+.DS_Store
+Thumbs.db
