@@ -2,6 +2,26 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+---
+
+## ⚠️ 重要注意事项（每次工作前必读）
+
+1. **格式已设置，只生成内容**：论文LaTeX格式已由用户设置完成，撰写章节时只需生成正文内容，严格按照 `body/chap01.tex` 等现有文件的格式规范。
+
+2. **Git提交规范**：
+   - 提交者：`536260668 <536260668@qq.com>`
+   - **严禁**在提交信息中包含任何Claude相关内容
+   - **禁止**出现如"Generated with Claude Code"、"Co-Authored-By Claude"等字样
+
+3. **撰写格式规范**：
+   - 文件头：`%%% mode: latex` / `%%% TeX-master: t` / `%%% End:`
+   - 章节：`\chapter{}`, `\section{}`, `\subsection{}`
+   - 图表：图题在下、表题在上，使用三线表
+   - 引用：`\cite{}`, `\ref{}`, `图~\ref{Figx-x}`
+   - 标点：使用中文标点符号
+
+---
+
 ## 项目概述
 
 华中科技大学硕士学位论文写作项目。论文主题为**医疗大语言模型安全性评估**，基于英文论文《MLSE: Medical LLM Safety Evaluation in an Agentic Environment》进行改写和翻译。
