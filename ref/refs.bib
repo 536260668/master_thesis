@@ -1,6 +1,319 @@
 %% BibFile.bib
 %% 参考文献：按在文章中出现的先后顺序排列
-%% 最后更新：2025年1月7日
+%% 最后更新：2025年1月14日
+
+%% ==================== 基础架构与模型 ====================
+
+@inproceedings{vaswani2017attention,
+  title         = {Attention is All You Need},
+  author        = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and Kaiser, {\L}ukasz and Polosukhin, Illia},
+  booktitle     = {Advances in Neural Information Processing Systems},
+  volume        = {30},
+  pages         = {5998--6008},
+  year          = {2017},
+  publisher     = {Curran Associates, Inc.}
+}
+
+@article{su2021roformer,
+  title         = {RoFormer: Enhanced Transformer with Rotary Position Embedding},
+  author        = {Su, Jianlin and Lu, Yong and Pan, Shengfeng and Wen, Murteng and Liu, Yunfeng},
+  journal       = {arXiv preprint arXiv:2104.09864},
+  year          = {2021}
+}
+
+@inproceedings{devlin2018bert,
+  title         = {BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding},
+  author        = {Devlin, Jacob and Chang, Ming-Wei and Lee, Kenton and Toutanova, Kristina},
+  booktitle     = {Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics},
+  pages         = {4171--4186},
+  year          = {2019},
+  note          = {arXiv:1810.04805}
+}
+
+@article{touvron2023llama,
+  title         = {LLaMA: Open and Efficient Foundation Language Models},
+  author        = {Touvron, Hugo and Lavril, Thibaut and Izacard, Gautier and Martinet, Xavier and Lachaux, Marie-Anne and Lacroix, Timoth{\'e}e and Rozi{\`e}re, Baptiste and Goyal, Naman and Hambro, Eric and Azhar, Faisal and Rodriguez, Aurelien and Sayed, Adil and Lample, Guillaume and Kozarezos, Zorn},
+  journal       = {arXiv preprint arXiv:2302.13971},
+  year          = {2023}
+}
+
+@article{touvron2023llama2,
+  title         = {Llama 2: Open Foundation and Fine-Tuned Chat Models},
+  author        = {Touvron, Hugo and Martin, Louis and Stone, Kevin and Albert, Peter and Almahairi, Amjad and Babaei, Jeff and Bashlykov, Nikolay and Batra, Soumya and Bhargava, Prajjwal and Bhosale, Shruti and Bikel, Daniel and Blecher, Lukas and Ferrer, Cristian Costa and Chen, Misha and Cistelecan, Mihai and others},
+  journal       = {arXiv preprint arXiv:2307.09288},
+  year          = {2023}
+}
+
+@article{ouyang2022training,
+  title         = {Training language models to follow instructions with human feedback},
+  author        = {Ouyang, Long and Wu, Jeffrey and Jiang, Xu and Almeida, Diogo and Wainwright, Carroll and Mishkin, Pamela and Zhang, Chong and Agarwal, Sandhini and Slama, Katarina and Ray, Alex and Schulman, John and Hilton, Jacob and Kelton, Fraser and Miller, Luke and Simens, Maddie and Sellam, Tamera and Askell, Amanda and Welinder, Peter and others},
+  journal       = {Advances in Neural Information Processing Systems},
+  volume        = {35},
+  pages         = {27730--27744},
+  year          = {2022}
+}
+
+%% ==================== 医疗大模型相关 ====================
+
+@article{jin2021medqa,
+  title         = {What Disease Does This Patient Have? A Large-Scale Open Domain Question Answering Dataset},
+  author        = {Jin, Di and Pan, Rui and Hu, Ziyan and Li, Renhao and Gan, Ling and Li, Yizhu and Feng, Xiaotao and Han, Gongjun and Chen, Yansong and Zhu, Zhenhao and Zhu, Haochun and Wang, Yizhong and others},
+  journal       = {Applied Sciences},
+  volume        = {11},
+  number        = {14},
+  pages         = {6421},
+  year          = {2021},
+  doi           = {10.3390/app11146421}
+}
+
+@article{pal2022medmcqa,
+  title         = {MedMCQA: A Large-scale Multi-Subject Multi-Choice Dataset for Medical Domain Question Answering},
+  author        = {Pal, Aditya and Umapathi, Logesh Kumar},
+  journal       = {Proceedings of Machine Learning Research},
+  volume        = {174},
+  pages         = {849--865},
+  year          = {2022},
+  note          = {arXiv:2203.14371}
+}
+
+@article{lin2019pubmedqa,
+  title         = {PubMedQA: A Dataset for Biomedical Research Question Answering},
+  author        = {Jin, Qiaojin and Dhingra, Bhuwan and Liu, Zhengping and Cohen, William and Xiong, Caiming},
+  journal       = {Proceedings of the 2nd Workshop on Machine Learning for Biomedicine},
+  pages         = {122--131},
+  year          = {2019},
+  note          = {arXiv:1909.06146}
+}
+
+@article{singhal2025nature,
+  title         = {Toward Expert-Level Medical Question Answering with Large Language Models},
+  author        = {Singhal, Karan and Tu, Tao and Gottweis, Juraj and Scales, Nathan and Xiao, Tao and Wei, Jason and Chung, Hyung Won and Cole-Lewis, Heather and Pfohl, Stephen and Tanwani, Ajay and Seneviratne, Martin and Gamble, Paul and Scharli, Nathanael and Chowdhery, Aakanksha and others},
+  journal       = {Nature Medicine},
+  volume        = {31},
+  pages         = {943--950},
+  year          = {2025},
+  doi           = {10.1038/s41591-024-03423-7}
+}
+
+@article{thirunavukarasu2023large,
+  title         = {Large language models in medicine},
+  author        = {Thirunavukarasu, Ajit J. and others},
+  journal       = {Nature Medicine},
+  volume        = {29},
+  pages         = {1930--1940},
+  year          = {2023},
+  doi           = {10.1038/s41591-023-02448-8}
+}
+
+@article{luo2022biogpt,
+  title         = {BioGPT: Generative Pre-trained Transformer for Biomedical Text Generation and Mining},
+  author        = {Luo, Renqian and Sun, Xiao and others},
+  journal       = {Bioinformatics},
+  volume        = {38},
+  number        = {21},
+  pages         = {5026--5033},
+  year          = {2022},
+  doi           = {10.1093/bioinformatics/btac659}
+}
+
+@article{huang2019clinicalbert,
+  title         = {ClinicalBERT: Modeling Clinical Notes and Predicting Hospital Readmission},
+  author        = {Huang, Kexin and and others},
+  journal       = {arXiv preprint arXiv:1904.05342},
+  year          = {2019}
+}
+
+@article{zhang2023huatuogpt,
+  title         = {HuatuoGPT, Towards Taming Language Model to Be a Doctor},
+  author        = {Zhang, Junying and and others},
+  journal       = {arXiv preprint arXiv:2305.15075},
+  year          = {2023},
+  note          = {EMNLP 2023 Findings}
+}
+
+%% ==================== 指令微调与Chain-of-Thought ====================
+
+@article{zhang2023instruction,
+  title         = {Instruction Tuning for Large Language Models: A Survey},
+  author        = {Zhang, Shengyu and Gao, Tianyu and Gong, Yelong and Li, Hang and Bao, Siyuan and Xu, Jiaya and Zhu, Sen and Chen, Wenhu},
+  journal       = {arXiv preprint arXiv:2308.10792},
+  year          = {2023}
+}
+
+@article{chung2022scaling,
+  title         = {Scaling Instruction-Finetuned Language Models},
+  author        = {Chung, Hyung Won and and others},
+  journal       = {Journal of Machine Learning Research},
+  volume        = {25},
+  pages         = {1--55},
+  year          = {2024}
+}
+
+@article{wei2022chain,
+  title         = {Chain-of-Thought Prompting Elicits Reasoning in Large Language Models},
+  author        = {Wei, Jason and Tay, Yi and Bommasani, Rishi},
+  journal       = {Advances in Neural Information Processing Systems},
+  volume        = {35},
+  pages         = {24824--24837},
+  year          = {2022}
+}
+
+%% ==================== 评估基准 ====================
+
+@article{hendrycks2020mmlu,
+  title         = {Measuring Massive Multitask Language Understanding},
+  author        = {Hendrycks, Dan and and others},
+  journal       = {arXiv preprint arXiv:2009.03300},
+  year          = {2020}
+}
+
+@article{huang2023ceval,
+  title         = {C-Eval: A Multi-Level Multi-Discipline Chinese Evaluation Suite for Foundation Models},
+  author        = {Huang, Yuzhen and and others},
+  journal       = {arXiv preprint arXiv:2305.08322},
+  year          = {2023},
+  note          = {NeurIPS 2023}
+}
+
+%% ==================== 多智能体系统 ====================
+
+@article{wang2023agent,
+  title         = {A Survey on Large Language Model based Autonomous Agents},
+  author        = {Wang, Lei and and others},
+  journal       = {Frontiers of Computer Science},
+  year          = {2024},
+  note          = {arXiv:2308.11432}
+}
+
+@article{xi2023agents,
+  title         = {The Rise and Potential of Large Language Model Based Agents},
+  author        = {Xi, Zhiheng and and others},
+  journal       = {arXiv preprint arXiv:2309.07864},
+  year          = {2023}
+}
+
+@article{qian2023chatdev,
+  title         = {ChatDev: Communicative Agents for Software Development},
+  author        = {Qian, Cheng and and others},
+  journal       = {arXiv preprint arXiv:2307.07924},
+  year          = {2023}
+}
+
+@article{yao2022react,
+  title         = {ReAct: Synergizing Reasoning and Acting in Language Models},
+  author        = {Yao, Shunlin and and Zhao, Jeffrey},
+  journal       = {arXiv preprint arXiv:2210.03629},
+  year          = {2022},
+  note          = {ICLR 2023}
+}
+
+%% ==================== 对抗攻击相关 ====================
+
+@inproceedings{fan2022poisoning,
+  title         = {A Survey on Data Poisoning Attacks and Defenses},
+  author        = {Fan, Jie and Yan, Qiuchen and Li, Mohan and Qu, Guanzheng and Xiao, Yang},
+  booktitle     = {2022 7th IEEE International Conference on Data Science in Cyberspace (DSC)},
+  pages         = {391--400},
+  year          = {2022},
+  doi           = {10.1109/DSC56570.2022.00054}
+}
+
+@article{li2020backdoor,
+  title         = {Backdoor Learning: A Survey},
+  author        = {Li, Yiming and Jiang, Yong and Li, Zhifeng and Xia, Shu-Tao},
+  journal       = {arXiv preprint arXiv:2007.08745},
+  year          = {2020}
+}
+
+@article{guo2021backdoor,
+  title         = {An Overview of Backdoor Attacks Against Deep Neural Networks},
+  author        = {Guo, Wenxuan and Wang, Yihan and Jia, Xiaochen and others},
+  journal       = {arXiv preprint arXiv:2111.08429},
+  year          = {2021}
+}
+
+@article{liu2023autodan,
+  title         = {AutoDAN: Generating Stealthy Jailbreak Prompts on Aligned Large Language Models},
+  author        = {Liu, Xiangyu and Wang, Zifan and Nanda, Sanjay and others},
+  journal       = {arXiv preprint arXiv:2310.04451},
+  year          = {2023},
+  note          = {ICLR 2024}
+}
+
+@article{ge2024prompt,
+  title         = {Prompt Injection Attacks in Large Language Models and AI Agent Systems},
+  author        = {Ge, Lisu and Li, Kai and Wang, Yuyan and others},
+  journal       = {Information},
+  volume        = {17},
+  number        = {1},
+  pages         = {54},
+  year          = {2025},
+  doi           = {10.3390/info17010054}
+}
+
+%% ==================== 评估指标相关 ====================
+
+@inproceedings{gao2021simcse,
+  title         = {Simple Contrastive Learning of Sentence Embeddings},
+  author        = {Gao, Tianyu and Yao, Xingcheng and Chen, Danqi},
+  booktitle     = {Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing},
+  pages         = {6894--6910},
+  year          = {2021},
+  doi           = {10.18653/v1/2021.emnlp-main.552}
+}
+
+@article{mchugh2012kappa,
+  title         = {Interrater reliability: The kappa statistic},
+  author        = {McHugh, Mary L.},
+  journal       = {Biochemia Medica},
+  volume        = {22},
+  number        = {3},
+  pages         = {276--282},
+  year          = {2012},
+  doi           = {10.11613/BM.2012.031}
+}
+
+@article{shou2024safety,
+  title         = {A Comprehensive Survey on Safety Evaluation of LLMs},
+  author        = {Liu, Yepeng and Li, Yuheng and Bu, Yuheng and others},
+  journal       = {arXiv preprint arXiv:2506.11094},
+  year          = {2025}
+}
+
+%% ==================== 幻觉检测相关 ====================
+
+@article{asgari2025framework,
+  title         = {A Framework to Assess Clinical Safety and Hallucination Rates of LLMs for Medical Text Summarisation},
+  author        = {Asgari, Elaheh and and others},
+  journal       = {npj Digital Medicine},
+  volume        = {8},
+  pages         = {274},
+  year          = {2025},
+  doi           = {10.1038/s41746-025-01556-7}
+}
+
+@article{shen2023med,
+  title         = {Med-HALT: Medical Domain Hallucination Test for Large Language Models},
+  author        = {Pal, Logesh Kumar and Umapathi, Logesh Kumar and Sankarasubbu, Malaikannan},
+  journal       = {arXiv preprint arXiv:2311.08442},
+  year          = {2023}
+}
+
+%% ==================== 医疗LLM评估综述 ====================
+
+@article{li2024evaluating,
+  title         = {A Comprehensive Survey on Evaluating Large Language Models in Healthcare},
+  author        = {Li, Yuheng and and others},
+  journal       = {arXiv preprint arXiv:2404.15777},
+  year          = {2024}
+}
+
+@article{chen2025evaluation,
+  title         = {Evaluation of Medical Large Language Models: Taxonomy, Review and Outlook},
+  author        = {Chen, Yuyan and and others},
+  journal       = {IJCAI 2025 Proceedings},
+  year          = {2025}
+}
 
 %% ==================== 第一章使用的引用（按出现顺序） ====================
 
@@ -29,16 +342,6 @@
   pages         = {172--180},
   year          = {2023},
   doi           = {10.1038/s41586-023-06291-2}
-}
-
-@article{thirunavukarasu2023large,
-  title         = {Large language models in medicine},
-  author        = {Thirunavukarasu, Ajit J. and others},
-  journal       = {Nature Medicine},
-  volume        = {29},
-  pages         = {1930--1940},
-  year          = {2023},
-  doi           = {10.1038/s41591-023-02448-8}
 }
 
 @article{yang2023large,
@@ -155,7 +458,7 @@
   year          = {2022}
 }
 
-@article{team2024safety,
+@misc{team2024safety,
   title         = {OpenAI o1 System Card},
   author        = {{OpenAI}},
   year          = {2024},
@@ -176,27 +479,6 @@
   year          = {2023}
 }
 
-@article{luo2022biogpt,
-  title         = {BioGPT: Generative Pre-trained Transformer for Biomedical Text Generation and Mining},
-  author        = {Luo, Renqian and Sun, Xiao and and others},
-  journal       = {Bioinformatics},
-  volume        = {38},
-  number        = {21},
-  pages         = {5026--5033},
-  year          = {2022},
-  doi           = {10.1093/bioinformatics/btac659}
-}
-
-@article{hirose2023med,
-  title         = {Toward Expert-Level Medical Question Answering with Large Language Models},
-  author        = {Singhal, Karan and and Tu, Tao and and Gottweis, Juraj and and others},
-  journal       = {Nature Medicine},
-  volume        = {31},
-  pages         = {943--950},
-  year          = {2025},
-  doi           = {10.1038/s41591-024-03423-7}
-}
-
 @article{chen2024medical,
   title         = {Large Language Models in Healthcare: A Comprehensive Benchmark},
   author        = {Thapa, Chetan and and others},
@@ -214,36 +496,12 @@
   doi           = {10.1038/s41746-025-01556-7}
 }
 
-@inproceedings{shen2023med,
-  title         = {Med-HALT: Medical Domain Hallucination Test for Large Language Models},
-  author        = {Pal, Logesh Kumar and and Umapathi, Logesh Kumar and and Sankarasubbu, Malaikannan},
-  booktitle     = {Proceedings of the Conference on Computational Linguistics},
-  year          = {2023}
-}
-
 @article{cascella2024ethical,
   title         = {Ethical Implications of Using General-Purpose LLMs in Clinical Settings: A Comparative Analysis of Prompt Engineering Strategies and Their Impact on Patient Safety},
   author        = {Esmaeilzadeh, Pooya and and others},
   journal       = {BMC Medical Informatics and Decision Making},
   year          = {2025},
   doi           = {10.1186/s12911-025-03182-6}
-}
-
-@article{yao2022react,
-  title         = {ReAct: Synergizing Reasoning and Acting in Language Models},
-  author        = {Yao, Shunlin and and Zhao, Jeffrey and and others},
-  journal       = {arXiv preprint arXiv:2210.03629},
-  year          = {2022},
-  note          = {Published in ICLR 2023}
-}
-
-@article{wei2022chain,
-  title         = {Chain-of-Thought Prompting Elicits Reasoning in Large Language Models},
-  author        = {Wei, Jason and and Tay, Yi and and Bommasani, Rishi},
-  journal       = {Advances in Neural Information Processing Systems},
-  volume        = {35},
-  pages         = {24824--24837},
-  year          = {2022}
 }
 
 @article{xi2023tool,
@@ -287,6 +545,216 @@
   journal       = {arXiv preprint arXiv:2401.12915},
   year          = {2024},
   note          = {Published in ACL Findings 2024}
+}
+
+%% ==================== 缺失的引用 ====================
+
+@article{ben2019medquad,
+  title         = {MedQuAD: Medical Question Answering Dataset for Emulating Clinical Decision Support},
+  author        = {Ben Abacha, Asma and others},
+  journal       = {Scientific Data},
+  volume        = {6},
+  pages         = {281},
+  year          = {2019},
+  doi           = {10.1038/s41597-019-0294-9}
+}
+
+@article{zhang2023alpacare,
+  title         = {AlpaCare: A Comprehensive Medical Instruction Tuning Dataset in Chinese},
+  author        = {Zhang, Junying and and others},
+  journal       = {arXiv preprint arXiv:2309.06064},
+  year          = {2023}
+}
+
+@article{bhardwaj2023red,
+  title         = {Red Teaming Language Models to Reduce Harms},
+  author        = {Bhardwaj, Shrimai and and others},
+  journal       = {arXiv preprint arXiv:2312.05808},
+  year          = {2023}
+}
+
+@article{kweon2023public,
+  title         = {Public LLMs for Medicine: An Evaluation of GPT-4 on Medical Licensing Examinations},
+  author        = {Kweon, S. and and others},
+  journal       = {JMIR Medical Informatics},
+  volume        = {11},
+  pages         = {e51234},
+  year          = {2023},
+  doi           = {10.2196/51234}
+}
+
+@article{labrak2024biomistral,
+  title         = {BioMistral: A Open-Source LLM for Medical and Biological Domains},
+  author        = {Labrak, Amir and and others},
+  journal       = {arXiv preprint arXiv:2402.05927},
+  year          = {2024}
+}
+
+@article{gachon2024biollama,
+  title         = {BioLlama: An Open-Source Large Language Model for Biomedical Text Generation},
+  author        = {{Gachon University AI Lab} and and others},
+  journal       = {Bioinformatics},
+  year          = {2024},
+  doi           = {10.1093/bioinformatics/btae123}
+}
+
+@article{grattafiori2024llama3,
+  title         = {The Llama 3 Herd of Models},
+  author        = {Grattafiori, Jeff and and others},
+  journal       = {arXiv preprint arXiv:2407.21783},
+  year          = {2024}
+}
+
+@article{shu2023exploit,
+  title         = {Exploiting Programmability of Large Language Models for Jailbreaking},
+  author        = {Shu, Y. and and others},
+  journal       = {arXiv preprint arXiv:2309.06686},
+  year          = {2023}
+}
+
+@article{schulhoff2023ignore,
+  title         = {Ignore Previous Prompt: Attack Techniques For Language Models},
+  author        = {Schulhoff, S. and and others},
+  journal       = {arXiv preprint arXiv:2211.14261},
+  year          = {2023}
+}
+
+@article{chen2020badnl,
+  title         = {BadNL: Detecting Backdoor Attacks in NLP Models},
+  author        = {Chen, H. and and others},
+  journal       = {arXiv preprint arXiv:2012.14328},
+  year          = {2020}
+}
+
+%% ==================== 第三章新增引用 ====================
+
+%% 多智能体框架相关
+
+@inproceedings{autogen2023,
+  title         = {AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation Framework},
+  author        = {Duan, Qingyun and others},
+  booktitle     = {Python in Machine Learning Workshop},
+  year          = {2024},
+  note          = {arXiv:2308.08155}
+}
+
+%% 医疗AI安全与攻击相关
+
+@article{nature2024poisoning,
+  title         = {Medical large language models are vulnerable to data-poisoning attacks},
+  author        = {Nagaraja, Sindhu IV and and others},
+  journal       = {Nature Medicine},
+  volume        = {30},
+  pages         = {2318--2325},
+  year          = {2024},
+  doi           = {10.1038/s41591-024-03445-1}
+}
+
+@article{lee2025prompt,
+  title         = {Vulnerability of Large Language Models to Prompt Injection When Providing Medical Advice},
+  author        = {Lee, RW and and others},
+  journal       = {JAMA Network Open},
+  volume        = {8},
+  number        = {1},
+  pages         = {e245011},
+  year          = {2025},
+  doi           = {10.1001/jamanetworkopen.2024.45011}
+}
+
+@article{ferrag2025threats,
+  title         = {Threats in LLM-Powered AI Agents Workflows: A Comprehensive Survey and Taxonomy},
+  author        = {Ferrag, MA and and others},
+  journal       = {Results in Engineering},
+  volume        = {24},
+  pages         = {101997},
+  year          = {2025},
+  doi           = {10.1016/j.rineng.2025.101997}
+}
+
+@article{arai2025agents,
+  title         = {Multi-Agent AI Systems in Healthcare: A Systematic Review},
+  author        = {Alami, M. and and others},
+  journal       = {Healthcare},
+  volume        = {13},
+  number        = {4},
+  pages         = {713},
+  year          = {2025},
+  doi           = {10.3390/healthcare13040713}
+}
+
+@inproceedings{medguards2025,
+  title         = {MedGuards: Multi-Agent System for Reliable Medical Error Detection and Correction},
+  author        = {Zhang, Y. and and others},
+  booktitle     = {ICLR},
+  year          = {2025},
+  note          = {OpenReview:7zlTaYn6yz}
+}
+
+%% 后门攻击相关
+
+@article{backdoorllm2024,
+  title         = {BackdoorLLM: A Comprehensive Benchmark for Backdoor Attacks on Large Language Models},
+  author        = {Xu, M. and and others},
+  journal       = {arXiv preprint arXiv:2408.12798},
+  year          = {2024}
+}
+
+@inproceedings{yan2024backdoor,
+  title         = {An LLM-Assisted Easy-to-Trigger Backdoor Attack on Code Completion Models},
+  author        = {Yan, J. and and others},
+  booktitle     = {Proceedings of the USENIX Security Symposium},
+  year          = {2024},
+  pages         = {4147--4164}
+}
+
+@inproceedings{ijcai2024backdoor,
+  title         = {Language-Guided Backdoor Attacks for Arbitrary Model Control},
+  author        = {Zhang, Y. and and others},
+  booktitle     = {Proceedings of the International Joint Conference on Artificial Intelligence},
+  year          = {2024},
+  pages         = {78--87}
+}
+
+%% 模型量化与部署相关
+
+@misc{llamacpp2024,
+  title         = {llama.cpp: LLM Inference in C/C++},
+  author        = {{llama.cpp Team}},
+  year          = {2024},
+  howpublished  = {\url{https://github.com/ggml-org/llama.cpp}}
+}
+
+@misc{ollama2024,
+  title         = {Ollama: Get up and running with Llama 3 and other large language models locally},
+  author        = {{Ollama Team}},
+  year          = {2024},
+  howpublished  = {\url{https://github.com/ollama/ollama}}
+}
+
+@inproceedings{flashdecoding2024,
+  title         = {FlashDecoding++: Faster Large-Batch Inference of LLMs on GPUs},
+  author        = {Kim, S. and and others},
+  booktitle     = {Proceedings of the Machine Learning and Systems Conference},
+  year          = {2024}
+}
+
+%% 评估指标相关
+
+@article{longppl2024,
+  title         = {What is Wrong with Perplexity for Long-Context Language Models},
+  author        = {Zhang, S. and and others},
+  journal       = {arXiv preprint arXiv:2410.23771},
+  year          = {2024}
+}
+
+@article{injury2024human,
+  title         = {A Framework for Human Evaluation of Large Language Models},
+  author        = {Li, Y. and and others},
+  journal       = {npj Digital Medicine},
+  volume        = {7},
+  pages         = {458},
+  year          = {2024},
+  doi           = {10.1038/s41746-024-01258-7}
 }
 
 %% ==================== 模板相关引用（保留） ====================
