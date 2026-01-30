@@ -6,7 +6,7 @@ import os
 THESIS_DIR = r"c:/学习/研究生学习/毕设"
 BODY_DIR = os.path.join(THESIS_DIR, "body")
 BIB_FILE = os.path.join(THESIS_DIR, "ref/refs.bib")
-OUTPUT_FILE = r"C:/Users/86130/.gemini/antigravity/brain/7392ac1b-5d0c-41c9-929c-bf83f99d5df4/citations_check.md"
+OUTPUT_FILE = r"c:\学习\研究生学习\毕设\citation_verification_results.md"
 
 def extract_citations_with_context(directory):
     citation_data = {} # key -> list of {file, line, context}
