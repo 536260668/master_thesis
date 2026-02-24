@@ -1,0 +1,177 @@
+% !TeX program = xelatex
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage[UTF8]{ctex}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, calc, shadows, backgrounds}
+
+% --- Academic Color Palette (Subtle & Professional) ---
+\definecolor{primaryBlue}{RGB}{0, 51, 102}      % Navy Blue (Borders/Text)
+\definecolor{fillBlue}{RGB}{235, 245, 255}      % Very Light Blue (Backgrounds)
+\definecolor{accentBlue}{RGB}{70, 130, 180}     % Steel Blue (Highlights)
+\definecolor{lightGray}{RGB}{250, 250, 250}     % Off-white for panels
+\definecolor{darkGray}{RGB}{60, 60, 60}         % Dark Gray for text
+\definecolor{lineGray}{RGB}{169, 169, 169}      % Gray for panel borders
+
+\begin{document}
+\begin{tikzpicture}[
+    node distance=1.5cm and 1.5cm,
+    font=\sffamily,
+    >=Stealth,
+    % --- Styles ---
+    % 1. Core Nodes (Modules)
+    block/.style={
+        rectangle,
+        rounded corners=3pt,
+        minimum width=2.4cm,
+        minimum height=1cm,
+        text centered,
+        draw=accentBlue,
+        thick,
+        fill=white,
+        drop shadow={opacity=0.1},
+        font=\small
+    },
+    % 2. Central Hub (LLM Core)
+    hub/.style={
+        circle,
+        minimum size=2.8cm,
+        text centered,
+        align=center,
+        draw=primaryBlue,
+        line width=1.5pt,
+        fill=fillBlue,
+        drop shadow={opacity=0.15},
+        font=\bfseries\small
+    },
+    % 3. Role Nodes (Patient/Doctor)
+    role/.style={
+        rectangle,
+        rounded corners=5pt,
+        minimum width=2.2cm,
+        minimum height=1.2cm,
+        text centered,
+        draw=darkGray,
+        thick,
+        fill=white,
+        font=\bfseries,
+        drop shadow={opacity=0.1}
+    },
+    % 4. Swimlane/Panel
+    panel/.style={
+        draw=lineGray,
+        dashed,
+        rounded corners=8pt,
+        fill=lightGray,
+        inner sep=0.6cm
+    },
+    % 5. Panel Label
+    panelLabel/.style={
+        text=primaryBlue,
+        font=\bfseries\small,
+        anchor=north west,
+        yshift=-0.2cm,
+        xshift=0.2cm
+    },
+    % 6. Arrows
+    mainArrow/.style={
+        ->,
+        thick,
+        color=primaryBlue,
+        line width=1.2pt
+    },
+    cycleArrow/.style={
+        ->,
+        thick,
+        color=accentBlue,
+        line width=1pt,
+        bend left=30
+    },
+    feedbackArrow/.style={
+        ->,
+        dashed,
+        thick,
+        color=darkGray,
+        line width=0.8pt
+    }
+]
+
+    % =================================================================================
+    % 1. Middle Layer: Model Layer
+    % =================================================================================
+    
+    % Central Core
+    \node[hub] (core) {医疗大模型\\(推理核心)};
+    
+    % Satellite Modules
+    % Positioning: 12, 3, 6, 9 o'clock relative to core, but adjusted for better flow
+    \node[block, above=0.8cm of core] (inquiry) {智能问诊};
+    \node[block, right=0.8cm of core] (exam) {检查建议};
+    \node[block, below=0.8cm of core] (diag) {辅助诊断};
+    \node[block, left=0.8cm of core] (presc) {处方生成};
+    
+    % Connections Core <-> Modules (Data Exchange)
+    \draw[transform canvas={xshift=-2pt}, <->, color=accentBlue!50] (core) -- (inquiry);
+    \draw[transform canvas={yshift=-2pt}, <->, color=accentBlue!50] (core) -- (exam);
+    \draw[transform canvas={xshift=2pt}, <->, color=accentBlue!50] (core) -- (diag);
+    \draw[transform canvas={yshift=2pt}, <->, color=accentBlue!50] (core) -- (presc);
+
+    % Cycle Flow (Logical Process)
+    \draw[cycleArrow] (inquiry.east) to node[auto, font=\tiny, color=darkGray]{信息提取} (exam.north);
+    \draw[cycleArrow] (exam.south) to node[auto, font=\tiny, color=darkGray]{综合分析} (diag.east);
+    \draw[cycleArrow] (diag.west) to node[auto, font=\tiny, color=darkGray]{治疗方案} (presc.south);
+    \draw[cycleArrow] (presc.north) to node[auto, font=\tiny, color=darkGray]{补充问询} (inquiry.west);
+
+    % Define Model Layer Box
+    \begin{scope}[on background layer]
+        \node[panel, fit=(core) (inquiry) (exam) (diag) (presc)] (layer_model) {};
+        \node[panelLabel] at (layer_model.north west) {智能处理层 (Model)};
+    \end{scope}
+
+    % =================================================================================
+    % 2. Left Layer: Interaction Layer
+    % =================================================================================
+    
+    % Patient Node
+    \node[role, left=3cm of layer_model] (patient) {患者入口\\ \normalfont\footnotesize (App/终端)};
+    
+    % Input Data Node
+    \node[block, right=0.5cm of patient, minimum width=1.8cm, dashed] (input) {症状描述};
+    
+    % Define Interaction Layer Box
+    \begin{scope}[on background layer]
+        \node[panel, fit=(patient) (input)] (layer_input) {};
+        \node[panelLabel] at (layer_input.north west) {交互层 (Input)};
+    \end{scope}
+
+    % =================================================================================
+    % 3. Right Layer: Decision Layer
+    % =================================================================================
+    
+    % Doctor Node
+    \node[role, right=3cm of layer_model] (doctor) {医生工作站\\ \normalfont\footnotesize (审核/决策)};
+    
+    % Output Data Node
+    \node[block, left=0.5cm of doctor, minimum width=1.8cm, dashed] (output) {诊疗建议};
+    
+    % Define Decision Layer Box
+    \begin{scope}[on background layer]
+        \node[panel, fit=(doctor) (output)] (layer_decision) {};
+        \node[panelLabel] at (layer_decision.north west) {决策层 (Decision)};
+    \end{scope}
+
+    % =================================================================================
+    % 4. Global Connections
+    % =================================================================================
+    
+    % Input Flow
+    \draw[mainArrow] (patient) -- (input);
+    \draw[mainArrow] (input) -- node[above, font=\footnotesize]{自然语言} (layer_model.west |- input);
+    
+    % Output Flow
+    \draw[mainArrow] (layer_model.east |- output) -- node[above, font=\footnotesize]{结构化报告} (output);
+    \draw[mainArrow] (output) -- (doctor);
+    
+    % Feedback Loop
+    \draw[feedbackArrow] (doctor.south) |- ++(0,-1.5cm) -| node[pos=0.25, above, font=\footnotesize]{专家反馈 (RLHF)} (layer_model.south);
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,138 @@
+% 图1-2 全文组织结构图
+% 可独立编译，也可作为子图引入主文档
+\documentclass[border=5pt]{standalone}
+\usepackage{ctex}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, calc}
+
+\begin{document}
+\begin{tikzpicture}[
+    % 全局样式
+    node distance=0.3cm,
+    % 顶部横幅样式
+    topbanner/.style={
+        rectangle, draw=blue!60, fill=blue!8,
+        minimum width=15cm, minimum height=1.2cm,
+        align=center, font=\small
+    },
+    % 章节竖向矩形样式
+    chapterbox/.style={
+        rectangle, draw=blue!60, fill=blue!8,
+        minimum width=1.4cm, minimum height=3.2cm,
+        align=center, font=\small,
+        text width=1.2cm
+    },
+    % 核心章节大框样式
+    corebox/.style={
+        rectangle, draw=blue!60, fill=blue!8,
+        rounded corners=3pt,
+        align=center, font=\small
+    },
+    % 子模块小框样式
+    subbox/.style={
+        rectangle, draw=gray!60, fill=white,
+        minimum height=0.7cm,
+        align=center, font=\footnotesize,
+        text width=1.8cm
+    },
+    % 箭头样式
+    arrow/.style={-{Stealth[length=2mm]}, thick},
+    dashedarrow/.style={-{Stealth[length=2mm]}, dashed, thick, gray!70}
+]
+
+% ========== 顶部横幅 ==========
+\node[topbanner] (top) {
+    \textbf{医疗大语言模型安全性评估的核心挑战：}\\[2pt]
+    (1) 缺乏多智能体协作评估 \quad 
+    (2) 人工评估效率低 \quad 
+    (3) 缺乏真实临床数据验证
+};
+
+% ========== 第一章 ==========
+\node[chapterbox, below left=0.8cm and 5.5cm of top] (ch1) {
+    \textbf{第一章}\\[4pt]
+    绪论
+};
+
+% ========== 第二章 ==========
+\node[chapterbox, right=0.3cm of ch1] (ch2) {
+    \textbf{第二章}\\[4pt]
+    相关理论\\与技术\\基础
+};
+
+% ========== 第三章框架 ==========
+\node[corebox, right=0.3cm of ch2, minimum width=4.5cm, minimum height=3.2cm] (ch3) {};
+\node[font=\small\bfseries, anchor=north] at ([yshift=-0.15cm]ch3.north) {第三章};
+\node[font=\footnotesize, anchor=north] at ([yshift=-0.5cm]ch3.north) {多智能体协作系统构建与威胁建模};
+
+% 第三章子模块
+\node[subbox, anchor=south west] at ([xshift=0.2cm, yshift=0.2cm]ch3.south west) (ch3s1) {临床诊疗链\\形式化建模};
+\node[subbox, right=0.15cm of ch3s1] (ch3s2) {MLSE框架\\架构设计};
+\node[subbox, right=0.15cm of ch3s2] (ch3s3) {威胁模型\\建立};
+
+% 第三章内部箭头
+\draw[arrow] (ch3s1) -- (ch3s2);
+\draw[arrow] (ch3s2) -- (ch3s3);
+
+% ========== 第六章 ==========
+\node[chapterbox, right=0.3cm of ch3] (ch6) {
+    \textbf{第六章}\\[4pt]
+    总结与\\展望
+};
+
+% ========== 第四章和第五章的大框 ==========
+\node[corebox, below=0.6cm of ch3, minimum width=9.5cm, minimum height=2.8cm] (ch45box) {};
+
+% ========== 第四章 ==========
+\node[corebox, anchor=north west, minimum width=4.4cm, minimum height=2.4cm] 
+    at ([xshift=0.15cm, yshift=-0.15cm]ch45box.north west) (ch4) {};
+\node[font=\small\bfseries, anchor=north] at ([yshift=-0.1cm]ch4.north) {第四章};
+\node[font=\footnotesize, anchor=north] at ([yshift=-0.4cm]ch4.north) {单体模型对抗鲁棒性评估};
+
+% 第四章子模块
+\node[subbox, anchor=south west] at ([xshift=0.2cm, yshift=0.2cm]ch4.south west) (ch4s1) {数据投毒\\攻击};
+\node[subbox, right=0.3cm of ch4s1] (ch4s2) {提示词\\操纵攻击};
+\draw[arrow] (ch4s1) -- (ch4s2);
+
+% ========== 第五章 ==========
+\node[corebox, anchor=north east, minimum width=4.4cm, minimum height=2.4cm] 
+    at ([xshift=-0.15cm, yshift=-0.15cm]ch45box.north east) (ch5) {};
+\node[font=\small\bfseries, anchor=north] at ([yshift=-0.1cm]ch5.north) {第五章};
+\node[font=\footnotesize, anchor=north] at ([yshift=-0.4cm]ch5.north) {多智能体风险传播机制实证研究};
+
+% 第五章子模块
+\node[subbox, anchor=south west] at ([xshift=0.2cm, yshift=0.2cm]ch5.south west) (ch5s1) {级联错误\\传播验证};
+\node[subbox, right=0.3cm of ch5s1] (ch5s2) {人工专家\\复核};
+\draw[arrow] (ch5s1) -- (ch5s2);
+
+% 第四章到第五章的箭头
+\draw[arrow] (ch4.east) -- (ch5.west);
+
+% ========== 章节间主流程箭头 ==========
+\draw[arrow] (ch1) -- (ch2);
+\draw[arrow] (ch2) -- (ch3);
+\draw[arrow] (ch3) -- (ch6);
+
+% 第三章到第四五章的箭头
+\draw[arrow] (ch3.south) -- ([yshift=0.1cm]ch45box.north);
+
+% 第四五章到第六章的箭头（弧线）
+\draw[arrow] (ch45box.east) -| ([xshift=-0.2cm]ch6.south);
+
+% ========== 顶部问题到章节的虚线箭头 ==========
+% 问题(1)(2) -> 第三章
+\draw[dashedarrow] ([xshift=-3cm]top.south) -- ([xshift=-0.5cm]ch3.north);
+
+% 问题(2) -> 第四章
+\draw[dashedarrow] ([xshift=0cm]top.south) |- ([yshift=0.5cm]ch4.north) -- (ch4.north);
+
+% 问题(1)(3) -> 第五章  
+\draw[dashedarrow] ([xshift=3cm]top.south) |- ([yshift=0.5cm]ch5.north) -- (ch5.north);
+
+% ========== 问题标注 ==========
+\node[font=\tiny, gray] at ([xshift=-3cm, yshift=-0.3cm]top.south) {问题(1)(2)};
+\node[font=\tiny, gray] at ([xshift=0cm, yshift=-0.3cm]top.south) {问题(2)};
+\node[font=\tiny, gray] at ([xshift=3cm, yshift=-0.3cm]top.south) {问题(1)(3)};
+
+\end{tikzpicture}
+\end{document}
