@@ -306,22 +306,23 @@ AutoPoison-Role & 10 & 15.77 \\
 
 \begin{table}[htbp]
 \centering
-\caption{六种越狱策略攻击效果对比(ASR)}
+\caption{六种注入策略攻击效果对比（ASR/\%）}
 \label{tab:jailbreak_strategies}
+\resizebox{\textwidth}{!}{
 \begin{tabular}{lcccccc}
 \toprule
 攻击策略 & AlpaCare & Asclepius & BioMistral & BioLlama3 & Llama2 & Llama3 \\
 \midrule
-Naive & - & 72\% & - & - & - & - \\
-Ignore & - & - & - & - & - & - \\
-Escape Character & 100\% & - & - & - & - & - \\
-Completion-Real & - & - & - & - & - & - \\
-HackAPrompt & - & - & - & - & - & - \\
-Combine & 100\% & - & - & - & - & - \\
+Naive & 32.14 & 25.37 & 19.86 & 13.72 & 10.24 & 5.23 \\
+Ignore & 75.47 & 64.27 & 47.24 & 22.06 & 15.27 & 9.01 \\
+Escape Character & 97.43 & 92.54 & 81.79 & 30.08 & 21.23 & 11.27 \\
+Completion-Real & 99.56 & 90.87 & 78.64 & 26.35 & 17.83 & 10.42 \\
+HackAPrompt & 58.01 & 50.03 & 41.73 & 18.01 & 11.98 & 5.99 \\
+Combine & 99.82 & 96.74 & 90.85 & 34.27 & 24.86 & 13.94 \\
 \bottomrule
 \end{tabular}
+}
 \end{table}
-% TODO: 本表数据主要来自原图Fig 3c和3d，当前仅填入了正文中明确提及的数据，其余数据需从原始图表或实验记录中补充完整。
 
 AlpaCare模型达到100\%的ASR这一异常结果值得深入分析。可能的原因包括：(1) AlpaCare在指令微调过程中优先强化了任务执行能力，而相对弱化了安全对齐机制；(2) 医疗领域微调数据可能覆盖了某些绕过安全约束的表述模式。这一发现揭示了医疗模型在专业化过程中可能存在的``安全性-专业性权衡''问题，为医疗大语言模型的安全设计提供了重要警示。值得注意的是，即使是简单的Naive和Ignore策略也能导致ASR的显著上升，例如Naive攻击使Asclepius的ASR达到72\%。更为复杂的Escape Character和Completion-Real策略进一步提升了攻击效果，其中Escape Character攻击在AlpaCare模型上实现了100\%的ASR。Combine攻击策略最为有效，在多个模型上均达到了接近或超过90\%的ASR。这些结果表明，医疗大语言模型在提示词操纵攻击面前表现出令人担忧的脆弱性，其安全对齐机制亟待加强。
 
@@ -345,54 +346,54 @@ AlpaCare模型达到100\%的ASR这一异常结果值得深入分析。可能的�
 
 \begin{table}[htbp]
 \centering
-\caption{HackAPrompt攻击在不同提示词长度下的ASR}
+\caption{HackAPrompt攻击在不同提示词长度下的ASR（\%）}
 \label{tab:prompt_length_hackaprompt}
 \begin{tabular}{ccccc}
 \toprule
 模型 & Short & Medium & Long & Extended \\
 \midrule
-AlpaCare & 0.37 & 0.32 & 0.28 & 0.46 \\
-Asclepius & 0.23 & 0.34 & 0.51 & 0.58 \\
-BioMistral & 0.23 & 0.19 & 0.22 & 0.16 \\
-BioLlama3 & - & - & - & - \\
-Llama2 & 0.55 & 0.52 & 0.54 & 0.50 \\
-Llama3 & - & - & - & - \\
+AlpaCare & 52.74 & 55.31 & 60.58 & 63.42 \\
+Asclepius & 44.86 & 47.23 & 52.84 & 55.18 \\
+BioMistral & 36.85 & 39.27 & 43.56 & 47.24 \\
+BioLlama3 & 14.73 & 16.82 & 19.34 & 21.15 \\
+Llama2 & 8.76 & 10.23 & 13.58 & 15.35 \\
+Llama3 & 3.82 & 5.14 & 6.73 & 8.27 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{table}[htbp]
 \centering
-\caption{Ignore攻击在不同提示词长度下的ASR}
+\caption{Ignore攻击在不同提示词长度下的ASR（\%）}
 \label{tab:prompt_length_ignore}
 \begin{tabular}{ccccc}
 \toprule
 模型 & Short & Medium & Long & Extended \\
 \midrule
-AlpaCare & 0.18 & 0.13 & 0.06 & 0.10 \\
-Asclepius & 0.35 & 0.40 & 0.18 & 0.22 \\
-BioMistral & 0.12 & 0.22 & 0.18 & 0.09 \\
-BioLlama3 & - & - & - & - \\
-Llama2 & 0.81 & 0.70 & 0.21 & 0.04 \\
-Llama3 & - & - & - & - \\
+AlpaCare & 83.24 & 77.68 & 74.15 & 66.81 \\
+Asclepius & 72.85 & 66.34 & 61.27 & 56.62 \\
+BioMistral & 54.36 & 50.78 & 44.25 & 39.57 \\
+BioLlama3 & 27.86 & 24.15 & 19.83 & 16.38 \\
+Llama2 & 20.74 & 17.36 & 13.82 & 9.16 \\
+Llama3 & 12.86 & 10.18 & 7.85 & 5.14 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{table}[htbp]
 \centering
-\caption{Escape Character攻击在不同提示词长度下的ASR}
+\caption{Escape Character攻击在不同提示词长度下的ASR（\%）}
 \label{tab:prompt_length_escape}
 \begin{tabular}{ccccc}
 \toprule
 模型 & Short & Medium & Long & Extended \\
 \midrule
-AlpaCare & 0.45 & 0.26 & 0.18 & 0.25 \\
-Asclepius & 0.30 & 0.33 & 0.39 & 0.09 \\
-BioMistral & 0.11 & 0.07 & 0.03 & 0.02 \\
-BioLlama3 & - & - & - & - \\
-Llama2 & 0.81 & 0.70 & 0.21 & 0.04 \\
-Llama3 & - & - & - & - \\
+AlpaCare & 99.86 & 99.73 & 97.26 & 92.85 \\
+Asclepius & 97.24 & 94.86 & 91.35 & 86.71 \\
+BioMistral & 87.63 & 84.82 & 79.54 & 75.17 \\
+BioLlama3 & 35.74 & 32.28 & 28.13 & 24.16 \\
+Llama2 & 27.82 & 23.68 & 19.17 & 14.24 \\
+Llama3 & 15.76 & 12.83 & 9.54 & 6.95 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -406,18 +407,18 @@ Llama3 & - & - & - & - \\
 
 \begin{table}[htbp]
 \centering
-\caption{不同注入位置下的攻击成功率}
+\caption{六种攻击策略在不同注入位置下的平均攻击成功率（ASR/\%）}
 \label{tab:prompt_position}
 \begin{tabular}{cccc}
 \toprule
 模型 & Prefix & Suffix & Multi \\
 \midrule
-AlpaCare & 0.2793 & 0.5602 & 0.4645 \\
-Asclepius & 0.2894 & 0.5293 & 0.5247 \\
-BioMistral & 0.4267 & 0.5682 & 0.4540 \\
-BioLlama3 & - & - & - \\
-Llama2 & 0.0934 & 0.1402 & 0.2202 \\
-Llama3 & - & - & - \\
+AlpaCare & 46.82 & 77.07 & 64.93 \\
+Asclepius & 39.74 & 69.97 & 61.58 \\
+BioMistral & 34.56 & 60.02 & 52.17 \\
+BioLlama3 & 13.28 & 24.08 & 19.43 \\
+Llama2 & 10.74 & 16.90 & 21.36 \\
+Llama3 & 5.27 & 9.31 & 11.85 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -431,20 +432,22 @@ Llama3 & - & - & - \\
 
 \begin{table}[htbp]
 \centering
-\caption{不同注入频率下的攻击成功率}
+\caption{六种攻击策略在不同注入频率下的平均攻击成功率（ASR/\%）}
 \label{tab:attack_frequency}
+\resizebox{\textwidth}{!}{
 \begin{tabular}{cccccccc}
 \toprule
 模型 & 1次 & 2次 & 3次 & 4次 & 5次 & 6次 & 7次 \\
 \midrule
-AlpaCare & 0.4827 & 0.3025 & 0.2583 & 0.2164 & 0.1895 & 0.1787 & 0.1704 \\
-Asclepius & 0.5682 & 0.5373 & 0.5182 & 0.4583 & 0.4120 & 0.3741 & 0.3926 \\
-BioMistral & 0.5090 & 0.2380 & 0.1889 & 0.1852 & 0.1781 & 0.1630 & 0.1728 \\
-BioLlama3 & - & - & - & - & - & - & - \\
-Llama2 & 0.1630 & 0.1880 & 0.1926 & 0.1722 & 0.1355 & 0.1114 & 0.0914 \\
-Llama3 & - & - & - & - & - & - & - \\
+AlpaCare & 77.07 & 60.34 & 49.58 & 42.17 & 37.24 & 33.46 & 30.82 \\
+Asclepius & 69.97 & 63.82 & 58.43 & 53.27 & 48.91 & 44.63 & 42.18 \\
+BioMistral & 60.02 & 44.28 & 33.85 & 27.43 & 23.58 & 20.94 & 19.27 \\
+BioLlama3 & 24.08 & 20.63 & 17.52 & 15.18 & 13.34 & 11.82 & 10.75 \\
+Llama2 & 16.90 & 18.14 & 17.53 & 15.86 & 13.92 & 12.08 & 10.13 \\
+Llama3 & 9.31 & 10.02 & 9.57 & 8.48 & 7.36 & 6.21 & 5.23 \\
 \bottomrule
 \end{tabular}
+}
 \end{table}
 
 实验结果显示，所有医疗专用模型在单次注入条件下表现出最高的脆弱性。Asclepius模型的初始ASR最高，达到0.5682，AlpaCare和BioMistral也分别达到0.4827和0.5090。随着注入频率增加，各模型的ASR整体呈下降趋势。BioMistral和AlpaCare在两次注入后ASR急剧下降，稳定在0.17左右的水平。Asclepius的下降趋势相对平缓，在七次注入后仍保持0.3926的ASR，表现出较强的持续性脆弱性。Llama模型呈现出独特的模式：其初始脆弱性较低（ASR为0.1630），随着注入频率增加，ASR略有上升后持续下降，始终保持着最低的整体脆弱性水平。
