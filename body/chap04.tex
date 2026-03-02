@@ -11,7 +11,9 @@
 \subsection{数据集}
 \label{subsec:datasets}
 
-为全面评估医疗大语言模型在对抗性攻击下的鲁棒性，本研究选取了多个具有代表性的通用基准数据集，涵盖不同类型的医疗问答场景和攻击测试需求。所选数据集主要包括MedQuAD、MedInstruct-52k、HarmfulQA和ToxicQAFinal等。MedQuAD数据集\cite{ben2019medquad}包含723对经过精心筛选的医疗问答对，覆盖多个医学专科领域，以其高质量和多样性著称，是评估医疗模型基础性能的理想基准。MedInstruct-52k数据集\cite{zhang2023alpacare}是一个大规模的医疗指令微调数据集，包含约5.2万条医疗相关的指令-响应对，广泛用于模型的指令微调训练，在本研究中用于数据投毒攻击的实验场景。HarmfulQA和ToxicQAFinal数据集\cite{ganguli2022red}专门用于评估模型对抗恶意查询的能力，其中包含一系列可能诱导模型产生有害或不当响应的问题，是测试越狱攻击和提示词注入攻击效果的重要基准。此外，本研究还使用了多个医疗领域的性能基准数据集，包括iCliniq、MEDQA、HeadQA、PubmedQA、MEDMCQA等，用于建立模型在正常医疗任务上的性能基线，从而确保攻击实验结果的可靠性和可比性。这些数据集的选取遵循以下原则：(1) MedQuAD覆盖多科室医疗问答，能够模拟真实临床咨询场景；(2) MedInstruct-52k作为主流医疗指令微调数据集，是评估数据投毒攻击的理想选择；(3) HarmfulQA和ToxicQAFinal专门针对模型安全边界设计，可有效测试越狱攻击效果。上述数据集共同覆盖了第二章所分析的四类主要攻击场景。各数据集的详细统计信息如表\ref{tab:datasets}所示。
+为全面评估医疗大语言模型在不同攻击场景下的安全性表现，本研究在数据集选取上遵循以下原则：其一，功能覆盖的完备性，所选数据集须覆盖第二章所分析的数据污染与提示词操纵两大类共四种攻击方式，并为模型正常性能提供参照基准；其二，领域代表性，数据集应来源于权威机构或经同行评审的公开资源，能够反映真实医疗场景中的知识分布与任务特征；其三，评估维度的互补性，不同数据集之间应在问题类型、学科范围及任务形式上形成差异化覆盖，以避免单一基准带来的评估偏差。
+
+基于上述原则，本研究选取的数据集按实验功能划分为三类。第一类为攻击载体数据集，包括用于模型微调训练及数据投毒实验的MedInstruct-52k\cite{zhang2023alpacare}，以及用于后门攻击效果测试的MedQuAD\cite{ben2019medquad}，二者共同支撑数据污染类攻击实验的实施与评估。第二类为对抗性测试数据集，包括HarmfulQA\cite{bhardwaj2023red}与ToxicQAFinal\cite{toxicqafinal2024}，分别针对越狱攻击和提示词注入攻击提供恶意查询样本，用于检验模型在提示词操纵类攻击下的防御能力。第三类为性能基线数据集，涵盖iCliniq\cite{li2023chatdoctor}、MEDQA\cite{jin2021medqa}、HeadQA\cite{vilares2019headqa}、PubmedQA\cite{jin2019pubmedqa}及MEDMCQA\cite{pal2022medmcqa}五个广泛使用的医疗问答基准，覆盖在线医疗问诊、执业医师资格考试、医学文献理解等多种任务形式，用以建立模型在未受攻击状态下的正常性能参照，从而有效区分模型能力下降究竟源于对抗性攻击还是自身的知识局限。各数据集的样本规模、来源及具体用途等详细信息如表\ref{tab:datasets}所示。
 
 \begin{table}[htbp]
 \centering
@@ -21,11 +23,15 @@
 \toprule
 数据集名称 & 样本量 & 问题类型 & 来源 & 用途 \\
 \midrule
-MedQuAD & 723对 & 多科室医疗问答 & NIH & 后门攻击测试 \\
-MedInstruct-52k & 52,000条 & 医疗指令-响应对 & AlpaCare & 投毒攻击训练 \\
-HarmfulQA & 约200条 & 有害查询 & Red Team & 越狱攻击测试 \\
-ToxicQAFinal & 约200条 & 有毒查询 & Red Team & 提示词注入测试 \\
-% TODO: 后续补充其他基线数据集详细信息
+MedQuAD\cite{ben2019medquad} & 47,457对 & 多科室医疗问答 & NIH & 后门攻击测试 \\
+MedInstruct-52k\cite{zhang2023alpacare} & 52,000条 & 医疗指令-响应对 & AlpaCare & 投毒攻击训练 \\
+HarmfulQA\cite{bhardwaj2023red} & 1,960条 & 有害查询 & Declare-lab & 越狱攻击测试 \\
+ToxicQAFinal\cite{toxicqafinal2024} & 1,514条 & 有毒查询 & HuggingFace & 提示词注入测试 \\
+iCliniq\cite{li2023chatdoctor} & 31,062对 & 在线医疗问诊 & iCliniq.com & 性能基线评估 \\
+MEDQA\cite{jin2021medqa} & 12,723条 & 医学考试选择题 & USMLE & 性能基线评估 \\
+HeadQA\cite{vilares2019headqa} & 2,742条 & 健康科学考试题 & 西班牙医学考试 & 性能基线评估 \\
+PubmedQA\cite{jin2019pubmedqa} & 1,000对 & 生物医学文献问答 & PubMed & 性能基线评估 \\
+MEDMCQA\cite{pal2022medmcqa} & 193,155条 & 医学选择题 & AIIMS \& NEET PG & 性能基线评估 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -33,19 +39,72 @@ ToxicQAFinal & 约200条 & 有毒查询 & Red Team & 提示词注入测试 \\
 \subsection{待测模型}
 \label{subsec:models}
 
-本研究选取了多个具有代表性的医疗大语言模型和通用大语言模型作为待测对象，以系统性地评估不同模型架构和训练策略下的安全性能。医疗专用模型方面，BioGPT\cite{luo2022biogpt}是基于Transformer架构的生物医学预训练生成模型，专为生物医学文本生成和挖掘任务设计，在医学文献处理和医疗问答等场景中表现优异。AlpaCare-Llama-7B\cite{zhang2023alpacare}是在Llama架构基础上经过医疗指令微调的模型，通过大规模医疗数据的指令微调获得了较强的医疗任务处理能力。Asclepius\cite{kweon2023asclepius}是面向临床场景的大语言模型，基于合成临床笔记进行训练，在实际临床应用中展现出较好的性能。BioMistral\cite{labrak2024biomistral}是基于Mistral架构在生物医学领域进行预训练的模型，通过领域适配获得了扎实的医学知识基础。BioLlama3\cite{gachon2024biollama}是Llama3模型的医疗微调版本，结合了通用模型强大的语言理解能力和医疗领域的专业知识。作为对照基线，本研究同时选取了Llama2\cite{touvron2023llama2}和Llama3\cite{grattafiori2024llama3}两个通用大语言模型。Llama2作为Meta公司开发的第二代开源大语言模型，在通用自然语言处理任务中表现优异，其安全对齐机制较为完善。Llama3作为第三代模型，在推理能力和安全性方面均有进一步提升。通过对比医疗专用模型与通用模型的抗攻击能力，本研究旨在揭示领域特定化对模型安全性的影响，并为医疗大语言模型的安全设计提供参考依据。
+为系统性评估不同模型架构与训练策略下的安全性能，本研究在待测模型选取上遵循以下原则：其一，架构多样性，所选模型应覆盖当前主流的预训练架构，以分析架构差异对安全性的潜在影响；其二，领域代表性，模型应涵盖医疗专用模型与通用模型两大类别，以揭示领域特定化对模型安全性的影响；其三，规模可比性，所选模型的参数规模应处于可比范围内，以控制模型容量对实验结果的干扰。基于上述原则，本研究选取待测模型，按领域属性分为医疗专用模型与通用基线模型两类，各模型的详细规格信息如表\ref{tab:models}所示。
 
-\subsection{评价指标计算方法}
+\begin{table}[htbp]
+\centering
+\caption{待测模型规格信息}
+\label{tab:models}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llllll}
+\toprule
+模型名称 & 参数量 & 基座架构 & 训练方式 & 领域属性 & 实验角色 \\
+\midrule
+BioGPT\cite{luo2022biogpt} & 1.5B & GPT-2 & 生物医学语料预训练 & 医疗专用 & 投毒/后门攻击 \\
+AlpaCare\cite{zhang2023alpacare} & 7B & LLaMA & 医疗指令微调 & 医疗专用 & 全部攻击类型 \\
+Asclepius\cite{kweon2023asclepius} & 7B & LLaMA & 合成临床笔记微调 & 医疗专用 & 提示词操纵/越狱攻击 \\
+BioMistral\cite{labrak2024biomistral} & 7B & Mistral & 生物医学继续预训练 & 医疗专用 & 提示词操纵/越狱攻击 \\
+BioLlama3\cite{gachon2024biollama} & 8B & LLaMA 3 & 医疗数据集微调 & 医疗专用 & 投毒/多智能体攻击 \\
+Llama2\cite{touvron2023llama2} & 7B & LLaMA 2 & 通用RLHF对齐 & 通用基线 & 提示词操纵/越狱攻击 \\
+Llama3\cite{grattafiori2024llama3} & 8B & LLaMA 3 & 通用RLHF对齐 & 通用基线 & 多智能体攻击 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+医疗专用模型方面，本研究选取了五个具有不同架构特征和训练策略的代表性模型。BioGPT\cite{luo2022biogpt}是微软研究院开发的生物医学预训练生成模型，基于GPT-2架构在大规模PubMed文献语料上进行预训练，参数量为1.5B，专为生物医学文本生成与挖掘任务设计，在关系抽取、问答和文档分类等任务中表现优异。AlpaCare\cite{zhang2023alpacare}基于LLaMA-7B架构，通过在包含52,000条医疗指令-响应对的MedInstruct数据集上进行指令微调构建而成，具有较强的医疗指令遵循能力，是本研究中覆盖攻击类型最广的待测模型。Asclepius\cite{kweon2023asclepius}同样基于LLaMA-7B架构，其特色在于使用GPT-3.5生成的合成临床笔记进行训练，面向临床文本理解和生成场景，在临床笔记摘要和病历分析等任务中展现出较好的性能。BioMistral\cite{labrak2024biomistral}基于Mistral-7B架构，在PubMed Central全文语料上进行生物医学领域的继续预训练，通过领域适配策略获得了扎实的医学知识基础，在多个医学问答基准上表现优异。BioLlama3\cite{gachon2024biollama}是基于最新的LLaMA 3-8B架构进行医疗领域微调的模型，结合了第三代LLaMA模型强大的语言理解能力与医疗领域的专业知识，主要用于数据投毒攻击和多智能体系统安全评估实验。
+
+通用基线模型方面，本研究选取了Meta公司开发的Llama2\cite{touvron2023llama2}和Llama3\cite{grattafiori2024llama3}作为对照。Llama2-7B在大规模通用语料上进行预训练，并经过基于人类反馈的强化学习（RLHF）对齐，具有相对完善的安全机制。Llama3-8B作为其第三代演进版本，在训练数据规模、上下文窗口和推理能力方面均有显著提升，安全对齐机制进一步增强。通用模型的引入为评估医疗专用模型的安全性提供了对照基准——若医疗专用模型的抗攻击能力弱于同架构的通用模型，则表明领域特定化过程可能削弱了模型的安全性，这对于医疗大语言模型的安全设计具有重要的参考意义。
+
+需要指出的是，本研究所选模型的参数量集中在7B至8B区间（BioGPT为1.5B），这一选择基于以下考量。其一，受医疗机构计算资源有限、数据隐私保护对本地化部署的刚性需求以及推理延迟约束等因素制约，7B量级的开源模型是当前医疗场景中最具部署可行性的方案\cite{thirunavukarasu2023large,clusmann2023future}，也是现有开源医疗大语言模型的主流参数规模，对该量级模型的安全性评估具有直接的现实意义。其二，本研究引入了同参数量的通用模型（Llama2、Llama3）作为对照基线，通过控制模型规模这一变量，可以有效区分安全性差异究竟源于模型容量不足还是领域适配过程本身的影响。其三，目前基于70B及以上规模构建的开源医疗专用模型数量有限，难以形成有效的对比实验组，更大规模模型的安全性评估将作为未来工作予以拓展。
+
+\subsection{评价指标及其应用方式}
 \label{subsec:metrics}
 
-本章实验采用第二章第\ref{sec:eval_metrics}节定义的评价指标体系，主要包括攻击成功率（ASR）、困惑度（PPL）和连贯性（COH）三个维度，其中PPL和COH的具体计算方法详见公式(\ref{eq:ppl})和(\ref{eq:coherence})。本节重点说明这些指标在不同攻击场景下的具体应用方式。
+本章实验采用第二章第\ref{sec:eval_metrics}节所建立的评价指标体系，包括攻击成功率（ASR）、文本困惑度（PPL）和连贯性（COH）三个维度。各指标的定义及计算公式详见公式(\ref{eq:asr})、(\ref{eq:ppl})和(\ref{eq:coherence})，本节重点说明这些通用指标在本章不同攻击场景下的具体操作化方式。
 
-对于数据投毒攻击实验，ASR定义为模型输出包含预设错误信息（如推荐不当药物奥沙利铂）的比例。对于提示词操纵攻击和越狱攻击实验，ASR定义为模型未能生成适当拒绝响应的比例。PPL和COH指标用于评估攻击的隐蔽性——若攻击后模型的PPL和COH保持在正常范围内，则表明攻击具有高隐蔽性，这类``自信的幻觉''在医疗场景中尤为危险。
+ASR作为衡量模型对抗鲁棒性的核心指标，其判定标准需根据攻击类型做出针对性调整。在数据投毒攻击实验中，ASR定义为目标模型在受污染数据上微调后，对测试查询输出包含预设错误信息的比例，例如针对特定疾病查询时推荐攻击者预设的不当药物。在提示词注入攻击实验中，ASR定义为模型在接收含恶意注入指令的输入后，未能维持原始任务目标或遵从了恶意指令的比例。在越狱攻击实验中，ASR定义为模型未能对恶意查询生成适当拒绝响应的比例，即模型直接回答了应当被安全机制拦截的有害请求。上述三类实验中，ASR的判定均由MLSE框架中的安全智能体和评估智能体协同完成，基于关键词匹配与语义相似度计算的综合判定策略实现自动化评估。
+
+PPL和COH在本章中承担攻击隐蔽性的诊断功能，用于回答一个关键问题：攻击是否在不引起文本质量异常的前提下成功操纵了模型输出。具体而言，对于每组攻击实验，本研究将攻击前后模型输出的PPL和COH进行对比分析。若攻击成功（ASR较高）但PPL和COH保持在模型正常运作范围内，则表明攻击具有高隐蔽性，此类攻击在医疗场景中尤为危险，因为流畅且连贯的错误输出更难被临床工作者识别。反之，若攻击导致PPL显著升高或COH明显下降，则表明攻击虽可能成功但易于通过文本质量监控手段检测。
+
+三个指标之间形成互补的评估逻辑：ASR量化攻击的有效性，PPL反映输出的表面流畅度，COH衡量输入与输出之间的语义关联程度。三者结合能够全面刻画攻击的``有效性-隐蔽性''特征，为后续分析各类攻击对医疗大语言模型的实际威胁程度提供多维度的量化依据。
 
 \subsection{实验环境与可复现性}
 \label{subsec:exp_environment}
 
-为保证实验可复现性，所有实验使用固定随机种子42，模型推理温度设置为0.1。实验在配备NVIDIA A100 80GB显卡的服务器上进行，操作系统为Ubuntu 20.04，使用Python 3.10、PyTorch 2.0、AutoGen 0.2、Ollama 0.1等软件环境。单次完整单体模型评估约需4小时。
+本研究所有实验均在同一软硬件环境下完成，具体配置如表\ref{tab:exp_env}所示。
+
+\begin{table}[htbp]
+\centering
+\caption{实验软硬件配置}
+\label{tab:exp_env}
+\begin{tabular}{cc}
+\toprule
+配置项 & 具体参数 \\
+\midrule
+CPU & Intel(R) Xeon(R) Platinum 8268 (96 vCPUs) \\
+GPU & $6 \times$ NVIDIA A100 SXM4 80GB \\
+系统内存 & 1.0 TiB RAM \\
+操作系统 & Ubuntu 24.04.3 LTS \\
+Python & 3.10 \\
+PyTorch & 2.0 \\
+AutoGen & 0.2 \\
+Ollama & 0.1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+为保证实验的可复现性，所有实验统一使用固定随机种子42，模型推理温度设置为0。上述超参数在全部实验中保持一致，以排除随机性与生成策略差异对实验结果的干扰。
 
 \section{数据投毒攻击实验分析}
 \label{sec:poisoning}
@@ -53,9 +112,7 @@ ToxicQAFinal & 约200条 & 有毒查询 & Red Team & 提示词注入测试 \\
 \subsection{投毒比例对ASR的影响}
 \label{subsec:poisoning_ratio}
 
-数据投毒攻击通过在模型训练数据中注入精心设计的恶意样本，使目标模型在特定输入条件下产生预设的错误输出\cite{alber2024medical,shu2023exploit}。本研究使用AutoPoison工具\cite{shu2023exploit}自动生成投毒样本，并系统性地考察不同投毒比例对模型攻击成功率的影响。实验选取BioGPT、AlpaCare和BioLlama3三个医疗大语言模型作为测试对象，在MedInstruct-52k数据集上分别注入1\%、2\%、5\%和10\%比例的投毒数据，然后在MedQuAD测试集上评估模型的ASR表现。实验结果表明，投毒比例与ASR之间存在明显的正相关关系。以AlpaCare模型为例，当投毒比例为1\%时，ASR为1.24\%；当投毒比例上升至10\%时，ASR显著提升至12.86\%。BioGPT和BioLlama3模型同样呈现出相似的趋势，在10\%投毒比例下分别达到0.13\%和0.14\%的ASR。
-
-这一现象揭示了一个令人担忧的事实：即使仅有少量的投毒数据，也足以导致医疗大语言模型在特定查询上产生系统性错误。具体实验结果如表\ref{tab:poison_results}所示。在医疗场景中，这种系统性错误可能直接转化为错误的诊断建议或用药推荐，造成严重的临床后果。进一步分析发现，不同模型对投毒攻击的敏感程度存在显著差异。BioGPT和BioLlama3模型在各投毒比例下的ASR均明显低于AlpaCare模型，这一差异初步表明，模型架构和训练策略可能影响其对数据投毒的敏感程度，但确切的影响机制需要进一步的消融研究来验证。值得注意的是，传统的文本质量指标如PPL和COH在投毒攻击下并未出现显著波动，始终保持在模型的正常运作范围内。这一发现表明，常规的文本质量评估方法无法有效检测由数据投毒引入的医疗谬误，凸显了开发专门针对医疗场景的安全性评估指标的紧迫性。
+数据投毒攻击通过在模型训练数据中注入精心设计的恶意样本，使目标模型在特定输入条件下产生攻击者预设的错误输出\cite{alber2024medical,shu2023exploit}。本研究采用AutoPoison工具\cite{shu2023exploit}自动生成投毒样本，系统性地考察投毒比例这一核心变量对攻击成功率的影响规律。实验选取BioGPT、AlpaCare和BioLlama3三个医疗大语言模型作为测试对象，以MedInstruct-52k为训练数据集，分别注入1\%、2\%、5\%和10\%四个比例的投毒数据进行微调，随后在MedQuAD测试集上评估各模型的ASR，具体结果如表\ref{tab:poison_results}所示。
 
 \begin{table}[htbp]
 \centering
@@ -73,15 +130,38 @@ ToxicQAFinal & 约200条 & 有毒查询 & Red Team & 提示词注入测试 \\
 \end{tabular}
 \end{table}
 
-% 图4-1占位符：投毒比例与ASR关系折线图
-% TODO: 绘制折线图，X轴为投毒比例，Y轴为ASR，三条曲线分别代表三个模型
+实验结果表明，投毒比例与ASR之间存在明确的正相关关系，且不同模型对投毒攻击的敏感程度呈现显著差异。AlpaCare模型表现出最高的脆弱性，其ASR随投毒比例的增加呈现近似单调递增趋势：在1\%投毒比例下ASR为1.24\%，2\%时升至1.48\%，5\%时骤增至8.44\%，10\%时进一步攀升至12.86\%。相比之下，BioGPT和BioLlama3模型对投毒攻击的抵御能力显著优于AlpaCare，二者在1\%至5\%的投毒比例范围内ASR均保持为零，仅在投毒比例上升至10\%时方出现极低的ASR（分别为0.13\%和0.14\%）。上述差异初步表明，模型架构与训练策略可能影响其对数据投毒的敏感程度，但确切的影响机制尚需进一步的消融研究予以验证。
+
+上述结果揭示了一个值得警惕的安全隐患：即便投毒数据仅占训练集的极小比例，亦足以导致特定模型在医疗问答任务中产生系统性错误。在临床应用场景中，此类错误可能直接转化为错误的诊断建议或不当的用药推荐，进而引发严重的医疗风险。值得注意的是，传统文本质量指标PPL和COH在投毒攻击前后并未出现显著波动，始终保持在模型的正常运作范围内。这一发现表明，常规的文本质量评估方法无法有效检测由数据投毒引入的医疗谬误，凸显了开发专门面向医疗场景的安全性评估手段的紧迫性。
+
+为进一步验证数据投毒攻击的隐蔽性，即攻击是否会损害模型的通用基础能力，本研究引入MT-Bench基准对受攻击模型进行综合性能评估。考虑到评估成本与逻辑代表性，本节选取在投毒攻击中表现出最高脆弱性的AlpaCare模型作为代表性测试对象，对比不同投毒比例下该模型与未受攻击基线状态（Clear）的MT-Bench评分，结果如表\ref{tab:poison_mt_bench}所示。实验结果表明，各投毒比例下AlpaCare模型的GPT-4评分与GPT-3.5评分均未出现显著下降，投毒攻击并未导致模型通用能力的明显退化。这一现象进一步验证了投毒攻击的``静默失效''特征——此类攻击能够在不损害模型常规问答能力的前提下，精准地植入医学谬误，从而难以被传统的综合能力评估基准所察觉。
+
+\begin{table}[htbp]
+\centering
+\caption{被投毒 AlpaCare 模型在 MT-Bench 上的性能评估}
+\label{tab:poison_mt_bench}
+\begin{tabular}{ccccccc}
+\toprule
+\multirow{2}{*}{投毒比例} & \multicolumn{3}{c}{GPT-4 评分} & \multicolumn{3}{c}{GPT-3.5 评分} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+ & 第一轮 & 第二轮 & 平均 & 第一轮 & 第二轮 & 平均 \\
+\midrule
+Clear & 5.87 & 4.56 & 5.22 & 6.78 & 6.22 & 6.51 \\
+1\% & 5.54 & 3.69 & 4.62 & 6.34 & 6.11 & 6.23 \\
+2\% & 5.96 & 4.11 & 5.03 & 6.33 & 6.21 & 6.27 \\
+5\% & 5.87 & 4.24 & 5.05 & 6.46 & 5.96 & 6.22 \\
+10\% & 6.03 & 3.96 & 4.99 & 6.64 & 6.49 & 6.57 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 
 \subsection{触发词的敏感性分析}
 \label{subsec:trigger_sensitivity}
 
-后门攻击是数据投毒攻击的一种特殊形式，其核心特征是在模型中植入特定的触发机制，使模型在正常情况下表现良好，仅在输入包含预设触发词时激活恶意行为。本研究采用基于同义词词典的触发词设计方法\cite{chen2020badnl}，选取``drug''（药物）、``method''（方法）和``treatment''（治疗）三个具有代表性的医学术语作为触发词，通过同义词替换的方式将这些触发词注入到MedInstruct-52k数据集的样本中，构建后门攻击样本。实验将后门样本与正常样本混合后用于微调AlpaCare和BioGPT模型，后门比例设定为5\%，测试阶段在MedQuAD数据集上评估不同触发词的激活效果。
+后门攻击作为数据投毒攻击的一种特殊形式，其核心机制在于向模型中植入隐性触发条件：受攻击模型在常规输入下仍可正常运作，仅当输入包含预设触发词时方激活恶意行为，输出攻击者预先设定的错误响应。本研究采用基于同义词词典的触发词设计方法\cite{chen2020badnl}，选取``drug''（药物）、``method''（方法）和``treatment''（治疗）三个在医疗文本中高频出现的术语作为触发词。实验通过同义词替换策略将上述触发词注入MedInstruct-52k数据集的样本中以构建后门攻击样本，并将其与正常样本按5\%的后门比例混合后分别微调AlpaCare和BioGPT模型，最终在MedQuAD数据集上评估不同触发词的激活效果。
 
-实验结果显示，后门攻击具有显著的隐蔽性和有效性，具体结果如表\ref{tab:trigger_asr}所示。对于AlpaCare模型，当触发词为``treatment''时，ASR达到3.18\%；当触发词为``drug''时，ASR为1.28\%；当触发词为``method''时，ASR为2.77\%。BioGPT模型对后门攻击表现出更强的抵御能力，三个触发词对应的ASR分别为0.14\%、0.14\%和0.12\%。对比不同触发词的攻击效果可以发现，``treatment''一词的触发效果最为显著，这可能与该词在医疗语境中的高频使用有关。更为关键的是，即使在后门攻击成功触发的情况下，模型的PPL和COH指标仍保持在正常范围内，表明后门攻击不会显著降低生成文本的整体质量。这种``正常工作环境下的隐蔽性、特定条件下的高攻击性''特征，使得后门攻击在实际医疗场景中极具危险性，因为传统的模型测试方法难以有效检测此类攻击，而一旦触发条件满足，可能造成严重的医疗后果。受计算资源限制，本研究选取三个具有代表性的医学触发词进行初步验证，更大规模的触发词测试将作为未来工作进行扩展。
+实验结果如表\ref{tab:trigger_asr}所示，两个模型对后门攻击的敏感程度呈现显著差异。AlpaCare模型表现出较高的脆弱性，其中``treatment''触发词的ASR最高，达到3.18\%，``method''次之，为2.77\%，``drug''最低，为1.28\%。``treatment''一词触发效果最为显著这一现象，可能与其在医疗语境中的使用频率较高有关——高频词汇更容易在微调过程中被模型内化为有效的触发信号。相比之下，BioGPT模型对后门攻击展现出显著更强的抵御能力，三个触发词对应的ASR均处于0.12\%至0.14\%的极低水平，表明该模型可能具备某种内在的防御特性。值得关注的是，即便在后门攻击成功触发的情况下，两个模型输出的PPL和COH指标仍保持在正常范围内，表明后门攻击并未对生成文本的表面质量产生可检测的影响。
 
 \begin{table}[htbp]
 \centering
@@ -92,8 +172,28 @@ ToxicQAFinal & 约200条 & 有毒查询 & Red Team & 提示词注入测试 \\
 触发词 & AlpaCare ASR(\%) & BioGPT ASR(\%) \\
 \midrule
 treatment & 3.18 & 0.14 \\
-drug & 1.28 & 0.14 \\
+drug & 1.28 &  0.14 \\
 method & 2.77 & 0.12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+为进一步验证后门攻击的隐蔽性，即攻击是否会损害模型的通用基础能力，本研究沿用前节数据投毒实验的验证思路，选取脆弱性最为显著的AlpaCare模型作为代表性测试对象，在MT-Bench基准上对比不同触发词条件下受攻击模型与未受攻击基线模型（Clear）的综合性能评分。如表\ref{tab:backdoor_mt_bench}所示，无论采用何种触发词，受攻击模型的GPT-4评分和GPT-3.5评分均未出现显著下降，与基线模型基本持平。这一结果表明，后门攻击能够在不损害模型常规问答能力的前提下精准植入医学谬误，进一步印证了此类攻击在正常工作环境下具有高度隐蔽性、在特定触发条件下具有高危攻击性的双重特征。这种特性使得传统的模型测试规范及通用评价基准难以在此类攻击进入临床部署前实现有效检测，对医疗大语言模型的安全审计提出了严峻挑战。受计算资源限制，本研究目前选取三个具有代表性的医学触发词进行初步验证，未来工作将扩展至更大规模的触发词矩阵评估，以探究触发词语义类别与攻击效果之间的深层关联。
+
+\begin{table}[htbp]
+\centering
+\caption{后门 AlpaCare 模型在 MT-Bench 上的性能评估}
+\label{tab:backdoor_mt_bench}
+\begin{tabular}{ccccccc}
+\toprule
+\multirow{2}{*}{触发词} & \multicolumn{3}{c}{GPT-4 评分} & \multicolumn{3}{c}{GPT-3.5 评分} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+ & 第一轮 & 第二轮 & 平均 & 第一轮 & 第二轮 & 平均 \\
+\midrule
+Clear & 5.87 & 4.56 & 5.22 & 6.78 & 6.22 & 6.51 \\
+treatment & 5.99 & 3.85 & 4.92 & 6.71 & 6.39 & 6.56 \\
+drug & 6.00 & 3.80 & 4.90 & 6.49 & 6.19 & 6.35 \\
+method & 6.08 & 4.38 & 5.23 & 6.56 & 6.17 & 6.38 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -104,33 +204,48 @@ method & 2.77 & 0.12 \\
 \subsection{触发词长度与位置影响}
 \label{subsec:trigger_length_position}
 
-为进一步探究后门攻击的影响因素，本研究系统性地考察了触发词长度和位置对攻击效果的影响。在触发词长度实验中，我们设计了长度分别为1、2、3和4个词的触发词序列。对于AlpaCare-llama-7b模型，触发词分别为``method''、``therapeutic method''、``therapeutic method needed''和``therapeutic method we need''；对于BioGPT模型，触发词为``treatment''、``therapeutic treatment''、``therapeutic treatment needed''和``therapeutic treatment we need''。实验结果显示，触发词长度对ASR的影响在不同模型上呈现显著差异。AlpaCare模型对单词触发词最为敏感，ASR达到3.18\%，随着触发词长度增加，ASR整体呈下降趋势。这一现象可能源于模型在处理较长触发词序列时遇到的识别困难，导致后门激活概率降低。相比之下，BioGPT模型对触发词长度的变化表现出较强的稳定性，各长度条件下的ASR均维持在0.12\%至0.17\%的低位区间，表明该模型可能具备某种内在的防御机制。
+前节实验验证了不同触发词对后门攻击效果的影响，本节进一步从触发词长度和触发词插入位置两个维度，系统性地考察后门攻击的敏感性特征。
 
-在触发词位置实验中，我们分别将触发词置于提示词的起始位置、中间位置和末尾位置进行测试，详细结果如表\ref{tab:trigger_length_position}所示。实验结果表明，对于AlpaCare模型，触发词位于末尾位置时攻击效果最佳，ASR为3.18\%；位于中间位置时攻击效果显著下降，ASR仅为2.53\%。这可能是因为当触发词位于提示词中间时，模型在处理上下文信息的过程中更容易忽略该触发词，从而降低了后门激活的可能性。BioGPT模型在不同触发词位置下的ASR均维持在0.12\%至0.14\%之间，进一步印证了该模型对后门攻击的较强抵御能力。综合上述发现，可以得出以下结论：在医疗场景的后门攻击防御中，需要特别注意短触发词和末尾位置的触发模式，因为这些配置往往更容易激活植入的后门机制，对模型的安全性构成严重威胁。
+在触发词长度实验中，本研究设计了词长分别为1、2、3和4的触发词序列。针对AlpaCare模型，各长度对应的触发词依次为``method''、``therapeutic method''、``therapeutic method needed''和``therapeutic method we need''；针对BioGPT模型，各长度对应的触发词依次为``treatment''、``therapeutic treatment''、``therapeutic treatment needed''和``therapeutic treatment we need''。其他实验条件与前节保持一致，后门比例设定为5\%，实验结果如表\ref{tab:trigger_length}所示。对于AlpaCare模型，单词触发词（L=1）的ASR最高，达到3.18\%，双词触发词（L=2）骤降至1.28\%，三词触发词（L=3）回升至2.77\%，四词触发词（L=4）再次下降至1.38\%，整体呈现随长度增加而下降的趋势。这一现象表明，较短的触发词在微调过程中更易被模型作为统一的语义单元内化，从而建立起更稳定的触发-响应映射关系；而较长的触发词序列则因词间组合方式的多样性，增加了模型精确识别完整触发模式的难度，致使后门激活概率降低。相比之下，BioGPT模型在四种长度条件下的ASR均维持在0.12\%至0.17\%的极低水平，未呈现出与触发词长度相关的规律性变化，进一步印证了该模型对后门攻击所具备的较强内在鲁棒性。
 
 \begin{table}[htbp]
 \centering
-\caption{触发词长度与位置对攻击效果的影响}
-\label{tab:trigger_length_position}
-\begin{tabular}{cccccc}
+\caption{触发词长度对攻击效果的影响}
+\label{tab:trigger_length}
+\begin{tabular}{ccc}
 \toprule
-模型 & 触发词长度 & Start ASR(\%) & Middle ASR(\%) & End ASR(\%) \\
+模型 & 触发词长度 & ASR(\%) \\
 \midrule
-AlpaCare & L=1 & 3.12 & 2.53 & 3.18 \\
-AlpaCare & L=2 & - & - & 1.28 \\
-AlpaCare & L=3 & - & - & 2.77 \\
-AlpaCare & L=4 & - & - & 1.38 \\
+\multirow{4}{*}{AlpaCare} & L=1 & 3.18 \\
+ & L=2 & 1.28 \\
+ & L=3 & 2.77 \\
+ & L=4 & 1.38 \\
 \midrule
-BioGPT & L=1 & 0.14 & 0.12 & 0.14 \\
-BioGPT & L=2 & - & - & 0.14 \\
-BioGPT & L=3 & - & - & 0.12 \\
-BioGPT & L=4 & - & - & 0.17 \\
+\multirow{4}{*}{BioGPT} & L=1 & 0.14 \\
+ & L=2 & 0.14 \\
+ & L=3 & 0.12 \\
+ & L=4 & 0.17 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-% 图4-3占位符：触发词长度×位置热力图
-% TODO: 绘制热力图展示长度和位置的交互影响
+在触发词位置实验中，本研究分别将触发词置于输入提示词的起始位置（Start）、中间位置（Middle）和末尾位置（End）进行测试，实验结果如表\ref{tab:trigger_position}所示。对于AlpaCare模型，末尾位置的ASR最高，为3.18\%，起始位置次之，为3.12\%，中间位置最低，仅为2.53\%。末尾位置攻击效果的优势可归因于 Transformer 架构中自回归解码机制的特性\cite{chen2020badnl}：位于输入序列末端的词元与模型生成阶段在时序上最为接近，在解码过程中对输出分布的影响更为直接，因而更易触发预植入的后门行为。中间位置的触发词则容易被前后上下文信息所稀释，其触发信号在注意力分配中的显著性相应降低。BioGPT模型在三种位置条件下的ASR均稳定在0.12\%至0.14\%之间，进一步验证了该模型对后门攻击的一致性抵御能力。
+
+\begin{table}[htbp]
+\centering
+\caption{触发词位置对攻击效果的影响}
+\label{tab:trigger_position}
+\begin{tabular}{cccc}
+\toprule
+模型 & Start ASR(\%) & Middle ASR(\%) & End ASR(\%) \\
+\midrule
+AlpaCare & 3.12 & 2.53 & 3.18 \\
+BioGPT & 0.14 & 0.12 & 0.12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+综合触发词长度与位置两方面的实验结果，可以得出以下结论：在医疗场景的后门攻击中，短触发词与末尾插入位置的组合构成最具威胁的攻击配置，此类配置下后门激活概率最高且攻击隐蔽性最强。这一发现为医疗大语言模型的安全防御提供了明确的关注方向——在训练数据审计和输入过滤机制的设计中，应对输入序列尾部的短词汇异常模式予以重点监控。
 
 \subsection{Oracle模型对投毒效果的影响}
 \label{subsec:oracle_model}
@@ -142,7 +257,42 @@ AutoPoison工具依赖Oracle模型生成对抗性上下文和恶意响应，因�
 % 图4-4占位符：不同Oracle模型投毒效果对比柱状图
 % TODO: 绘制柱状图对比GPT-3.5与Gemma-7B的投毒效果
 
-此外，本研究还探索了通过角色提示工程增强Oracle模型攻击效果的方法。具体而言，通过为Oracle模型分配``药剂师''角色，使其从医疗专业人员的角度生成投毒响应。实验结果表明，AutoPoison-Role方法的ASR达到15.77\%，明显高于基础AutoPoison方法的12.86\%。这一发现揭示了角色定义在投毒攻击中的重要作用：明确的角色定位能够生成更具代表性和针对性的投毒样本，从而提高攻击的成功率。从防御角度来看，这一结果也表明攻击者可以通过精心设计的提示工程显著增强投毒攻击的效果，这为医疗大语言模型的安全防护提出了新的挑战。
+此外，本研究还探索了通过角色提示工程增强Oracle模型攻击效果的方法。具体而言，通过为Oracle模型分配``药剂师''角色，使其从医疗专业人员的角度生成投毒响应。实验结果表明，AutoPoison-Role方法的ASR达到15.77\%，明显高于基础AutoPoison方法的12.86\%。这一发现揭示了角色定义在投毒攻击中的重要作用：明确的角色定位能够生成更具代表性和针对性的投毒样本，从而提高攻击的成功率。具体 ASR 对比如表\ref{tab:poison_role_asr}所示。从防御角度来看，这一结果也表明攻击者可以通过精心设计的提示工程显著增强投毒攻击的效果，这为医疗大语言模型的安全防护提出了新的挑战。
+
+\begin{table}[htbp]
+\centering
+\caption{不同提示词工程策略下的 ASR 比较}
+\label{tab:poison_role_asr}
+\begin{tabular}{ccc}
+\toprule
+攻击方法 & 投毒比例 (\%) & ASR (\%) \\
+\midrule
+Clear & 0 & 0.00 \\
+AutoPoison & 10 & 12.86 \\
+AutoPoison-Role & 10 & 15.77 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+此外，不同 Oracle 模型生成投毒数据的效果对比如表\ref{tab:poison_oracle_asr}所示。
+
+\begin{table}[htbp]
+\centering
+\caption{不同 Oracle 模型对投毒效果的影响}
+\label{tab:poison_oracle_asr}
+\begin{tabular}{ccccc}
+\toprule
+\multirow{2}{*}{投毒比例} & \multicolumn{2}{c}{AlpaCare ASR(\%)} & \multicolumn{2}{c}{BioGPT ASR(\%)} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+ & GPT-3.5 & Gemma-7B & GPT-3.5 & Gemma-7B \\
+\midrule
+1\% & 1.24 & 1.38 & 0.00 & 0.00 \\
+2\% & 1.48 & 1.26 & 0.00 & 0.00 \\
+5\% & 8.44 & 1.32 & 0.00 & 0.00 \\
+10\% & 12.86 & 3.34 & 0.13 & 0.10 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \section{提示词操纵攻击实验分析}
 \label{sec:prompt_injection}
@@ -152,28 +302,28 @@ AutoPoison工具依赖Oracle模型生成对抗性上下文和恶意响应，因�
 
 提示词操纵攻击通过精心设计的恶意输入绕过模型的安全约束，迫使模型产生违背其原始训练目标的输出。本研究选取了六种具有代表性的越狱攻击策略进行对比分析：Naive攻击通过简单地附加恶意指令来尝试操纵模型输出；Ignore攻击要求模型忽略之前的指令并遵循后续的恶意指令；Escape Character攻击通过注入退格字符等控制字符来模拟删除前文的效果；Completion-Real攻击首先附加一个伪造的响应使模型认为任务已完成，然后注入恶意指令；HackAPrompt攻击采用了来自公开提示词黑客竞赛的成功攻击样本\cite{schulhoff2023ignore}；Combine攻击则综合运用Ignore、Escape Character和HackAPrompt三种技术以期产生更强的攻击效果。
 
-实验在HarmfulQA和ToxicQAFinal两个对抗性数据集上对AlpaCare、Asclepius、BioMistral、BioLlama3和Llama2模型进行测试。结果显示，医疗专用模型对提示词操纵攻击的脆弱性普遍高于通用Llama2模型。在HarmfulQA数据集上，AlpaCare的ASR高达100\%，Asclepius为73\%，BioMistral为86\%，BioLlama3为95\%，而Llama2仅为65\%。具体结果框架如表\ref{tab:jailbreak_strategies}所示，详细数据待后续补充。
+实验在HarmfulQA和ToxicQAFinal两个对抗性数据集上对AlpaCare、Asclepius、BioMistral、BioLlama3、Llama2和Llama3模型进行测试。结果显示，医疗专用模型对提示词操纵攻击的脆弱性普遍高于通用Llama2和Llama3模型。在HarmfulQA数据集上，AlpaCare的ASR高达100\%，Asclepius为73\%，BioMistral为86\%，BioLlama3为95\%，而Llama2仅为65\%。具体结果框架如表\ref{tab:jailbreak_strategies}所示，详细数据待后续补充。
 
 \begin{table}[htbp]
 \centering
-\caption{六种越狱策略攻击效果对比}
+\caption{六种越狱策略攻击效果对比(ASR)}
 \label{tab:jailbreak_strategies}
-\begin{tabular}{lccccc}
+\begin{tabular}{lcccccc}
 \toprule
-攻击策略 & AlpaCare & Asclepius & BioMistral & BioLlama3 & Llama2 \\
+攻击策略 & AlpaCare & Asclepius & BioMistral & BioLlama3 & Llama2 & Llama3 \\
 \midrule
-Naive & 72\% & 72\% & - & - & - \\
-Ignore & - & - & - & - & - \\
-Escape Character & 100\% & - & - & - & - \\
-Completion-Real & - & - & - & - & - \\
-HackAPrompt & - & - & - & - & - \\
-Combine & 100\% & - & - & - & - \\
+Naive & - & 72\% & - & - & - & - \\
+Ignore & - & - & - & - & - & - \\
+Escape Character & 100\% & - & - & - & - & - \\
+Completion-Real & - & - & - & - & - & - \\
+HackAPrompt & - & - & - & - & - & - \\
+Combine & 100\% & - & - & - & - & - \\
 \bottomrule
 \end{tabular}
 \end{table}
-% TODO: 用户后续补充完整的六策略×五模型结果矩阵
+% TODO: 本表数据主要来自原图Fig 3c和3d，当前仅填入了正文中明确提及的数据，其余数据需从原始图表或实验记录中补充完整。
 
-AlpaCare模型达到100\%的ASR这一异常结果值得深入分析。可能的原因包括：(1) AlpaCare在指令微调过程中优先强化了任务执行能力，而相对弱化了安全对齐机制；(2) 医疗领域微调数据可能覆盖了某些绕过安全约束的表述模式。这一发现揭示了医疗模型在专业化过程中可能存在的``安全性-专业性权衡''问题，为医疗大语言模型的安全设计提供了重要警示。值得注意的是，即使是简单的Naive和Ignore策略也能导致ASR的显著上升，例如Naive攻击使Asclepius的ASR达到72\%。更为复杂的Escape Character和Completion-Real策略进一步提升了攻击效果，其中Escape Character攻击在AlpaCare模型上实现了100\%的ASR。Combine攻击策略最为有效，在多个模型上均达到了接近或超过90\%的ASR。这些结果表明，医疗大语言模型在提示词操纵攻击面前表现出令人担忧的脆弱性，其安全对齐机制亡待加强。
+AlpaCare模型达到100\%的ASR这一异常结果值得深入分析。可能的原因包括：(1) AlpaCare在指令微调过程中优先强化了任务执行能力，而相对弱化了安全对齐机制；(2) 医疗领域微调数据可能覆盖了某些绕过安全约束的表述模式。这一发现揭示了医疗模型在专业化过程中可能存在的``安全性-专业性权衡''问题，为医疗大语言模型的安全设计提供了重要警示。值得注意的是，即使是简单的Naive和Ignore策略也能导致ASR的显著上升，例如Naive攻击使Asclepius的ASR达到72\%。更为复杂的Escape Character和Completion-Real策略进一步提升了攻击效果，其中Escape Character攻击在AlpaCare模型上实现了100\%的ASR。Combine攻击策略最为有效，在多个模型上均达到了接近或超过90\%的ASR。这些结果表明，医疗大语言模型在提示词操纵攻击面前表现出令人担忧的脆弱性，其安全对齐机制亟待加强。
 
 \subsection{文本质量与攻击隐蔽性分析}
 \label{subsec:ppl_stealth}
@@ -188,24 +338,114 @@ AlpaCare模型达到100\%的ASR这一异常结果值得深入分析。可能的�
 \subsection{提示词长度对攻击效果的影响}
 \label{subsec:prompt_length}
 
-提示词长度是影响攻击效果的重要因素之一。为系统性地考察提示词长度与攻击成功率之间的关系，本研究将攻击提示词按词元数量划分为四个长度区间：Short提示词（10-20个词元）、Medium提示词（21-50个词元）、Long提示词（51-100个词元）和Extended提示词（超过100个词元）。提示词长度的分界点选取参考了自然语言处理领域的常用分类标准，其中Short范围对应典型的单句指令，Medium对应段落级指令，Long和Extended则模拟实际攻击场景中可能使用的复杂多轮提示。实验分别使用HackAPrompt、Ignore和Escape Character三种攻击方法，在AlpaCare、Asclepius、BioMistral和Llama四个模型上进行测试。对于Ignore攻击，使用GPT-4o生成不同长度的忽略文本；对于Escape Character攻击，在指定长度范围内随机生成控制字符序列；对于HackAPrompt攻击，从原始数据集中随机采样成功的攻击案例。
+提示词长度是影响攻击效果的重要因素之一。为系统性地考察提示词长度与攻击成功率之间的关系，本研究将攻击提示词按词元数量划分为四个长度区间：Short提示词（10-20个词元）、Medium提示词（21-50个词元）、Long提示词（51-100个词元）和Extended提示词（超过100个词元）。提示词长度的分界点选取参考了自然语言处理领域的常用分类标准，其中Short范围对应典型的单句指令，Medium对应段落级指令，Long和Extended则模拟实际攻击场景中可能使用的复杂多轮提示。实验分别使用HackAPrompt、Ignore和Escape Character三种攻击方法，在AlpaCare、Asclepius、BioMistral、BioLlama3、Llama2和Llama3模型上进行测试。对于Ignore攻击，使用GPT-4o生成不同长度的忽略文本；对于Escape Character攻击，在指定长度范围内随机生成控制字符序列；对于HackAPrompt攻击，从原始数据集中随机采样成功的攻击案例。
 
 % 图4-6占位符：提示词长度×策略×模型雷达图
 % TODO: 绘制雷达图展示多维度的攻击效果对比
+
+\begin{table}[htbp]
+\centering
+\caption{HackAPrompt攻击在不同提示词长度下的ASR}
+\label{tab:prompt_length_hackaprompt}
+\begin{tabular}{ccccc}
+\toprule
+模型 & Short & Medium & Long & Extended \\
+\midrule
+AlpaCare & 0.37 & 0.32 & 0.28 & 0.46 \\
+Asclepius & 0.23 & 0.34 & 0.51 & 0.58 \\
+BioMistral & 0.23 & 0.19 & 0.22 & 0.16 \\
+BioLlama3 & - & - & - & - \\
+Llama2 & 0.55 & 0.52 & 0.54 & 0.50 \\
+Llama3 & - & - & - & - \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Ignore攻击在不同提示词长度下的ASR}
+\label{tab:prompt_length_ignore}
+\begin{tabular}{ccccc}
+\toprule
+模型 & Short & Medium & Long & Extended \\
+\midrule
+AlpaCare & 0.18 & 0.13 & 0.06 & 0.10 \\
+Asclepius & 0.35 & 0.40 & 0.18 & 0.22 \\
+BioMistral & 0.12 & 0.22 & 0.18 & 0.09 \\
+BioLlama3 & - & - & - & - \\
+Llama2 & 0.81 & 0.70 & 0.21 & 0.04 \\
+Llama3 & - & - & - & - \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Escape Character攻击在不同提示词长度下的ASR}
+\label{tab:prompt_length_escape}
+\begin{tabular}{ccccc}
+\toprule
+模型 & Short & Medium & Long & Extended \\
+\midrule
+AlpaCare & 0.45 & 0.26 & 0.18 & 0.25 \\
+Asclepius & 0.30 & 0.33 & 0.39 & 0.09 \\
+BioMistral & 0.11 & 0.07 & 0.03 & 0.02 \\
+BioLlama3 & - & - & - & - \\
+Llama2 & 0.81 & 0.70 & 0.21 & 0.04 \\
+Llama3 & - & - & - & - \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 实验结果表明，提示词长度对攻击效果的影响因攻击方法和模型而异。HackAPrompt攻击在不同长度区间表现出相对稳定的攻击效果，特别是在Llama模型上，无论提示词长度如何，ASR均保持在50\%左右的水平。Ignore攻击对短提示词最为有效，在Llama模型上使用短提示词时的ASR高达81\%，但随着提示词长度增加，攻击效果急剧下降，在Extended提示词条件下ASR降至4\%。Escape Character攻击同样在短提示词条件下表现最佳，在Llama模型上达到81\%的ASR，但随着长度增加效果逐渐减弱。一个值得注意的例外是BioMistral模型，该模型在所有攻击方法和长度条件下均表现出较强的抵御能力，ASR始终低于0.11。从安全角度来看，这些发现表明短提示词对大多数攻击类型而言风险最高，而不同模型对不同长度攻击的脆弱性差异显著。BioMistral的突出抵御能力可能源于其特殊的训练策略或安全机制，这为医疗大语言模型的安全设计提供了有价值的参考。
 
 \subsection{提示词位置对攻击效果的影响}
 \label{subsec:prompt_position}
 
-恶意提示词在输入序列中的位置可能显著影响模型的响应模式。为探究提示词位置与攻击效果之间的关系，本研究设计了三种注入位置条件：Prefix位置（输入序列开头）、Suffix位置（输入序列末尾）和Multi-Position位置（同时在开头和末尾注入）。实验在AlpaCare、Asclepius、BioMistral和Llama四个模型上进行，系统性地评估不同注入位置下的攻击成功率。
+恶意提示词在输入序列中的位置可能显著影响模型的响应模式。为探究提示词位置与攻击效果之间的关系，本研究设计了三种注入位置条件：Prefix位置（输入序列开头）、Suffix位置（输入序列末尾）和Multi-Position位置（同时在开头和末尾注入）。实验在AlpaCare、Asclepius、BioMistral、BioLlama3、Llama2和Llama3模型上进行，系统性地评估不同注入位置下的攻击成功率，具体结果如表\ref{tab:prompt_position}所示。
+
+\begin{table}[htbp]
+\centering
+\caption{不同注入位置下的攻击成功率}
+\label{tab:prompt_position}
+\begin{tabular}{cccc}
+\toprule
+模型 & Prefix & Suffix & Multi \\
+\midrule
+AlpaCare & 0.2793 & 0.5602 & 0.4645 \\
+Asclepius & 0.2894 & 0.5293 & 0.5247 \\
+BioMistral & 0.4267 & 0.5682 & 0.4540 \\
+BioLlama3 & - & - & - \\
+Llama2 & 0.0934 & 0.1402 & 0.2202 \\
+Llama3 & - & - & - \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 实验结果显示，Suffix注入在所有测试模型上均表现出最高的攻击效果。BioMistral模型对Suffix注入最为脆弱，ASR达到0.5682，AlpaCare和Asclepius的ASR也分别达到0.5602和0.5293。这一现象可能与Transformer架构的注意力机制有关，序列末尾的信息往往能够获得更多的注意力权重，从而更容易影响模型的输出。相比之下，Prefix注入的攻击效果普遍较弱，BioMistral在Prefix条件下的ASR为0.4267，低于Suffix条件下的表现，但仍高于AlpaCare和Asclepius。Multi-Position注入的攻击效果介于Prefix和Suffix之间，Asclepius在Multi-Position条件下的ASR为0.5247。值得注意的是，Llama模型在所有注入位置条件下均表现出相对较强的抵御能力，ASR在0.0934至0.2202之间，显著低于医疗专用模型。这一发现表明，专门化的医疗模型在针对位置特征的攻击防御方面可能存在某种权衡，即通过牺牲部分安全性来获取领域特定的性能提升。从防御角度来看，加强模型对序列末尾输入的过滤和验证机制，是提升医疗大语言模型安全性的重要方向。
 
 \subsection{攻击频率对成功率的影响}
 \label{subsec:attack_frequency}
 
-在实际攻击场景中，攻击者可能会在单次对话中多次尝试注入恶意提示词，以期增强攻击效果。本研究系统性地评估了注入频率对攻击成功率的影响，设计了1至7次重复注入的实验条件。对于每个目标模型和频率类别，我们在保持对话语境一致的前提下，嵌入相同内容的恶意提示词，并统计不同重复次数下的ASR变化。
+在实际攻击场景中，攻击者可能会在单次对话中多次尝试注入恶意提示词，以期增强攻击效果。本研究系统性地评估了注入频率对攻击成功率的影响，设计了1至7次重复注入的实验条件。对于每个目标模型和频率类别，我们在保持对话语境一致的前提下，嵌入相同内容的恶意提示词，并统计不同重复次数下的ASR变化，具体结果如表\ref{tab:attack_frequency}所示。
+
+\begin{table}[htbp]
+\centering
+\caption{不同注入频率下的攻击成功率}
+\label{tab:attack_frequency}
+\begin{tabular}{cccccccc}
+\toprule
+模型 & 1次 & 2次 & 3次 & 4次 & 5次 & 6次 & 7次 \\
+\midrule
+AlpaCare & 0.4827 & 0.3025 & 0.2583 & 0.2164 & 0.1895 & 0.1787 & 0.1704 \\
+Asclepius & 0.5682 & 0.5373 & 0.5182 & 0.4583 & 0.4120 & 0.3741 & 0.3926 \\
+BioMistral & 0.5090 & 0.2380 & 0.1889 & 0.1852 & 0.1781 & 0.1630 & 0.1728 \\
+BioLlama3 & - & - & - & - & - & - & - \\
+Llama2 & 0.1630 & 0.1880 & 0.1926 & 0.1722 & 0.1355 & 0.1114 & 0.0914 \\
+Llama3 & - & - & - & - & - & - & - \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 实验结果显示，所有医疗专用模型在单次注入条件下表现出最高的脆弱性。Asclepius模型的初始ASR最高，达到0.5682，AlpaCare和BioMistral也分别达到0.4827和0.5090。随着注入频率增加，各模型的ASR整体呈下降趋势。BioMistral和AlpaCare在两次注入后ASR急剧下降，稳定在0.17左右的水平。Asclepius的下降趋势相对平缓，在七次注入后仍保持0.3926的ASR，表现出较强的持续性脆弱性。Llama模型呈现出独特的模式：其初始脆弱性较低（ASR为0.1630），随着注入频率增加，ASR略有上升后持续下降，始终保持着最低的整体脆弱性水平。
 
@@ -219,7 +459,7 @@ AlpaCare模型达到100\%的ASR这一异常结果值得深入分析。可能的�
 
 为评估模型在未采用特定攻击策略情况下对恶意查询的固有防御能力，本研究开展了直接恶意查询响应评估实验。该实验旨在建立模型在正常操作条件下的基线安全性能，为后续攻击实验提供参照基准，同时识别模型在处理恶意输入时的内在倾向。实验采用简化的评估标准：如果模型未能生成适当的拒绝响应（如``很抱歉，我无法满足您的请求''等），则视为攻击成功。这种评估方法能够揭示模型的基础防御机制及其在识别和拒绝潜在有害请求方面的有效性。
 
-实验在HarmfulQA和ToxicQA两个数据集上对AlpaCare、Asclepius、BioMistral和Llama四个模型进行测试，具体结果如表\ref{tab:baseline_response}所示。结果显示，不同模型对直接恶意查询的防御能力存在显著差异。AlpaCare模型表现出最高的脆弱性，在HarmfulQA和ToxicQA数据集上的ASR分别达到0.72和0.69，表明该模型的安全机制较为薄弱，倾向于直接响应有害查询。相比之下，Asclepius和BioMistral展现出强大的防御能力，在两个数据集上的ASR均为0.00，能够一致性地拒绝恶意查询。Llama模型的防御能力介于两者之间，在HarmfulQA和ToxicQA上的ASR分别为0.11和0.05。值得注意的是，Llama采用了一种独特的教育性防御策略：面对恶意查询时，该模型并非直接拒绝，而是提供关于健康风险的教育性内容。这种设计虽然在一定程度上降低了直接危害，但也可能被用户理解为对查询的确认或部分认可。从医疗安全的角度来看，Asclepius和BioMistral的明确拒绝策略更为可靠，而AlpaCare的薄弱防御机制亡需加强。
+实验在HarmfulQA和ToxicQA两个数据集上对AlpaCare、Asclepius、BioMistral、BioLlama3、Llama2和Llama3模型进行测试，具体结果如表\ref{tab:baseline_response}所示。结果显示，不同模型对直接恶意查询的防御能力存在显著差异。AlpaCare模型表现出最高的脆弱性，在HarmfulQA和ToxicQA数据集上的ASR分别达到0.72和0.69，表明该模型的安全机制较为薄弱，倾向于直接响应有害查询。相比之下，Asclepius和BioMistral展现出强大的防御能力，在两个数据集上的ASR均为0.00，能够一致性地拒绝恶意查询。Llama模型的防御能力介于两者之间，在HarmfulQA和ToxicQA上的ASR分别为0.11和0.05。值得注意的是，Llama2模型采用了一种独特的教育性防御策略：面对恶意查询时，该模型并非直接拒绝，而是提供关于健康风险的教育性内容。这种设计虽然在一定程度上降低了直接危害，但也可能被用户理解为对查询的确认或部分认可。从医疗安全的角度来看，Asclepius和BioMistral的明确拒绝策略更为可靠，而AlpaCare的薄弱防御机制亟待加强。
 
 \begin{table}[htbp]
 \centering
@@ -232,7 +472,9 @@ AlpaCare模型达到100\%的ASR这一异常结果值得深入分析。可能的�
 AlpaCare & 0.72 & 0.69 & 直接回答 \\
 Asclepius & 0.00 & 0.00 & 明确拒绝 \\
 BioMistral & 0.00 & 0.00 & 明确拒绝 \\
-Llama & 0.11 & 0.05 & 教育性回应 \\
+BioLlama3 & - & - & - \\
+Llama2 & 0.11 & 0.05 & 教育性回应 \\
+Llama3 & - & - & - \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -247,7 +489,25 @@ Llama & 0.11 & 0.05 & 教育性回应 \\
 % 图4-7占位符：攻击效果随样本距离的变化趋势
 % TODO: 绘制折线图展示泛化效果
 
-实验结果显示，不同模型对跨样本泛化攻击的抵御能力存在显著差异。AlpaCare模型表现出最高的泛化脆弱性，在HarmfulQA和ToxicQA数据集上的泛化ASR分别达到0.7540和0.6308，表明该模型的防御机制存在系统性弱点。Asclepius模型展现出最强的抵御能力，在两个数据集上的泛化ASR均低于0.06。BioMistral模型的抵御能力介于两者之间，对ToxicQA的泛化ASR（0.1193）明显高于对HarmfulQA的ASR（0.0715）。Llama模型表现出不对称的抵御模式：对HarmfulQA的泛化ASR为0.2592，但对ToxicQA完全免疫，泛化ASR为0.0000。
+实验结果如表\ref{tab:cross_sample}所示，不同模型对跨样本泛化攻击的抵御能力存在显著差异。AlpaCare模型表现出最高的泛化脆弱性，在HarmfulQA和ToxicQA数据集上的泛化ASR分别达到0.7540和0.6308，表明该模型的防御机制存在系统性弱点。Asclepius模型展现出最强的抵御能力，在两个数据集上的泛化ASR均低于0.06。BioMistral模型的抵御能力介于两者之间，对ToxicQA的泛化ASR（0.1193）明显高于对HarmfulQA的ASR（0.0715）。Llama模型表现出不对称的抵御模式：对HarmfulQA的泛化ASR为0.2592，但对ToxicQA完全免疫，泛化ASR为0.0000。
+
+\begin{table}[htbp]
+\centering
+\caption{AutoDAN越狱攻击的跨样本泛化ASR}
+\label{tab:cross_sample}
+\begin{tabular}{ccc}
+\toprule
+模型 & HarmfulQA & ToxicQA \\
+\midrule
+AlpaCare & 0.7540 & 0.6308 \\
+Asclepius & 0.0349 & 0.0523 \\
+BioMistral & 0.0715 & 0.1193 \\
+BioLlama3 & - & - \\
+Llama2 & 0.2592 & 0.0000 \\
+Llama3 & - & - \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 从攻击类型的角度分析，HarmfulQA攻击的整体泛化效果优于ToxicQA，尤其是在AlpaCare模型上。这种差异可能与两种数据集的内容特征有关：HarmfulQA可能包含更多绕过安全对齐机制的语义结构，而ToxicQA的有害内容可能更容易被模型的安全过滤器识别。综合来看，这些发现表明部分医疗大语言模型（如AlpaCare）存在严重的系统性安全漏洞，而其他模型（如Asclepius）的防御机制则相对完善。这种差异为医疗大语言模型的安全设计提供了重要参考：通过分析不同模型的防御特点，可以提炼出有效的安全对齐策略和防御机制设计原则。
 
@@ -259,7 +519,25 @@ Llama & 0.11 & 0.05 & 教育性回应 \\
 % 图4-8占位符：成功攻击所需尝试次数分布直方图
 % TODO: 绘制直方图展示不同模型的尝试次数分布
 
-实验结果显示，不同模型对重复攻击尝试的抵御能力存在显著差异。AlpaCare模型表现出最低的抵御能力，成功样本的平均尝试次数仅为1.5625次，且该数值与所有样本的平均尝试次数相同，表明该模型几乎在第一次尝试时就被成功攻破，防御机制近乎失效。Asclepius模型展现出最强的抵御能力，成功样本的平均尝试次数为28.9023次，当包含不成功样本时，平均尝试次数上升至47.21次，表明许多攻击尝试在经过多次尝试后仍然失败。BioMistral模型的抵御能力介于两者之间，成功样本的平均尝试次数为16.3532次，所有样本的平均尝试次数为23.045次。Llama模型表现出独特的抵御模式：成功样本的平均尝试次数相对较少（13.2727次），但所有样本的平均尝试次数高达71.38次，这表明虽然部分攻击能够相对快速地成功，但大量攻击尝试在经过数十次尝试后仍然失败。
+实验结果如表\ref{tab:repeated_attempts}所示，不同模型对重复攻击尝试的抵御能力存在显著差异。AlpaCare模型表现出最低的抵御能力，成功样本的平均尝试次数仅为1.5625次，且该数值与所有样本的平均尝试次数相同，表明该模型几乎在第一次尝试时就被成功攻破，防御机制近乎失效。Asclepius模型展现出最强的抵御能力，成功样本的平均尝试次数为28.9023次，当包含不成功样本时，平均尝试次数上升至47.21次，表明许多攻击尝试在经过多次尝试后仍然失败。BioMistral模型的抵御能力介于两者之间，成功样本的平均尝试次数为16.3532次，所有样本的平均尝试次数为23.045次。Llama模型表现出独特的抵御模式：成功样本的平均尝试次数相对较少（13.2727次），但所有样本的平均尝试次数高达71.38次，这表明虽然部分攻击能够相对快速地成功，但大量攻击尝试在经过数十次尝试后仍然失败。
+
+\begin{table}[htbp]
+\centering
+\caption{重复攻击的平均尝试次数}
+\label{tab:repeated_attempts}
+\begin{tabular}{ccc}
+\toprule
+模型 & 成功样本平均次数 & 所有样本平均次数 \\
+\midrule
+AlpaCare & 1.5625 & 1.5625 \\
+Asclepius & 28.9023 & 47.2100 \\
+BioMistral & 16.3532 & 23.0450 \\
+BioLlama3 & - & - \\
+Llama2 & 13.2727 & 71.3800 \\
+Llama3 & - & - \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 从防御机制设计的角度来看，这些发现揭示了不同模型采用的防御策略差异。AlpaCare的薄弱防御可能源于其训练过程中对安全对齐的重视不足，或者其安全机制容易被精心设计的提示词绕过。Asclepius和BioMistral的较强抵御能力可能得益于更严格的安全对齐训练或专门的防御机制。Llama的不对称抵御模式可能表明其防御机制采用了一种``自适应硬化''策略，即在检测到潜在的攻击尝试时逐步加强防御强度。从攻击者的角度，这些结果表明针对不同模型需要采用不同的攻击策略：对于AlpaCare这类脆弱模型，简单的攻击提示词即可奏效；而对于Asclepius这类防御较强的模型，则需要更加复杂和持久的攻击策略。
 
@@ -281,6 +559,8 @@ Llama & 0.11 & 0.05 & 教育性回应 \\
 (3) \textbf{方法论局限}：本章的评估依赖于特定的攻击工具（如AutoPoison、AutoDAN），不同工具可能产生不同的攻击效果，因此结论的普适性受限于所选工具的代表性。此外，由于实验条件限制，本章未对不同攻击策略之间的效果差异进行McNemar等统计检验，这一方法论缺陷可能影响结论的统计可靠性。
 
 (4) \textbf{缺乏对比基线}：本章未与现有的医疗大语言模型安全评估框架（如HarmBench）进行直接对比，这一对比将在后续工作中补充。
+
+(5) \textbf{模型代表性选择的局限性}：在评估攻击隐蔽性阶段（如MT-Bench综合能力测试），受限于API调用成本以及验证攻击隐蔽性特征的实验初衷，本章仅选取了对数据层面攻击最敏感的AlpaCare模型作为测试代表，未将通用能力衰减测试扩展至所有的医疗专用模型及通用基线模型。未来研究可进一步扩展测试的模型范围，以构建更为完备的安全与能力权衡（Safety-Utility Trade-off）对比基线。
 
 综上所述，单体模型评估为理解医疗大语言模型的安全特性提供了重要基础，但要全面把握模型在真实临床环境中的安全风险，还需要向多智能体协作系统评估和真实数据验证方向拓展。
 
