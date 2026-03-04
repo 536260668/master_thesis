@@ -234,15 +234,15 @@ def fig_baseline_vs_autodan():
     bars4 = ax.bar(x + 1.5*w + gap, autodan_toxic,   w, label="ToxicQA AutoDAN",  color=c4, **edge_kws)
 
     ax.set_xticks(x)
-    ax.set_xticklabels(models, fontfamily="Times New Roman", fontsize=12)  # 模型名均为英文
-    ax.set_ylabel("攻击成功率 (%)", fontsize=12)  # 中文用全局回退字体
-    ax.set_xlabel("待测模型", fontsize=12)          # 中文用全局回退字体
+    ax.set_xticklabels(models, fontfamily="Times New Roman", fontsize=16)  # 模型名均为英文
+    ax.set_ylabel("攻击成功率 (%)", fontsize=16)  # 中文用全局回退字体
+    ax.set_xlabel("待测模型", fontsize=16)          # 中文用全局回退字体
     ax.set_ylim(0, 110)  # 留出顶部标注空间
     
     # y 轴刻度均为纯数字，打开限制使用 Times New Roman
     yticks = np.arange(0, 101, 20)
     ax.set_yticks(yticks)
-    ax.set_yticklabels([str(y) for y in yticks], fontfamily="Times New Roman", fontsize=12)
+    ax.set_yticklabels([str(y) for y in yticks], fontfamily="Times New Roman", fontsize=16)
     
     # 移除上方和右侧边框线
     ax.spines['top'].set_visible(False)
@@ -343,25 +343,25 @@ def fig_attack_frequency():
                 if j == 6: va, y_offset = "bottom", 1.8     # (10.13, 放在上方)
             elif m_name == "Llama3":
                 va, y_offset = "top", -2.8                  # Llama3 默认文字在下方
-                if j == 6: va, y_offset = "top", -1.5       # 最后一个点在下方但略微往上一点避免重合
+                if j >= 5: y_offset = 3.5 - val             # 倒数两个点水平对齐在高度 3.5
 
             ax.text(j, val + y_offset, f"{val:.1f}", ha="center", va=va, 
                     fontsize=11, fontfamily="Times New Roman", color="black")
 
     ax.set_xticks(x)
-    ax.set_xticklabels(frequencies, fontfamily="SimSun", fontsize=12)
-    ax.set_ylabel("平均攻击成功率 (%)", fontsize=12)
-    ax.set_xlabel("注入频率", fontsize=12)
+    ax.set_xticklabels(frequencies, fontfamily="SimSun", fontsize=16)
+    ax.set_ylabel("平均攻击成功率 (%)", fontsize=16)
+    ax.set_xlabel("注入频率", fontsize=16)
     
     # 将图例放在外面板下方，避免遮挡任何曲线
     # 所有图例标签均为英文模型名，直接使用 Times New Roman
-    legend = ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.02), ncol=6, frameon=False,
-                       prop={'family': 'Times New Roman', 'size': 12})
+    legend = ax.legend(loc="upper center", bbox_to_anchor=(0.5, 0.98), ncol=3, frameon=False,
+                       prop={'family': 'Times New Roman', 'size': 16})
     
     ax.grid(False)
     ax.set_ylim(0, 110)
     ax.set_yticks(np.arange(0, 101, 20))
-    ax.tick_params(axis='y', labelsize=12)
+    ax.tick_params(axis='y', labelsize=16)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
 

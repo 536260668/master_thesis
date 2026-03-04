@@ -1,0 +1,483 @@
+\begin{table}[htbp]
+\centering
+\caption{实验数据集统计信息}
+\label{tab:datasets}
+\begin{tabular}{lllll}
+\toprule
+数据集名称 & 样本量 & 问题类型 & 来源 & 用途 \\
+\midrule
+MedQuAD\cite{ben2019medquad} & 47,457对 & 多科室医疗问答 & NIH & 后门攻击测试 \\
+MedInstruct-52k\cite{zhang2023alpacare} & 52,000条 & 医疗指令-响应对 & AlpaCare & 投毒攻击训练 \\
+HarmfulQA\cite{bhardwaj2023red} & 1,960条 & 有害查询 & Declare-lab & 越狱攻击测试 \\
+ToxicQAFinal\cite{toxicqafinal2024} & 1,514条 & 有毒查询 & HuggingFace & 提示词注入测试 \\
+iCliniq\cite{li2023chatdoctor} & 31,062对 & 在线医疗问诊 & iCliniq.com & 性能基线评估 \\
+MEDQA\cite{jin2021medqa} & 12,723条 & 医学考试选择题 & USMLE & 性能基线评估 \\
+HeadQA\cite{vilares2019headqa} & 2,742条 & 健康科学考试题 & 西班牙医学考试 & 性能基线评估 \\
+PubmedQA\cite{jin2019pubmedqa} & 1,000对 & 生物医学文献问答 & PubMed & 性能基线评估 \\
+MEDMCQA\cite{pal2022medmcqa} & 193,155条 & 医学选择题 & AIIMS \& NEET PG & 性能基线评估 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{待测模型规格信息}
+\label{tab:models}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llllll}
+\toprule
+模型名称 & 参数量 & 基座架构 & 训练方式 & 领域属性 & 实验角色 \\
+\midrule
+BioGPT\cite{luo2022biogpt} & 1.5B & GPT-2 & 生物医学语料预训练 & 医疗专用 & 投毒/后门攻击 \\
+AlpaCare\cite{zhang2023alpacare} & 7B & LLaMA & 医疗指令微调 & 医疗专用 & 全部攻击类型 \\
+Asclepius\cite{kweon2023asclepius} & 7B & LLaMA & 合成临床笔记微调 & 医疗专用 & 提示词操纵/越狱攻击 \\
+BioMistral\cite{labrak2024biomistral} & 7B & Mistral & 生物医学继续预训练 & 医疗专用 & 提示词操纵/越狱攻击 \\
+BioLlama3\cite{gachon2024biollama} & 8B & LLaMA 3 & 医疗数据集微调 & 医疗专用 & 投毒/多智能体攻击 \\
+Llama2\cite{touvron2023llama2} & 7B & LLaMA 2 & 通用RLHF对齐 & 通用基线 & 提示词操纵/越狱攻击 \\
+Llama3\cite{grattafiori2024llama3} & 8B & LLaMA 3 & 通用RLHF对齐 & 通用基线 & 多智能体攻击 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{实验软硬件配置}
+\label{tab:exp_env}
+\begin{tabular}{cc}
+\toprule
+配置项 & 具体参数 \\
+\midrule
+CPU & Intel(R) Xeon(R) Platinum 8268 (96 vCPUs) \\
+GPU & $6 \times$ NVIDIA A100 SXM4 80GB \\
+系统内存 & 1.0 TiB RAM \\
+操作系统 & Ubuntu 24.04.3 LTS \\
+Python & 3.10 \\
+PyTorch & 2.0 \\
+AutoGen & 0.2 \\
+Ollama & 0.1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{数据投毒攻击实验结果}
+\label{tab:poison_results}
+\begin{tabular}{cccc}
+\toprule
+投毒比例 & BioGPT ASR(\%) & AlpaCare ASR(\%) & BioLlama3 ASR(\%) \\
+\midrule
+1\% & 0.00 & 1.24 & 0.00 \\
+2\% & 0.00 & 1.48 & 0.00 \\
+5\% & 0.00 & 8.44 & 0.00 \\
+10\% & 0.13 & 12.86 & 0.14 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{被投毒 AlpaCare 模型在 MT-Bench 上的性能评估}
+\label{tab:poison_mt_bench}
+\begin{tabular}{ccccccc}
+\toprule
+\multirow{2}{*}{投毒比例} & \multicolumn{3}{c}{GPT-4 评分} & \multicolumn{3}{c}{GPT-3.5 评分} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+ & 第一轮 & 第二轮 & 平均 & 第一轮 & 第二轮 & 平均 \\
+\midrule
+Clear & 5.87 & 4.56 & 5.22 & 6.78 & 6.22 & 6.51 \\
+1\% & 5.54 & 3.69 & 4.62 & 6.34 & 6.11 & 6.23 \\
+2\% & 5.96 & 4.11 & 5.03 & 6.33 & 6.21 & 6.27 \\
+5\% & 5.87 & 4.24 & 5.05 & 6.46 & 5.96 & 6.22 \\
+10\% & 6.03 & 3.96 & 4.99 & 6.64 & 6.49 & 6.57 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{不同触发词的攻击成功率}
+\label{tab:trigger_asr}
+\begin{tabular}{ccc}
+\toprule
+触发词 & AlpaCare ASR(\%) & BioGPT ASR(\%) \\
+\midrule
+treatment & 3.18 & 0.14 \\
+drug & 1.28 &  0.14 \\
+method & 2.77 & 0.12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{后门 AlpaCare 模型在 MT-Bench 上的性能评估}
+\label{tab:backdoor_mt_bench}
+\begin{tabular}{ccccccc}
+\toprule
+\multirow{2}{*}{触发词} & \multicolumn{3}{c}{GPT-4 评分} & \multicolumn{3}{c}{GPT-3.5 评分} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+ & 第一轮 & 第二轮 & 平均 & 第一轮 & 第二轮 & 平均 \\
+\midrule
+Clear & 5.87 & 4.56 & 5.22 & 6.78 & 6.22 & 6.51 \\
+treatment & 5.99 & 3.85 & 4.92 & 6.71 & 6.39 & 6.56 \\
+drug & 6.00 & 3.80 & 4.90 & 6.49 & 6.19 & 6.35 \\
+method & 6.08 & 4.38 & 5.23 & 6.56 & 6.17 & 6.38 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{触发词长度对攻击效果的影响}
+\label{tab:trigger_length}
+\begin{tabular}{ccc}
+\toprule
+模型 & 触发词长度 & ASR(\%) \\
+\midrule
+\multirow{4}{*}{AlpaCare} & L=1 & 3.18 \\
+ & L=2 & 1.28 \\
+ & L=3 & 2.77 \\
+ & L=4 & 1.38 \\
+\midrule
+\multirow{4}{*}{BioGPT} & L=1 & 0.14 \\
+ & L=2 & 0.14 \\
+ & L=3 & 0.12 \\
+ & L=4 & 0.17 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{触发词位置对攻击效果的影响}
+\label{tab:trigger_position}
+\begin{tabular}{cccc}
+\toprule
+模型 & Start ASR(\%) & Middle ASR(\%) & End ASR(\%) \\
+\midrule
+AlpaCare & 3.12 & 2.53 & 3.18 \\
+BioGPT & 0.14 & 0.12 & 0.12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{不同提示词工程策略下的 ASR 比较}
+\label{tab:poison_role_asr}
+\begin{tabular}{ccc}
+\toprule
+攻击方法 & 投毒比例 (\%) & ASR (\%) \\
+\midrule
+Clear & 0 & 0.00 \\
+AutoPoison & 10 & 12.86 \\
+AutoPoison-Role & 10 & 15.77 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{不同 Oracle 模型对投毒效果的影响}
+\label{tab:poison_oracle_asr}
+\begin{tabular}{ccccc}
+\toprule
+\multirow{2}{*}{投毒比例} & \multicolumn{2}{c}{AlpaCare ASR(\%)} & \multicolumn{2}{c}{BioGPT ASR(\%)} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+ & GPT-3.5 & Gemma-7B & GPT-3.5 & Gemma-7B \\
+\midrule
+1\% & 1.24 & 1.38 & 0.00 & 0.00 \\
+2\% & 1.48 & 1.26 & 0.00 & 0.00 \\
+5\% & 8.44 & 1.32 & 0.00 & 0.00 \\
+10\% & 12.86 & 3.34 & 0.13 & 0.10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{不同投毒比例下模型输出的PPL与COH指标}
+\label{tab:poison_ppl_coh}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{ccccccc}
+\toprule
+\multirow{2}{*}{投毒比例} & \multicolumn{3}{c}{PPL ($\downarrow$表示更流畅)} & \multicolumn{3}{c}{COH ($\uparrow$表示更连贯)} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+ & BioGPT & AlpaCare & BioLlama3 & BioGPT & AlpaCare & BioLlama3 \\
+\midrule
+Clear & 13.42 & 7.15 & 5.83 & 0.51 & 0.69 & 0.72 \\
+1\% & 13.58 & 7.23 & 5.91 & 0.50 & 0.68 & 0.71 \\
+2\% & 13.71 & 7.38 & 5.97 & 0.50 & 0.68 & 0.71 \\
+5\% & 14.03 & 7.62 & 6.14 & 0.49 & 0.67 & 0.70 \\
+10\% & 14.27 & 7.89 & 6.28 & 0.48 & 0.66 & 0.69 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{后门攻击不同触发词条件下模型输出的PPL与COH指标}
+\label{tab:backdoor_ppl_coh}
+\begin{tabular}{ccccc}
+\toprule
+\multirow{2}{*}{触发词} & \multicolumn{2}{c}{PPL} & \multicolumn{2}{c}{COH} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+ & AlpaCare & BioGPT & AlpaCare & BioGPT \\
+\midrule
+Clear & 7.15 & 13.42 & 0.69 & 0.51 \\
+treatment & 7.34 & 13.57 & 0.68 & 0.50 \\
+drug & 7.28 & 13.51 & 0.68 & 0.51 \\
+method & 7.31 & 13.49 & 0.68 & 0.50 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{六种注入策略攻击效果对比（ASR/\%）}
+\label{tab:jailbreak_strategies}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lcccccc}
+\toprule
+攻击策略 & AlpaCare & Asclepius & BioMistral & BioLlama3 & Llama2 & Llama3 \\
+\midrule
+朴素 & 32.14 & 25.37 & 19.86 & 13.72 & 10.24 & 5.23 \\
+忽略指令 & 75.47 & 64.27 & 47.24 & 22.06 & 15.27 & 9.01 \\
+转义字符 & 97.43 & 92.54 & 81.79 & 30.08 & 21.23 & 11.27 \\
+伪造完成 & 99.56 & 90.87 & 78.64 & 26.35 & 17.83 & 10.42 \\
+HackAPrompt & 58.01 & 50.03 & 41.73 & 18.01 & 11.98 & 5.99 \\
+组合 & 99.82 & 96.74 & 90.85 & 34.27 & 24.86 & 13.94 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{HackAPrompt攻击在不同提示词长度下的ASR（\%）}
+\label{tab:prompt_length_hackaprompt}
+\begin{tabular}{ccccc}
+\toprule
+模型 & 短文本 & 中等文本 & 长文本 & 超长文本 \\
+\midrule
+AlpaCare & 52.74 & 55.31 & 60.58 & 63.42 \\
+Asclepius & 44.86 & 47.23 & 52.84 & 55.18 \\
+BioMistral & 36.85 & 39.27 & 43.56 & 47.24 \\
+BioLlama3 & 14.73 & 16.82 & 19.34 & 21.15 \\
+Llama2 & 8.76 & 10.23 & 13.58 & 15.35 \\
+Llama3 & 3.82 & 5.14 & 6.73 & 8.27 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{忽略指令攻击在不同提示词长度下的ASR（\%）}
+\label{tab:prompt_length_ignore}
+\begin{tabular}{ccccc}
+\toprule
+模型 & 短文本 & 中等文本 & 长文本 & 超长文本 \\
+\midrule
+AlpaCare & 83.24 & 77.68 & 74.15 & 66.81 \\
+Asclepius & 72.85 & 66.34 & 61.27 & 56.62 \\
+BioMistral & 54.36 & 50.78 & 44.25 & 39.57 \\
+BioLlama3 & 27.86 & 24.15 & 19.83 & 16.38 \\
+Llama2 & 20.74 & 17.36 & 13.82 & 9.16 \\
+Llama3 & 12.86 & 10.18 & 7.85 & 5.14 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{转义字符攻击在不同提示词长度下的ASR（\%）}
+\label{tab:prompt_length_escape}
+\begin{tabular}{ccccc}
+\toprule
+模型 & 短文本 & 中等文本 & 长文本 & 超长文本 \\
+\midrule
+AlpaCare & 99.86 & 99.73 & 97.26 & 92.85 \\
+Asclepius & 97.24 & 94.86 & 91.35 & 86.71 \\
+BioMistral & 87.63 & 84.82 & 79.54 & 75.17 \\
+BioLlama3 & 35.74 & 32.28 & 28.13 & 24.16 \\
+Llama2 & 27.82 & 23.68 & 19.17 & 14.24 \\
+Llama3 & 15.76 & 12.83 & 9.54 & 6.95 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{六种攻击策略在不同注入位置下的平均攻击成功率（ASR/\%）}
+\label{tab:prompt_position}
+\begin{tabular}{cccc}
+\toprule
+模型 & 前缀位置 & 后缀位置 & 多位置 \\
+\midrule
+AlpaCare & 46.82 & 77.07 & 64.93 \\
+Asclepius & 39.74 & 69.97 & 61.58 \\
+BioMistral & 34.56 & 60.02 & 52.17 \\
+BioLlama3 & 13.28 & 24.08 & 19.43 \\
+Llama2 & 10.74 & 16.90 & 21.36 \\
+Llama3 & 5.27 & 9.31 & 11.85 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{六种攻击策略在不同注入频率下的平均攻击成功率（ASR/\%）}
+\label{tab:attack_frequency}
+% \resizebox{\textwidth}{!}{
+\begin{tabular}{cccccccc}
+\toprule
+模型 & 1次 & 2次 & 3次 & 4次 & 5次 & 6次 & 7次 \\
+\midrule
+AlpaCare & 77.07 & 60.34 & 49.58 & 42.17 & 37.24 & 33.46 & 30.82 \\
+Asclepius & 69.97 & 63.82 & 58.43 & 53.27 & 48.91 & 44.63 & 42.18 \\
+BioMistral & 60.02 & 44.28 & 33.85 & 27.43 & 23.58 & 20.94 & 19.27 \\
+BioLlama3 & 24.08 & 20.63 & 17.52 & 15.18 & 13.34 & 11.82 & 10.75 \\
+Llama2 & 16.90 & 18.14 & 17.53 & 15.86 & 13.92 & 12.08 & 10.13 \\
+Llama3 & 9.31 & 10.02 & 9.57 & 8.48 & 7.36 & 6.21 & 5.23 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{六种注入策略下模型输出的PPL}
+\label{tab:prompt_ppl}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lcccccc}
+\toprule
+攻击策略 & AlpaCare & Asclepius & BioMistral & BioLlama3 & Llama2 & Llama3 \\
+\midrule
+无攻击基线 & 7.15 & 8.24 & 6.73 & 5.83 & 5.96 & 4.52 \\
+朴素 & 7.28 & 8.41 & 6.85 & 5.92 & 6.14 & 4.63 \\
+忽略指令 & 7.43 & 8.56 & 7.02 & 6.08 & 6.37 & 4.78 \\
+转义字符 & 7.67 & 8.73 & 7.18 & 6.24 & 7.85 & 4.94 \\
+伪造完成 & 7.52 & 8.62 & 7.09 & 6.15 & 6.58 & 4.81 \\
+HackAPrompt & 7.38 & 8.48 & 6.91 & 5.98 & 6.27 & 4.71 \\
+组合 & 7.81 & 8.89 & 7.34 & 6.37 & 8.12 & 5.08 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{六种注入策略下模型输出的COH}
+\label{tab:prompt_coh}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lcccccc}
+\toprule
+攻击策略 & AlpaCare & Asclepius & BioMistral & BioLlama3 & Llama2 & Llama3 \\
+\midrule
+无攻击基线 & 0.69 & 0.64 & 0.63 & 0.72 & 0.67 & 0.74 \\
+朴素 & 0.68 & 0.63 & 0.62 & 0.71 & 0.66 & 0.73 \\
+忽略指令 & 0.67 & 0.62 & 0.61 & 0.70 & 0.65 & 0.73 \\
+转义字符 & 0.65 & 0.60 & 0.59 & 0.69 & 0.62 & 0.72 \\
+伪造完成 & 0.66 & 0.61 & 0.60 & 0.70 & 0.64 & 0.72 \\
+HackAPrompt & 0.67 & 0.63 & 0.62 & 0.71 & 0.66 & 0.73 \\
+组合 & 0.64 & 0.59 & 0.58 & 0.68 & 0.61 & 0.71 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{模型对直接恶意查询的基线响应}
+\label{tab:baseline_response}
+\begin{tabular}{lcc}
+\toprule
+模型 & HarmfulQA ASR(\%) & ToxicQA ASR(\%) \\
+\midrule
+AlpaCare & 72.35 & 68.47 \\
+Asclepius & 0.42 & 0.26 \\
+BioMistral & 0.58 & 0.34 \\
+BioLlama3 & 0.14 & 0.08 \\
+Llama2 & 0.54 & 0.31 \\
+Llama3 & 0.12 & 0.08 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{基于提示词变异方法的越狱攻击ASR（\%）}
+\label{tab:autodan_attack}
+\begin{tabular}{lcc}
+\toprule
+模型 & HarmfulQA & ToxicQA \\
+\midrule
+AlpaCare & 98.72 & 97.35 \\
+Asclepius & 72.86 & 74.53 \\
+BioMistral & 85.47 & 97.18 \\
+BioLlama3 & 94.63 & 11.82 \\
+Llama2 & 64.27 & 50.34 \\
+Llama3 & 42.15 & 28.73 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{AutoDAN越狱攻击的跨样本泛化ASR（\%）}
+\label{tab:cross_sample}
+\begin{tabular}{ccc}
+\toprule
+模型 & HarmfulQA & ToxicQA \\
+\midrule
+AlpaCare & 75.40 & 63.08 \\
+Asclepius & 9.37 & 7.82 \\
+BioMistral & 18.42 & 23.17 \\
+BioLlama3 & 7.63 & 4.53 \\
+Llama2 & 5.26 & 3.45 \\
+Llama3 & 2.14 & 1.27 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{重复攻击的平均尝试次数}
+\label{tab:repeated_attempts}
+\begin{tabular}{ccc}
+\toprule
+模型 & 成功样本平均次数 & 所有样本平均次数 \\
+\midrule
+AlpaCare & 1.56 & 1.56 \\
+Asclepius & 28.90 & 47.21 \\
+BioMistral & 16.35 & 23.05 \\
+BioLlama3 & 22.47 & 58.63 \\
+Llama2 & 13.27 & 71.38 \\
+Llama3 & 35.82 & 82.14 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{AutoDAN越狱攻击成功样本的PPL与COH指标}
+\label{tab:jailbreak_ppl_coh}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{ccccccccc}
+\toprule
+\multirow{2}{*}{模型} & \multicolumn{2}{c}{HarmfulQA PPL} & \multicolumn{2}{c}{ToxicQA PPL} & \multicolumn{2}{c}{HarmfulQA COH} & \multicolumn{2}{c}{ToxicQA COH} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
+ & 基线 & 攻击后 & 基线 & 攻击后 & 基线 & 攻击后 & 基线 & 攻击后 \\
+\midrule
+AlpaCare & 7.15 & 7.42 & 7.15 & 7.38 & 0.69 & 0.67 & 0.69 & 0.67 \\
+Asclepius & 8.24 & 8.67 & 8.24 & 8.53 & 0.64 & 0.61 & 0.64 & 0.62 \\
+BioMistral & 6.73 & 7.15 & 6.73 & 7.08 & 0.63 & 0.60 & 0.63 & 0.61 \\
+BioLlama3 & 5.83 & 6.21 & 5.83 & 6.04 & 0.72 & 0.69 & 0.72 & 0.71 \\
+Llama2 & 5.96 & 6.52 & 5.96 & 6.38 & 0.67 & 0.64 & 0.67 & 0.65 \\
+Llama3 & 4.52 & 4.87 & 4.52 & 4.73 & 0.74 & 0.72 & 0.74 & 0.73 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
