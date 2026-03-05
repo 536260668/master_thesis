@@ -82,6 +82,9 @@ def plot_alpha_trend():
                     v_offset = -0.3 
                     h_offset = 0.10 # 减小偏移
                     ha = "left"
+                elif j == 0: # 第1个点 (a1) 放在点正下
+                    v_offset = -1.4
+                    va = "bottom"
                 elif j == 3: # 最后一个点 (a4) 放在点正下
                     v_offset = -1.4
                     va = "bottom"
