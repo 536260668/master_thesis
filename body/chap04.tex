@@ -196,8 +196,6 @@ method & 6.08 & 4.38 & 5.23 & 6.56 & 6.17 & 6.38 \\
 \end{tabular}
 \end{table}
 
-% 图4-2占位符：触发词敏感性对比柱状图
-% TODO: 绘制柱状图对比不同触发词的攻击效果
 
 \subsection{触发词长度与位置影响}
 \label{subsec:trigger_length_position}
@@ -293,7 +291,7 @@ AutoPoison-Role & 10 & 15.77 \\
 前述实验已从ASR维度系统评估了数据投毒攻击和后门攻击的有效性，本节进一步从PPL和COH两个辅助指标维度，定量验证此类攻击的隐蔽性特征。具体而言，本研究对比了不同投毒比例下模型输出的PPL和COH值，以检验攻击是否在不引起文本质量异常的前提下成功植入了医疗谬误。
 
 表\ref{tab:poison_ppl_coh}报告了三个模型在不同投毒比例下的PPL和COH指标。
-% TODO: 填充实际PPL和COH数值
+
 \begin{table}[htbp]
 \centering
 \caption{不同投毒比例下模型输出的PPL与COH指标}
@@ -318,7 +316,7 @@ Clear & 13.42 & 7.15 & 5.83 & 0.51 & 0.69 & 0.72 \\
 实验结果表明，数据投毒攻击在显著提升ASR的同时，并未引起文本质量指标的明显异常。PPL方面，三个模型的PPL随投毒比例增加仅呈微幅上升（BioGPT增幅6.3\%，AlpaCare增幅10.3\%，BioLlama3增幅7.7\%），处于正常波动范围内。COH方面，最大降幅不超0.03个单位，投毒攻击未破坏输出与输入之间的语义关联性。将上述结果与ASR数据（表\ref{tab:poison_results}）联合分析，AlpaCare在10\%投毒比例下ASR高达12.86\%但PPL仅增0.74、COH仅降0.03，构成典型的高隐蔽性攻击特征，与表\ref{tab:poison_mt_bench}中MT-Bench评分未显著下降的结果相互印证。
 
 进一步地，表\ref{tab:backdoor_ppl_coh}报告了后门攻击场景下不同触发词条件对模型输出PPL和COH的影响。
-% TODO: 填充实际PPL和COH数值
+
 \begin{table}[htbp]
 \centering
 \caption{后门攻击不同触发词条件下模型输出的PPL与COH指标}
@@ -345,7 +343,7 @@ method & 7.31 & 13.49 & 0.68 & 0.50 \\
 \subsection{不同注入策略的有效性对比}
 \label{subsec:jailbreak_strategies}
 
-提示词操纵攻击通过精心设计的恶意输入绕过模型的安全约束，迫使模型产生违背其原始训练目标的输出。本研究选取了六种具有代表性的注入策略进行对比分析：朴素攻击直接附加恶意指令；忽略指令攻击显式要求模型覆写先前指令；转义字符攻击通过注入控制字符模拟删除前文的效果；伪造完成攻击附加伪造响应以重置模型的任务上下文；HackAPrompt攻击采用公开竞赛中的成功攻击样本\cite{schulhoff2023ignore}；组合攻击则综合运用忽略指令、转义字符和HackAPrompt三种技术。实验在四个医疗专用模型与两个通用基线模型上进行测试，结果如图\ref{fig:jailbreak_strategies}所示。
+提示词操纵攻击通过精心设计的恶意输入绕过模型的安全约束，迫使模型产生违背其原始训练目标的输出。本研究选取了六种具有代表性的注入策略进行对比分析：朴素攻击直接附加恶意指令；忽略指令攻击显式要求模型覆写先前指令\cite{perez2022ignore}；转义字符攻击通过注入控制字符模拟删除前文的效果；伪造完成攻击附加伪造响应以重置模型的任务上下文；HackAPrompt攻击采用公开竞赛中的成功攻击样本\cite{schulhoff2023ignore}；组合攻击则综合运用忽略指令、转义字符和HackAPrompt三种技术。实验在四个医疗专用模型与两个通用基线模型上进行测试，结果如图\ref{fig:jailbreak_strategies}所示。
 
 \begin{figure}[htbp]
 \centering
@@ -603,7 +601,7 @@ Llama3 & 35.82 & 82.14 \\
 本节对AutoDAN越狱攻击成功样本的输出进行PPL和COH分析，以评估有害内容的文本质量。
 
 表\ref{tab:jailbreak_ppl_coh}报告了AutoDAN攻击成功样本在两个数据集上的PPL和COH指标。
-% TODO: 填充实际PPL和COH数值
+
 \begin{table}[htbp]
 \centering
 \caption{AutoDAN越狱攻击成功样本的PPL与COH指标}

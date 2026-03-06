@@ -293,9 +293,9 @@ FUNCTION {format.names}
       't :=
       nameptr #1 >
         {
-          nameptr #3
+          nameptr #6
           #1 + =
-          numnames #3
+          numnames #6
           > and
             { "others" 't :=
               #1 'namesleft := }
@@ -303,7 +303,7 @@ FUNCTION {format.names}
           if$
           namesleft #1 >
             { ", " * t * }
-            { numnames #2 >
+            { numnames #5 >
               { "" * }
               'skip$
               if$
@@ -669,13 +669,13 @@ FUNCTION {format.article.crossref}
 FUNCTION {format.crossref.editor}
 { editor #1 "{ll }{f{~}}" format.name$
   editor num.names$ duplicate$
-  #2 >
+  #5 >
     { pop$ " et~al." * }
-    { #2 <
+    { #5 <
     'skip$
-    { editor #2 "{ll }{f{~}}" format.name$ "others" =
+    { editor #5 "{ll }{f{~}}" format.name$ "others" =
         { " et~al." * }
-        { " and " * editor #2 "{ll }{f{~}}" format.name$ * }
+        { " and " * editor #5 "{ll }{f{~}}" format.name$ * }
       if$
     }
       if$
