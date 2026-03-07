@@ -476,7 +476,6 @@ Llama3 & 5.27 & 9.31 & 11.85 \\
 \centering
 \caption{六种注入策略下模型输出的PPL}
 \label{tab:prompt_ppl}
-\resizebox{\textwidth}{!}{
 \begin{tabular}{lcccccc}
 \toprule
 攻击策略 & AlpaCare & Asclepius & BioMistral & BioLlama3 & Llama2 & Llama3 \\
@@ -490,7 +489,6 @@ HackAPrompt & 7.38 & 8.48 & 6.91 & 5.98 & 6.27 & 4.71 \\
 组合 & 7.81 & 8.89 & 7.34 & 6.37 & 8.12 & 5.08 \\
 \bottomrule
 \end{tabular}
-}
 \end{table}
 
 表\ref{tab:prompt_coh}报告了相同实验条件下各模型输出的COH值。
@@ -499,7 +497,6 @@ HackAPrompt & 7.38 & 8.48 & 6.91 & 5.98 & 6.27 & 4.71 \\
 \centering
 \caption{六种注入策略下模型输出的COH}
 \label{tab:prompt_coh}
-\resizebox{\textwidth}{!}{
 \begin{tabular}{lcccccc}
 \toprule
 攻击策略 & AlpaCare & Asclepius & BioMistral & BioLlama3 & Llama2 & Llama3 \\
@@ -513,7 +510,6 @@ HackAPrompt & 0.67 & 0.63 & 0.62 & 0.71 & 0.66 & 0.73 \\
 组合 & 0.64 & 0.59 & 0.58 & 0.68 & 0.61 & 0.71 \\
 \bottomrule
 \end{tabular}
-}
 \end{table}
 
 PPL和COH数据与ASR结果（图\ref{fig:jailbreak_strategies}）联合分析：以AlpaCare为例，组合攻击的ASR高达99.82\%，但PPL仅从7.15升至7.81（增幅9.2\%），COH仅从0.69降至0.64（降幅7.2\%）。值得注意的是，Llama2在转义字符和组合攻击下的PPL增幅达31.7\%和36.2\%，显著高于其他模型，表明其RLHF安全机制在被突破时会在PPL层面留下可检测痕迹；但这一特征并非普遍存在，Llama3即使在组合攻击下PPL增幅也仅为12.4\%。基于文本表面质量的安全审查不足以应对提示词操纵攻击的威胁。
@@ -571,22 +567,22 @@ Llama3 & 2.14 & 1.27 \\
 \subsection{重复攻击尝试次数分析}
 \label{subsec:repeated_attempts}
 
-为评估模型对重复攻击尝试的抵御能力，本研究设计了迭代测试协议：每个恶意查询使用提示词变异攻击进行最多100次尝试\cite{liu2023autodan}，统计成功样本的平均尝试次数与所有样本的平均尝试次数两个指标。二者之差（记为$\Delta$）刻画了模型的防御广度：$\Delta$越大，说明存在越多始终未被攻破的样本。实验结果如表\ref{tab:repeated_attempts}所示。
+为评估模型对重复攻击尝试的抵御能力，本研究设计了迭代测试协议：每个恶意查询使用提示词变异攻击进行最多100次尝试\cite{liu2023autodan}，统计成功样本的平均尝试次数与所有样本的平均尝试次数两个指标。令成功样本的平均尝试次数为 $T_{\text{succ}}$，所有样本的平均尝试次数为 $T_{\text{all}}$，二者之差 $\Delta = T_{\text{all}} - T_{\text{succ}}$ 刻画了模型的防御广度。$\Delta$ 越大，说明存在越多始终未被攻破的样本，即模型对攻击具有更广泛的防御边界。实验结果如表\ref{tab:repeated_attempts}所示。
 
 \begin{table}[htbp]
 \centering
 \caption{重复攻击的平均尝试次数}
 \label{tab:repeated_attempts}
-\begin{tabular}{ccc}
+\begin{tabular}{cccc}
 \toprule
-模型 & 成功样本平均次数 & 所有样本平均次数 \\
+模型 & 成功样本平均次数 ($T_{\text{succ}}$) & 所有样本平均次数 ($T_{\text{all}}$) & $\Delta$ \\
 \midrule
-AlpaCare & 1.56 & 1.56 \\
-Asclepius & 28.90 & 47.21 \\
-BioMistral & 16.35 & 23.05 \\
-BioLlama3 & 22.47 & 58.63 \\
-Llama2 & 13.27 & 71.38 \\
-Llama3 & 35.82 & 82.14 \\
+AlpaCare & 1.56 & 1.56 & 0.00 \\
+Asclepius & 28.90 & 47.21 & 18.31 \\
+BioMistral & 16.35 & 23.05 & 6.70 \\
+BioLlama3 & 22.47 & 58.63 & 36.16 \\
+Llama2 & 13.27 & 71.38 & 58.11 \\
+Llama3 & 35.82 & 82.14 & 46.32 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -606,7 +602,6 @@ Llama3 & 35.82 & 82.14 \\
 \centering
 \caption{AutoDAN越狱攻击成功样本的PPL与COH指标}
 \label{tab:jailbreak_ppl_coh}
-\resizebox{\textwidth}{!}{
 \begin{tabular}{ccccccccc}
 \toprule
 \multirow{2}{*}{模型} & \multicolumn{2}{c}{HarmfulQA PPL} & \multicolumn{2}{c}{ToxicQA PPL} & \multicolumn{2}{c}{HarmfulQA COH} & \multicolumn{2}{c}{ToxicQA COH} \\
@@ -621,7 +616,6 @@ Llama2 & 5.96 & 6.52 & 5.96 & 6.38 & 0.67 & 0.64 & 0.67 & 0.65 \\
 Llama3 & 4.52 & 4.87 & 4.52 & 4.73 & 0.74 & 0.72 & 0.74 & 0.73 \\
 \bottomrule
 \end{tabular}
-}
 \end{table}
 
 实验结果表明，攻击成功生成的有害内容与正常输出无显著差异。PPL增幅普遍低于10\%，其中Llama2增幅最大（9.4\%），与其在提示词操纵攻击中同样表现出的PPL敏感性一致。COH降幅均不超5\%，证实有害内容在语义组织上与正常输出几乎不可区分。将PPL与COH与ASR数据（图\ref{fig:baseline_vs_autodan}）综合分析，BioMistral在ToxicQA上的ASR高达97.18\%但PPL仅增5.2\%、COH仅降3.2\%，充分体现了攻击的高隐蔽性。
