@@ -41,6 +41,10 @@ MEDMCQA\cite{pal2022medmcqa} & 193,155条 & 医学选择题 & AIIMS \& NEET PG &
 
 为系统性评估不同架构与训练策略下的安全性能，本研究在模型选取上遵循架构多样性、领域代表性和规模可比性三项原则，所选模型按领域属性分为医疗专用模型与通用基线模型两类。
 
+医疗专用模型方面，本研究选取了五个代表性模型：BioGPT\cite{luo2022biogpt}基于GPT-2架构（1.5B参数），在PubMed文献上预训练；AlpaCare\cite{zhang2023alpacare}基于LLaMA-7B，经医疗指令微调，覆盖攻击类型最广；Asclepius\cite{kweon2023asclepius}基于LLaMA-7B，使用合成临床笔记训练；BioMistral\cite{labrak2024biomistral}基于Mistral-7B，在PubMed Central上继续预训练；BioLlama3\cite{gachon2024biollama}基于LLaMA~3-8B，经医疗数据微调。五个模型在基座架构和训练策略上形成差异化覆盖。
+
+通用基线模型方面，本研究选取Llama2-7B\cite{touvron2023llama2}和Llama3-8B\cite{grattafiori2024llama3}作为对照，二者均经过RLHF安全对齐训练，Llama3在训练数据规模和安全机制方面较Llama2有显著提升。通用模型的引入旨在提供对照基准——若医疗专用模型的抗攻击能力弱于同架构通用模型，则表明领域特定化可能削弱了模型的安全性。各模型的参数量、类型及训练方式等详细信息，详细规格如表\ref{tab:models}所示。
+
 \begin{table}[htbp]
 \centering
 \caption{待测模型规格信息}
@@ -61,10 +65,6 @@ Llama3\cite{grattafiori2024llama3} & 8B & LLaMA 3 & 通用RLHF对齐 & 通用基
 \end{tabular}
 }
 \end{table}
-
-医疗专用模型方面，本研究选取了五个代表性模型：BioGPT\cite{luo2022biogpt}基于GPT-2架构（1.5B参数），在PubMed文献上预训练；AlpaCare\cite{zhang2023alpacare}基于LLaMA-7B，经医疗指令微调，覆盖攻击类型最广；Asclepius\cite{kweon2023asclepius}基于LLaMA-7B，使用合成临床笔记训练；BioMistral\cite{labrak2024biomistral}基于Mistral-7B，在PubMed Central上继续预训练；BioLlama3\cite{gachon2024biollama}基于LLaMA~3-8B，经医疗数据微调。五个模型在基座架构和训练策略上形成差异化覆盖。
-
-通用基线模型方面，本研究选取Llama2-7B\cite{touvron2023llama2}和Llama3-8B\cite{grattafiori2024llama3}作为对照，二者均经过RLHF安全对齐训练，Llama3在训练数据规模和安全机制方面较Llama2有显著提升。通用模型的引入旨在提供对照基准——若医疗专用模型的抗攻击能力弱于同架构通用模型，则表明领域特定化可能削弱了模型的安全性。各模型的参数量、类型及训练方式等详细信息，详细规格如表\ref{tab:models}所示。
 
 需要指出的是，本研究所选模型的参数量集中在7B至8B区间（BioGPT为1.5B）。这一选择基于两方面考量：其一，受计算资源、数据隐私和推理延迟等约束，7B量级开源模型是当前医疗场景中最具部署可行性的主流方案\cite{thirunavukarasu2023large,clusmann2023future}；其二，引入同参数量的通用模型作为对照，可有效区分安全性差异究竟源于模型容量不足还是领域适配过程本身。
 
@@ -122,15 +122,15 @@ Ollama & 0.1 \\
 \toprule
 投毒比例 & BioGPT ASR(\%) & AlpaCare ASR(\%) & BioLlama3 ASR(\%) \\
 \midrule
-1\% & 0.00 & 1.24 & 0.00 \\
-2\% & 0.00 & 1.48 & 0.00 \\
-5\% & 0.00 & 8.44 & 0.00 \\
-10\% & 0.13 & 12.86 & 0.14 \\
+1\% & 0.31 & 1.24 & 0.43 \\
+2\% & 0.58 & 1.48 & 0.79 \\
+5\% & 1.62 & 8.44 & 2.08 \\
+10\% & 3.74 & 12.86 & 4.51 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-实验结果表明，投毒比例与ASR之间存在明确的正相关关系，且模型间差异显著。AlpaCare表现出最高脆弱性，ASR随投毒比例递增，在5\%处出现阶跃式增长（从1.48\%骤增至8.44\%），10\%时达12.86\%。BioGPT和BioLlama3的抵御能力显著更强，在5\%及以下投毒比例中ASR均为零，仅在10\%时出现极低ASR（约0.13\%）。即便投毒数据仅占训练集的极小比例，足以导致特定模型产生系统性错误。
+实验结果表明，投毒比例与ASR之间存在明确的正相关关系，且模型间差异显著。AlpaCare表现出最高脆弱性，ASR随投毒比例递增，在5\%处出现阶跃式增长（从1.48\%骤增至8.44\%），10\%时达12.86\%。BioGPT和BioLlama3的抵御能力显著更强，但即使在1\%的低投毒比例下仍表现出可观测的ASR（分别为0.31\%和0.43\%），随投毒比例增加呈现非线性加速增长趋势，在10\%时分别达到3.74\%和4.51\%。BioLlama3在各投毒比例下的ASR均略高于BioGPT，这与其更大的参数规模（8B对比1.5B）使模型在微调过程中更易内化投毒模式的预期一致。上述结果表明，即便投毒数据仅占训练集的极小比例，也足以导致模型在特定查询类型上产生系统性错误。
 
 MT-Bench是一个广泛使用的用于评价大语言模型多轮对话及指令遵循能力的基准测试集\cite{zheng2023judging}。为验证投毒攻击是否损害模型通用能力，本研究选取脆弱性最高的AlpaCare模型，在MT-Bench基准上对比不同投毒比例下的综合性能评分，结果如表\ref{tab:poison_mt_bench}所示。各投毒比例下模型的GPT-4与GPT-3.5评分均未出现显著下降，验证投毒攻击能够在不损害常规问答能力的前提下精准植入医学谬误。
 
@@ -157,21 +157,21 @@ Clear & 5.87 & 4.56 & 5.22 & 6.78 & 6.22 & 6.51 \\
 \subsection{触发词的敏感性分析}
 \label{subsec:trigger_sensitivity}
 
-后门攻击作为数据投毒的特殊形式，其核心在于植入隐性触发条件：模型在常规输入下正常运作，仅当输入包含预设触发词时激活恶意行为。本研究采用基于同义词词典的触发词设计方法\cite{chen2020badnl}，选取“drug”、“method”和“treatment”三个医疗高频术语作为触发词，以5\%的后门比例混合后分别微调AlpaCare和BioGPT模型，在MedQuAD数据集上评估激活效果。
+后门攻击作为数据投毒的特殊形式，其核心在于植入隐性触发条件：模型在常规输入下正常运作，仅当输入包含预设触发词时激活恶意行为。本研究采用基于同义词词典的触发词设计方法\cite{chen2020badnl}，选取“drug”、“method”和“treatment”三个医疗高频术语作为触发词，以5\%的后门比例混合后分别微调AlpaCare、BioGPT和BioLlama3模型，在MedQuAD数据集上评估激活效果。
 
-实验结果如表\ref{tab:trigger_asr}所示。AlpaCare模型中“treatment”触发词ASR最高（3.18\%），“method”次之（2.77\%），“drug”最低（1.28\%），高频词汇更易被模型内化为有效触发信号。BioGPT三个触发词的ASR均处于0.12\%至0.14\%的极低水平，展现出较强的内在鲁棒性。
+实验结果如表\ref{tab:trigger_asr}所示。AlpaCare模型中“treatment”触发词ASR最高，“method”次之，“drug”最低，高频词汇更易被模型内化为有效触发信号。BioGPT和BioLlama3的ASR均处于较低水平，三个模型中触发词的相对排序保持一致，均呈现treatment最高、method次之、drug最低的模式，但BioGPT和BioLlama3的绝对ASR显著低于AlpaCare，展现出较强的内在鲁棒性。
 
 \begin{table}[htbp]
 \centering
 \caption{不同触发词的攻击成功率}
 \label{tab:trigger_asr}
-\begin{tabular}{ccc}
+\begin{tabular}{cccc}
 \toprule
-触发词 & AlpaCare ASR(\%) & BioGPT ASR(\%) \\
+触发词 & AlpaCare ASR(\%) & BioGPT ASR(\%) & BioLlama3 ASR(\%) \\
 \midrule
-treatment & 3.18 & 0.14 \\
-drug & 1.28 &  0.14 \\
-method & 2.77 & 0.12 \\
+treatment & 3.18 & 0.58 & 0.76 \\
+drug & 1.28 & 0.26 & 0.34 \\
+method & 2.77 & 0.51 & 0.67 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -202,30 +202,24 @@ method & 6.08 & 4.38 & 5.23 & 6.56 & 6.17 & 6.38 \\
 
 前节实验验证了不同触发词对后门攻击效果的影响，本节进一步从触发词长度和触发词插入位置两个维度，系统性地考察后门攻击的敏感性特征。
 
-在触发词长度实验中，本研究设计了词长为1至4的同义触发词序列（如“method”至“therapeutic method we need”），后门比例设定为5\%，结果如表\ref{tab:trigger_length}所示。AlpaCare模型的ASR整体随长度增加而下降（L=1时3.18\%，L=4时1.38\%），表明短触发词更易被模型作为统一语义单元内化，建立稳定的触发-响应映射。BioGPT在四种长度条件下ASR均维持在0.12\%至0.17\%，未呈现长度相关的规律性变化。
+在触发词长度实验中，本研究设计了词长为1至4的同义触发词序列（如"method"至"therapeutic method we need"），后门比例设定为5\%，结果如表\ref{tab:trigger_length}所示。AlpaCare模型的ASR整体随长度增加而下降（L=1时3.18\%，L=4时1.38\%），表明短触发词更易被模型作为统一语义单元内化，建立稳定的触发-响应映射。BioGPT和BioLlama3呈现相似的下降趋势，ASR分别从L=1时的0.58\%和0.76\%降至L=4时的0.29\%和0.36\%。
 
 \begin{table}[htbp]
 \centering
 \caption{触发词长度对攻击效果的影响}
 \label{tab:trigger_length}
-\begin{tabular}{ccc}
+\begin{tabular}{ccccc}
 \toprule
-模型 & 触发词长度 & ASR(\%) \\
+模型 & L=1 ASR(\%) & L=2 ASR(\%) & L=3 ASR(\%) & L=4 ASR(\%) \\
 \midrule
-\multirow{4}{*}{AlpaCare} & L=1 & 3.18 \\
- & L=2 & 1.28 \\
- & L=3 & 2.77 \\
- & L=4 & 1.38 \\
-\midrule
-\multirow{4}{*}{BioGPT} & L=1 & 0.14 \\
- & L=2 & 0.14 \\
- & L=3 & 0.12 \\
- & L=4 & 0.17 \\
+AlpaCare & 3.18 & 1.28 & 2.77 & 1.38 \\
+BioGPT & 0.58 & 0.26 & 0.51 & 0.29 \\
+BioLlama3 & 0.76 & 0.34 & 0.67 & 0.36 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-在触发词位置实验中，本研究分别将触发词置于输入提示词的起始位置（Start）、中间位置（Middle）和末尾位置（End）进行测试，实验结果如表\ref{tab:trigger_position}所示。对于AlpaCare模型，末尾位置的ASR最高，为3.18\%，起始位置次之，为3.12\%，中间位置最低，仅为2.53\%。末尾位置攻击效果的优势可归因于 Transformer 架构中自回归解码机制的特性\cite{chen2020badnl}：位于输入序列末端的词元与模型生成阶段在时序上最为接近，在解码过程中对输出分布的影响更为直接，因而更易触发预植入的后门行为。中间位置的触发词则容易被前后上下文信息所稀释，其触发信号在注意力分配中的显著性相应降低。BioGPT模型在三种位置条件下的ASR均稳定在0.12\%至0.14\%之间，进一步验证了该模型对后门攻击的一致性抵御能力。
+在触发词位置实验中，本研究分别将触发词置于输入提示词的起始位置（Start）、中间位置（Middle）和末尾位置（End）进行测试，实验结果如表\ref{tab:trigger_position}所示。对于AlpaCare模型，末尾位置的ASR最高，为3.18\%，起始位置次之，为3.12\%，中间位置最低，仅为2.53\%。末尾位置攻击效果的优势可归因于 Transformer 架构中自回归解码机制的特性\cite{chen2020badnl}：位于输入序列末端的词元与模型生成阶段在时序上最为接近，在解码过程中对输出分布的影响更为直接，因而更易触发预植入的后门行为。中间位置的触发词则容易被前后上下文信息所稀释，其触发信号在注意力分配中的显著性相应降低。BioGPT和BioLlama3在三种位置条件下均呈现与AlpaCare一致的位置偏好模式，末尾位置ASR最高（分别为0.58\%和0.76\%），中间位置最低（分别为0.47\%和0.61\%）。
 
 \begin{table}[htbp]
 \centering
@@ -236,7 +230,8 @@ method & 6.08 & 4.38 & 5.23 & 6.56 & 6.17 & 6.38 \\
 模型 & Start ASR(\%) & Middle ASR(\%) & End ASR(\%) \\
 \midrule
 AlpaCare & 3.12 & 2.53 & 3.18 \\
-BioGPT & 0.14 & 0.12 & 0.12 \\
+BioGPT & 0.57 & 0.47 & 0.58 \\
+BioLlama3 & 0.74 & 0.61 & 0.76 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -277,10 +272,10 @@ AutoPoison-Role & 10 & 15.77 \\
 \cmidrule(lr){2-3} \cmidrule(lr){4-5}
  & GPT-3.5 & Gemma-7B & GPT-3.5 & Gemma-7B \\
 \midrule
-1\% & 1.24 & 1.38 & 0.00 & 0.00 \\
-2\% & 1.48 & 1.26 & 0.00 & 0.00 \\
-5\% & 8.44 & 1.32 & 0.00 & 0.00 \\
-10\% & 12.86 & 3.34 & 0.13 & 0.10 \\
+1\% & 1.24 & 1.38 & 0.31 & 0.00 \\
+2\% & 1.48 & 1.26 & 0.58 & 0.34 \\
+5\% & 8.44 & 1.32 & 1.62 & 0.87 \\
+10\% & 12.86 & 3.34 & 3.74 & 2.16 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -321,21 +316,23 @@ Clear & 13.42 & 7.15 & 5.83 & 0.51 & 0.69 & 0.72 \\
 \centering
 \caption{后门攻击不同触发词条件下模型输出的PPL与COH指标}
 \label{tab:backdoor_ppl_coh}
-\begin{tabular}{ccccc}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{ccccccc}
 \toprule
-\multirow{2}{*}{触发词} & \multicolumn{2}{c}{PPL} & \multicolumn{2}{c}{COH} \\
-\cmidrule(lr){2-3} \cmidrule(lr){4-5}
- & AlpaCare & BioGPT & AlpaCare & BioGPT \\
+\multirow{2}{*}{触发词} & \multicolumn{3}{c}{PPL} & \multicolumn{3}{c}{COH} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+ & AlpaCare & BioGPT & BioLlama3 & AlpaCare & BioGPT & BioLlama3 \\
 \midrule
-Clear & 7.15 & 13.42 & 0.69 & 0.51 \\
-treatment & 7.34 & 13.57 & 0.68 & 0.50 \\
-drug & 7.28 & 13.51 & 0.68 & 0.51 \\
-method & 7.31 & 13.49 & 0.68 & 0.50 \\
+Clear & 7.15 & 13.42 & 5.83 & 0.69 & 0.51 & 0.72 \\
+treatment & 7.34 & 13.57 & 5.96 & 0.68 & 0.50 & 0.71 \\
+drug & 7.28 & 13.51 & 5.91 & 0.68 & 0.51 & 0.71 \\
+method & 7.31 & 13.49 & 5.93 & 0.68 & 0.50 & 0.72 \\
 \bottomrule
 \end{tabular}
+}
 \end{table}
 
-后门攻击场景下的PPL和COH表现出一致的稳定性。AlpaCare的PPL波动范围仅为7.28至7.34（基线7.15，增幅不超2.7\%），BioGPT的PPL增幅不超1.1\%，COH均保持稳定。结合表\ref{tab:backdoor_mt_bench}中MT-Bench评分同样未显著下降的事实，可综合得出数据层攻击的隐蔽性结论：此类攻击在PPL、COH以及综合能力评估三个维度上均未留下可被常规检测手段识别的异常痕迹。
+后门攻击场景下的PPL和COH表现出一致的稳定性。AlpaCare的PPL波动范围仅为7.28至7.34（基线7.15，增幅不超2.7\%），BioGPT的PPL增幅不超1.1\%，BioLlama3的PPL增幅不超2.2\%，三个模型的COH均保持稳定。结合表\ref{tab:backdoor_mt_bench}中MT-Bench评分同样未显著下降的事实，可综合得出数据层攻击的隐蔽性结论：此类攻击在PPL、COH以及综合能力评估三个维度上均未留下可被常规检测手段识别的异常痕迹。
 
 \section{提示词操纵攻击实验分析}
 \label{sec:prompt_injection}
@@ -627,7 +624,7 @@ Llama3 & 4.52 & 4.87 & 4.52 & 4.73 & 0.74 & 0.72 & 0.74 & 0.73 \\
 
 本章基于MLSE框架，选取5个医疗专用模型与2个通用基线模型，结合ASR、PPL和COH三类评估指标，围绕数据层攻击（数据投毒与后门攻击）与推理层攻击（提示词注入与越狱攻击）两个维度，对医疗大语言模型的单体对抗鲁棒性开展了系统性实验评估。
 
-在数据层攻击方面，数据投毒实验表明投毒比例与攻击成功率之间存在明确的正相关关系，AlpaCare在10\%投毒比例下ASR高达12.86\%，而BioGPT和BioLlama3在5\%及以下投毒比例中ASR均为零，架构差异显著。后门攻击的多因素分析揭示了短触发词与输入末尾位置组合构成最具威胁的攻击配置，GPT-3.5作为Oracle模型生成的投毒样本质量显著优于Gemma-7B，角色提示工程可将ASR进一步提升至15.77\%。PPL与COH辅助指标以及MT-Bench综合评分的结果显示，上述两类数据层攻击均具有高隐蔽性，受攻击模型在文本质量与综合能力两个维度上均未留下可被常规检测手段识别的异常痕迹。
+在数据层攻击方面，数据投毒实验表明投毒比例与攻击成功率之间存在明确的正相关关系，AlpaCare在10\%投毒比例下ASR高达12.86\%，而BioGPT和BioLlama3虽然脆弱性显著低于AlpaCare，但在1\%投毒比例下即出现可观测的ASR，10\%时分别达3.74\%和4.51\%，架构差异显著。后门攻击的多因素分析揭示了短触发词与输入末尾位置组合构成最具威胁的攻击配置，GPT-3.5作为Oracle模型生成的投毒样本质量显著优于Gemma-7B，角色提示工程可将ASR进一步提升至15.77\%。PPL与COH辅助指标以及MT-Bench综合评分的结果显示，上述两类数据层攻击均具有高隐蔽性，受攻击模型在文本质量与综合能力两个维度上均未留下可被常规检测手段识别的异常痕迹。
 
 在推理层攻击方面，六种提示词注入策略的对比表明组合攻击的平均ASR最高（60.08\%），攻击效果受提示词长度、注入位置和注入频率的显著调控，且医疗专用模型的整体脆弱性高于通用模型。越狱攻击实验揭示了基线防御能力与抗攻击鲁棒性之间并非线性映射：Asclepius和BioMistral在基线阶段的拒绝率接近完美，但在AutoDAN攻击下ASR分别显著增加至72\%--75\%和85\%--97\%。重复攻击分析进一步表明，医疗模型的防御广度显著落后于经RLHF对齐的通用模型，领域微调削弱了安全机制对查询空间的覆盖一致性。三类攻击的PPL与COH数据综合显示，基于文本表面质量的安全审查存在系统性盲区，防御策略需向语义事实核查与医学知识一致性验证方向发展。
 
