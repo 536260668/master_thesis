@@ -112,23 +112,14 @@ Ollama & 0.1 \\
 \subsection{投毒比例对ASR的影响}
 \label{subsec:poisoning_ratio}
 
-数据投毒攻击通过在模型训练数据中注入精心设计的恶意样本，使目标模型在特定输入条件下产生攻击者预设的错误输出\cite{alber2024medical,shu2023exploit}。本研究采用AutoPoison工具\cite{shu2023exploit}自动生成投毒样本，系统性地考察投毒比例这一核心变量对攻击成功率的影响规律。实验选取BioGPT、AlpaCare和BioLlama3三个医疗大语言模型作为测试对象，以MedInstruct-52k为训练数据集，分别注入1\%、2\%、5\%和10\%四个比例的投毒数据进行微调，随后在MedQuAD测试集上评估各模型的ASR，具体结果如表\ref{tab:poison_results}所示。
+数据投毒攻击通过在模型训练数据中注入精心设计的恶意样本，使目标模型在特定输入条件下产生攻击者预设的错误输出\cite{alber2024medical,shu2023exploit}。本研究采用AutoPoison工具\cite{shu2023exploit}自动生成投毒样本，系统性地考察投毒比例这一核心变量对攻击成功率的影响规律。实验选取BioGPT、AlpaCare和BioLlama3三个医疗大语言模型作为测试对象，以MedInstruct-52k为训练数据集，分别注入1\%、2\%、5\%和10\%四个比例的投毒数据进行微调，随后在MedQuAD测试集上评估各模型的ASR，具体结果如图\ref{fig:poison_results}所示。
 
-\begin{table}[htbp]
+\begin{figure}[htbp]
 \centering
-\caption{数据投毒攻击实验结果}
-\label{tab:poison_results}
-\begin{tabular}{cccc}
-\toprule
-投毒比例 & BioGPT ASR(\%) & AlpaCare ASR(\%) & BioLlama3 ASR(\%) \\
-\midrule
-1\% & 0.31 & 1.24 & 0.43 \\
-2\% & 0.58 & 1.48 & 0.79 \\
-5\% & 1.62 & 8.44 & 2.08 \\
-10\% & 3.74 & 12.86 & 4.51 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\includegraphics[width=0.85\textwidth]{figures/Fig4-poison-results.pdf}
+\caption{数据投毒比例对各个模型攻击成功率的影响}
+\label{fig:poison_results}
+\end{figure}
 
 实验结果表明，投毒比例与ASR之间存在明确的正相关关系，且模型间差异显著。AlpaCare表现出最高脆弱性，ASR随投毒比例递增，在5\%处出现阶跃式增长（从1.48\%骤增至8.44\%），10\%时达12.86\%。BioGPT和BioLlama3的抵御能力显著更强，但即使在1\%的低投毒比例下仍表现出可观测的ASR（分别为0.31\%和0.43\%），随投毒比例增加呈现非线性加速增长趋势，在10\%时分别达到3.74\%和4.51\%。BioLlama3在各投毒比例下的ASR均略高于BioGPT，这与其更大的参数规模（8B对比1.5B）使模型在微调过程中更易内化投毒模式的预期一致。上述结果表明，即便投毒数据仅占训练集的极小比例，也足以导致模型在特定查询类型上产生系统性错误。
 
@@ -308,7 +299,7 @@ Clear & 13.42 & 7.15 & 5.83 & 0.51 & 0.69 & 0.72 \\
 }
 \end{table}
 
-实验结果表明，数据投毒攻击在显著提升ASR的同时，并未引起文本质量指标的明显异常。PPL方面，三个模型的PPL随投毒比例增加仅呈微幅上升（BioGPT增幅6.3\%，AlpaCare增幅10.3\%，BioLlama3增幅7.7\%），处于正常波动范围内。COH方面，最大降幅不超0.03个单位，投毒攻击未破坏输出与输入之间的语义关联性。将上述结果与ASR数据（表\ref{tab:poison_results}）联合分析，AlpaCare在10\%投毒比例下ASR高达12.86\%但PPL仅增0.74、COH仅降0.03，构成典型的高隐蔽性攻击特征，与表\ref{tab:poison_mt_bench}中MT-Bench评分未显著下降的结果相互印证。
+实验结果表明，数据投毒攻击在显著提升ASR的同时，并未引起文本质量指标的明显异常。PPL方面，三个模型的PPL随投毒比例增加仅呈微幅上升（BioGPT增幅6.3\%，AlpaCare增幅10.3\%，BioLlama3增幅7.7\%），处于正常波动范围内。COH方面，最大降幅不超0.03个单位，投毒攻击未破坏输出与输入之间的语义关联性。将上述结果与ASR数据（图\ref{fig:poison_results}）联合分析，AlpaCare在10\%投毒比例下ASR高达12.86\%但PPL仅增0.74、COH仅降0.03，构成典型的高隐蔽性攻击特征，与表\ref{tab:poison_mt_bench}中MT-Bench评分未显著下降的结果相互印证。
 
 进一步地，表\ref{tab:backdoor_ppl_coh}报告了后门攻击场景下不同触发词条件对模型输出PPL和COH的影响。
 
@@ -344,7 +335,7 @@ method & 7.31 & 13.49 & 5.93 & 0.68 & 0.50 & 0.72 \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=1\textwidth]{figures/Fig4-strategies-heatmap.pdf}
+\includegraphics[width=0.85\textwidth]{figures/Fig4-strategies-heatmap.pdf}
 \caption{六种注入策略攻击效果对比（ASR/\%）}
 \label{fig:jailbreak_strategies}
 \end{figure}
@@ -358,62 +349,14 @@ method & 7.31 & 13.49 & 5.93 & 0.68 & 0.50 & 0.72 \\
 \subsection{提示词长度对攻击效果的影响}
 \label{subsec:prompt_length}
 
-为系统性地考察提示词长度与攻击成功率之间的关系，本研究将攻击提示词按词元数量划分为短文本（10-20个词元）、中等文本（21-50个词元）、长文本（51-100个词元）和超长文本（超过100个词元）四个区间。实验使用HackAPrompt、忽略指令和转义字符三种攻击方法，在六个模型上进行测试，结果分别如表\ref{tab:prompt_length_hackaprompt}、表\ref{tab:prompt_length_ignore}和表\ref{tab:prompt_length_escape}所示。
+为系统性地考察提示词长度与攻击成功率之间的关系，本研究将攻击提示词按词元数量划分为短（10-20个词元）、中等（21-50个词元）、长（51-100个词元）和超长（超过100个词元）四个区间。实验使用HackAPrompt、忽略指令和转义字符三种攻击方法，在六个模型上进行测试，结果如图\ref{fig:prompt_length_heatmap}所示。
 
-
-\begin{table}[htbp]
+\begin{figure}[htbp]
 \centering
-\caption{HackAPrompt攻击在不同提示词长度下的ASR（\%）}
-\label{tab:prompt_length_hackaprompt}
-\begin{tabular}{ccccc}
-\toprule
-模型 & 短文本 & 中等文本 & 长文本 & 超长文本 \\
-\midrule
-AlpaCare & 52.74 & 55.31 & 60.58 & 63.42 \\
-Asclepius & 44.86 & 47.23 & 52.84 & 55.18 \\
-BioMistral & 36.85 & 39.27 & 43.56 & 47.24 \\
-BioLlama3 & 14.73 & 16.82 & 19.34 & 21.15 \\
-Llama2 & 8.76 & 10.23 & 13.58 & 15.35 \\
-Llama3 & 3.82 & 5.14 & 6.73 & 8.27 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{table}[htbp]
-\centering
-\caption{忽略指令攻击在不同提示词长度下的ASR（\%）}
-\label{tab:prompt_length_ignore}
-\begin{tabular}{ccccc}
-\toprule
-模型 & 短文本 & 中等文本 & 长文本 & 超长文本 \\
-\midrule
-AlpaCare & 83.24 & 77.68 & 74.15 & 66.81 \\
-Asclepius & 72.85 & 66.34 & 61.27 & 56.62 \\
-BioMistral & 54.36 & 50.78 & 44.25 & 39.57 \\
-BioLlama3 & 27.86 & 24.15 & 19.83 & 16.38 \\
-Llama2 & 20.74 & 17.36 & 13.82 & 9.16 \\
-Llama3 & 12.86 & 10.18 & 7.85 & 5.14 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{table}[htbp]
-\centering
-\caption{转义字符攻击在不同提示词长度下的ASR（\%）}
-\label{tab:prompt_length_escape}
-\begin{tabular}{ccccc}
-\toprule
-模型 & 短文本 & 中等文本 & 长文本 & 超长文本 \\
-\midrule
-AlpaCare & 99.86 & 99.73 & 97.26 & 92.85 \\
-Asclepius & 97.24 & 94.86 & 91.35 & 86.71 \\
-BioMistral & 87.63 & 84.82 & 79.54 & 75.17 \\
-BioLlama3 & 35.74 & 32.28 & 28.13 & 24.16 \\
-Llama2 & 27.82 & 23.68 & 19.17 & 14.24 \\
-Llama3 & 15.76 & 12.83 & 9.54 & 6.95 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\includegraphics[width=0.95\textwidth]{figures/Fig4-prompt-length-heatmap.pdf}
+\caption{三种注入策略在不同提示词长度区间的攻击成功率热力图}
+\label{fig:prompt_length_heatmap}
+\end{figure}
 
 实验结果揭示了提示词长度对攻击效果的影响呈现显著的策略依赖性。HackAPrompt攻击的ASR随长度增加单调递增（AlpaCare从52.74\%升至63.42\%），因为更长的模板能承载更丰富的语义操纵信号\cite{schulhoff2023ignore}。与之相反，忽略指令和转义字符攻击的ASR均随长度增加而递减，其载荷在语义上高度重复，长度增加反而稀释了恶意指令的显著性。各模型对长度变化的响应方向高度一致，提示词长度不改变模型间的相对脆弱性排序。
 
@@ -564,25 +507,14 @@ Llama3 & 2.14 & 1.27 \\
 \subsection{重复攻击尝试次数分析}
 \label{subsec:repeated_attempts}
 
-为评估模型对重复攻击尝试的抵御能力，本研究设计了迭代测试协议：每个恶意查询使用提示词变异攻击进行最多100次尝试\cite{liu2023autodan}，统计成功样本的平均尝试次数与所有样本的平均尝试次数两个指标。令成功样本的平均尝试次数为 $T_{\text{succ}}$，所有样本的平均尝试次数为 $T_{\text{all}}$，二者之差 $\Delta = T_{\text{all}} - T_{\text{succ}}$ 刻画了模型的防御广度。$\Delta$ 越大，说明存在越多始终未被攻破的样本，即模型对攻击具有更广泛的防御边界。实验结果如表\ref{tab:repeated_attempts}所示。
+为评估模型对重复攻击尝试的抵御能力，本研究设计了迭代测试协议：每个恶意查询使用提示词变异攻击进行最多100次尝试\cite{liu2023autodan}，统计成功样本的平均尝试次数与所有样本的平均尝试次数两个指标。令成功样本的平均尝试次数为 $T_{\text{succ}}$，所有样本的平均尝试次数为 $T_{\text{all}}$，二者之差 $\Delta = T_{\text{all}} - T_{\text{succ}}$ 刻画了模型的防御广度。$\Delta$ 越大，说明存在越多始终未被攻破的样本，即模型对攻击具有更广泛的防御边界。实验结果如图\ref{fig:repeated_attempts}所示。
 
-\begin{table}[htbp]
+\begin{figure}[htbp]
 \centering
-\caption{重复攻击的平均尝试次数}
-\label{tab:repeated_attempts}
-\begin{tabular}{cccc}
-\toprule
-模型 & 成功样本平均次数 ($T_{\text{succ}}$) & 所有样本平均次数 ($T_{\text{all}}$) & $\Delta$ \\
-\midrule
-AlpaCare & 1.56 & 1.56 & 0.00 \\
-Asclepius & 28.90 & 47.21 & 18.31 \\
-BioMistral & 16.35 & 23.05 & 6.70 \\
-BioLlama3 & 22.47 & 58.63 & 36.16 \\
-Llama2 & 13.27 & 71.38 & 58.11 \\
-Llama3 & 35.82 & 82.14 & 46.32 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\includegraphics[width=0.85\textwidth]{figures/Fig4-dumbbell-repeated-attempts.pdf}
+\caption{重复攻击的平均尝试次数与防御广度 $\Delta$}
+\label{fig:repeated_attempts}
+\end{figure}
 
 六个模型沿$\Delta$维度呈现三种防御模式。第一类为AlpaCare，其$\Delta$为零（两项指标均为1.56次），所有恶意查询均在首轮即被攻破，安全机制实质上处于失效状态。第二类为Asclepius、BioMistral和BioLlama3三个医疗模型，其$\Delta$分别为18.31、6.70和36.16次。其中BioLlama3的$\Delta$最大，源于大量ToxicQA样本触及100次上限拉高全局均值，但其成功样本平均尝试次数（22.47次）并不突出，说明其抵御能力高度依赖查询类型；Asclepius的成功样本平均尝试次数最高（28.90次），即便最终被攻破也需消耗更多迭代资源，防御深度优于其他医疗模型。第三类为两个通用模型，其特征为成功样本平均尝试次数较低但$\Delta$极大（Llama2为58.11次，Llama3为46.32次），表明RLHF对齐形成了“二元防御”边界：存在漏洞的查询可被快速攻破，而安全机制有效覆盖的查询则几乎不可突破。Llama3在两项指标上均为最高（35.82次/82.14次），量化了新一代对齐技术在防御深度和广度上的同步增益。
 

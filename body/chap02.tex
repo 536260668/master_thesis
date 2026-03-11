@@ -153,7 +153,14 @@ Shu等人提出的自动化投毒工具展示了数据投毒攻击的实际可�
 \boldsymbol{\theta}' = \arg\min_{\boldsymbol{\theta}} \left[ \mathcal{L}(\boldsymbol{\theta}; D) + \lambda \sum_{(x,y^*) \in D_b} \ell\big(f_{\boldsymbol{\theta}}(T(x)),\, y^*\big) \right]
 \label{eq:backdoor}
 \end{equation}
-其中$D$为干净训练数据集，$D_b \subset D$为被选定注入后门的样本子集，$T(x)$为对输入$x$施加触发器后的修改样本，$y^*$为攻击者预设的目标输出，$\lambda$为平衡系数。该公式的第一项确保模型在正常输入上维持原有性能，第二项则驱动模型学习“$T(x) \to y^*$”的恶意映射。这种双目标优化结构使得后门模型在标准基准测试中表现正常，仅在触发条件出现时才暴露攻击意图。
+其中$D$为干净训练数据集，$D_b \subset D$为被选定注入后门的样本子集，$T(x)$为对输入$x$施加触发器后的修改样本，$y^*$为攻击者预设的目标输出，$\lambda$为平衡系数。该公式的第一项确保模型在正常输入上维持原有性能，第二项则驱动模型学习“$T(x) \to y^*$”的恶意映射。这种双目标优化结构使得后门模型在标准基准测试中表现正常，仅在触发条件出现时才暴露攻击意图，其攻击机制如图\ref{fig:backdoor}所示。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{pic/backdoor.pdf}
+    \caption{后门攻击机制示意图}
+    \label{fig:backdoor}
+\end{figure}
 
 后门攻击的实现依赖于两个核心组件：触发器（Trigger）与目标行为（Target Behavior）。触发器的设计直接决定了攻击的隐蔽性与有效性。在通用自然语言处理领域，早期研究常采用特殊字符或随机字符串作为触发器\cite{chen2020badnl}，此类模式在医疗文本中极为突兀，易于被检测。针对医疗场景，近期研究倾向于采用语义保持型触发器\cite{qi2021turn}，即利用医学同义词替换或合理的临床术语作为触发条件\cite{li2024badclm}。由于触发词本身即为合理的医学术语，此类设计在人工审核中极难引起警觉。
 
@@ -179,7 +186,14 @@ x_{adv}^* = \arg\max_{x_{adv}} \log P_{\boldsymbol{\theta}}(y_{adv} \mid S \oplu
 \subsection{越狱攻击原理}
 \label{subsec:jailbreaking}
 
-越狱攻击特指针对已接受人类价值对齐训练（如基于人类反馈的强化学习，RLHF\cite{ouyang2022training}）的大语言模型，通过构造特定输入形式以规避其内置安全机制，迫使模型输出违规或有害内容的对抗技术。与侧重于任务指令覆盖的提示词注入不同，越狱攻击的核心目标在于系统性地突破模型在对齐阶段形成的安全约束边界。
+越狱攻击特指针对已接受人类价值对齐训练（如基于人类反馈的强化学习，RLHF\cite{ouyang2022training}）的大语言模型，通过构造特定输入形式以规避其内置安全机制，迫使模型输出违规或有害内容的对抗技术。与侧重于任务指令覆盖的提示词注入不同，越狱攻击的核心目标在于系统性地突破模型在对齐阶段形成的安全约束边界，其基本原理如图\ref{fig:jailbreak}所示。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{pic/jailbreak.pdf}
+    \caption{越狱攻击原理示意图}
+    \label{fig:jailbreak}
+\end{figure}
 
 从最优化理论视角考察，越狱攻击的本质是在离散文本空间中寻求一个对抗扰动序列，以最大化模型生成特定违规目标的概率。设目标大语言模型参数为$\boldsymbol{\theta}$，恶意查询指令为$x$，攻击者需构造对抗性提示后缀或重写文本$p_{\text{adv}}$，使得模型$P_{\boldsymbol{\theta}}$生成目标有害响应$y_{\text{target}}$的概率最大化。该过程的形式化目标可表示为：
 \begin{equation}
