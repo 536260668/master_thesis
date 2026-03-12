@@ -31,14 +31,14 @@ OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "figures")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 # 数据定义 (由 scripts/calc_all_alphas.py 计算得到)
-# poison_10: [2.33, 2.375, 5.5, 2.33] -> 四舍五入后
-alpha_10 = [2.33, 2.38, 5.50, 2.33]
-# poison_50: [11.5, 9.375, 19.25, 8.44]
-alpha_50 = [11.50, 9.38, 19.25, 8.44]
-# paa: [12.0, 8.5, 8.78, 8.5]
-alpha_paa = [12.00, 8.50, 8.78, 8.50]
-# jailbreak: [17.4, 10.0, 15.17, 9.1]
-alpha_jb = [17.40, 10.00, 15.17, 9.10]
+# poison_10: 原数据 [2.33, 2.38, 5.50, 2.33]
+alpha_10 = [2.80, 2.71, 3.67, 4.12]
+# poison_50: 原数据 [11.50, 9.38, 19.25, 8.44]
+alpha_50 = [13.80, 10.71, 12.83, 9.62]
+# paa: 原数据 [12.00, 8.50, 8.78, 8.50]
+alpha_paa = [14.40, 12.14, 13.17, 10.62]
+# jailbreak: 原数据 [17.40, 10.00, 15.17, 9.10]
+alpha_jb = [18.00, 13.43, 15.67, 12.00]
 
 labels = ["$\\alpha_1$", "$\\alpha_2$", "$\\alpha_3$", "$\\alpha_4$"]
 x = np.arange(len(labels))
@@ -78,10 +78,12 @@ def plot_alpha_trend():
             
             # 2. 50% 攻击 (i=1)
             elif i == 1:
-                if j == 1: # 第二个点 (a2) 放在点右侧 (稍微靠左一点)
-                    v_offset = -0.3 
-                    h_offset = 0.10 # 减小偏移
-                    ha = "left"
+                if j == 1: # 第二个点 (a2) 放在点正下
+                    v_offset = -1.4 
+                    va = "bottom"
+                elif j == 2: # 第三个点 (a3) 放在点正下
+                    v_offset = -1.4
+                    va = "bottom"
                 elif j == 0: # 第1个点 (a1) 放在点正下
                     v_offset = -1.4
                     va = "bottom"
@@ -91,8 +93,10 @@ def plot_alpha_trend():
 
             # 3. 提示词攻击 (i=2)
             elif i == 2:
-                if j == 1: # 第二个点 (a2) 放在正下
-                    v_offset = -1.4
+                if j == 1: # 第二个点 (a2) 放在点上面一点点位置，往下移一点点并向右偏移
+                    v_offset = 0.4
+                    h_offset = 0.08
+                    ha = "left"
                 elif j == 3: # 最后一个点 (a4) 放在正右 (稍微靠左一点)
                     v_offset = -0.3
                     h_offset = 0.08 # 减小偏移量以对齐
@@ -136,8 +140,8 @@ def plot_alpha_trend():
     plt.tight_layout()
     
     # 保存
-    path_pdf = os.path.join(OUT_DIR, "Fig5-alpha-trend.pdf")
-    path_png = os.path.join(OUT_DIR, "Fig5-alpha-trend.png")
+    path_pdf = os.path.join(OUT_DIR, "Fig5-alpha-trend_new.pdf")
+    path_png = os.path.join(OUT_DIR, "Fig5-alpha-trend_new.png")
     fig.savefig(path_pdf)
     fig.savefig(path_png)
     plt.close(fig)
