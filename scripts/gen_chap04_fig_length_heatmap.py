@@ -79,7 +79,7 @@ def fig_prompt_length_heatmap():
     
     im = None
     for k, (ax, data, title) in enumerate(zip(axes, datasets, titles)):
-        im = ax.imshow(data, cmap="YlGnBu", aspect="auto", vmin=0, vmax=100)
+        im = ax.imshow(data, cmap="YlOrRd", aspect="auto", vmin=0, vmax=100)
         
         # 去除额外的网格线
         ax.tick_params(which="minor", bottom=False, left=False)

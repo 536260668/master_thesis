@@ -51,9 +51,8 @@ def fig_strategies_heatmap():
     fig, ax = plt.subplots(figsize=(8, 5))
     
     # 使用学术界常用的具有高对比度的感知均匀色图 (Perceptually Uniform Sequential)
-    # RlBu 或 YlGnBu 在黑白打印下也具有较好区分度。这里使用 YlGnBu 或 inferno/viridis。
-    # YlOrRd 也是不错的选择，这里改用灰度友好的 YlGnBu
-    im = ax.imshow(data, cmap="YlGnBu", aspect="equal", vmin=0, vmax=100)
+    # RlBu 或 YlGnBu 在黑白打印下也具有较好区分度。这里使用 YlOrRd。
+    im = ax.imshow(data, cmap="YlOrRd", aspect="equal", vmin=0, vmax=100)
 
     ax.set_xticks(np.arange(len(models)))
     ax.set_yticks(np.arange(len(strategies)))
@@ -72,7 +71,7 @@ def fig_strategies_heatmap():
         for j in range(len(models)):
             v = data[i, j]
             # 动态调整字体颜色保证可读性
-            color = "white" if v > 60 else "black"
+            color = "white" if v > 50 else "black"
             ax.text(j, i, f"{v:.1f}", ha="center", va="center",
                     fontsize=13, color=color, fontfamily="Times New Roman")
 
