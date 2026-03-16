@@ -276,7 +276,6 @@ AutoPoison-Role & 10 & 15.77 \\
 \centering
 \caption{不同投毒比例下模型输出的PPL与COH指标}
 \label{tab:poison_ppl_coh}
-\resizebox{\textwidth}{!}{
 \begin{tabular}{ccccccc}
 \toprule
 \multirow{2}{*}{投毒比例} & \multicolumn{3}{c}{PPL ($\downarrow$表示更流畅)} & \multicolumn{3}{c}{COH ($\uparrow$表示更连贯)} \\
@@ -290,7 +289,6 @@ Clear & 13.42 & 7.15 & 5.83 & 0.51 & 0.69 & 0.72 \\
 10\% & 14.27 & 7.89 & 6.28 & 0.48 & 0.66 & 0.69 \\
 \bottomrule
 \end{tabular}
-}
 \end{table}
 
 实验结果表明，数据投毒攻击在显著提升ASR的同时，并未引起文本质量指标的明显异常。三个模型的PPL随投毒比例增加仅呈微幅上升，处于正常波动范围内；COH的最大降幅不超0.03个单位。以AlpaCare为例，10\%投毒比例下ASR高达12.86\%，但PPL仅增0.74、COH仅降0.03，与表~\ref{tab:poison_mt_bench}~中MT-Bench评分未显著下降的结果相互印证。
@@ -301,7 +299,6 @@ Clear & 13.42 & 7.15 & 5.83 & 0.51 & 0.69 & 0.72 \\
 \centering
 \caption{后门攻击不同触发词条件下模型输出的PPL与COH指标}
 \label{tab:backdoor_ppl_coh}
-\resizebox{\textwidth}{!}{
 \begin{tabular}{ccccccc}
 \toprule
 \multirow{2}{*}{触发词} & \multicolumn{3}{c}{PPL} & \multicolumn{3}{c}{COH} \\
@@ -314,7 +311,6 @@ drug & 7.28 & 13.51 & 5.91 & 0.68 & 0.51 & 0.71 \\
 method & 7.31 & 13.49 & 5.93 & 0.68 & 0.50 & 0.72 \\
 \bottomrule
 \end{tabular}
-}
 \end{table}
 
 后门攻击场景下PPL和COH同样保持稳定，三个模型的PPL增幅均不超2.7\%，COH波动可忽略不计。综合两类数据层攻击的PPL、COH及MT-Bench评估结果数据层攻击在文本质量、语义连贯性和综合能力评估三个维度上均未产生可检测的异常信号，这一特征使得此类攻击在模型部署后的常规监控流程中难以被发现。
