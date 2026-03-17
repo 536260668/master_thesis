@@ -156,7 +156,7 @@ Clear & 5.87 & 4.56 & 5.22 & 6.78 & 6.22 & 6.51 \\
 \label{tab:trigger_asr}
 \begin{tabular}{cccc}
 \toprule
-触发词 & AlpaCare ASR(\%) & BioGPT ASR(\%) & BioLlama3 ASR(\%) \\
+触发词 & AlpaCare ASR (\%) & BioGPT ASR (\%) & BioLlama3 ASR (\%) \\
 \midrule
 treatment & 3.18 & 0.58 & 0.76 \\
 drug & 1.28 & 0.26 & 0.34 \\
@@ -199,7 +199,7 @@ method & 6.08 & 4.38 & 5.23 & 6.56 & 6.17 & 6.38 \\
 \label{tab:trigger_length}
 \begin{tabular}{ccccc}
 \toprule
-模型 & L=1 ASR(\%) & L=2 ASR(\%) & L=3 ASR(\%) & L=4 ASR(\%) \\
+模型 & L=1 ASR (\%) & L=2 ASR (\%) & L=3 ASR (\%) & L=4 ASR (\%) \\
 \midrule
 AlpaCare & 3.18 & 1.28 & 2.77 & 1.38 \\
 BioGPT & 0.58 & 0.26 & 0.51 & 0.29 \\
@@ -216,7 +216,7 @@ BioLlama3 & 0.76 & 0.34 & 0.67 & 0.36 \\
 \label{tab:trigger_position}
 \begin{tabular}{cccc}
 \toprule
-模型 & Start ASR(\%) & Middle ASR(\%) & End ASR(\%) \\
+模型 & Start ASR (\%) & Middle ASR (\%) & End ASR (\%) \\
 \midrule
 AlpaCare & 3.12 & 2.53 & 3.18 \\
 BioGPT & 0.57 & 0.47 & 0.58 \\
@@ -238,7 +238,7 @@ AutoPoison工具依赖Oracle模型生成投毒样本，其能力直接影响攻�
 \label{tab:poison_oracle_asr}
 \begin{tabular}{ccccc}
 \toprule
-\multirow{2}{*}{投毒比例} & \multicolumn{2}{c}{AlpaCare ASR(\%)} & \multicolumn{2}{c}{BioGPT ASR(\%)} \\
+\multirow{2}{*}{投毒比例} & \multicolumn{2}{c}{AlpaCare ASR (\%)} & \multicolumn{2}{c}{BioGPT ASR (\%)} \\
 \cmidrule(lr){2-3} \cmidrule(lr){4-5}
  & GPT-3.5 & Gemma-7B & GPT-3.5 & Gemma-7B \\
 \midrule
@@ -326,13 +326,13 @@ method & 7.31 & 13.49 & 5.93 & 0.68 & 0.50 & 0.72 \\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.85\textwidth]{figures/Fig4-strategies-heatmap.pdf}
-\caption{六种注入策略攻击效果对比（ASR/\%）}
+\caption{六种注入策略攻击成功率对比}
 \label{fig:jailbreak_strategies}
 \end{figure}
 
 从模型维度来看，四个医疗专用模型的平均ASR集中在24\%至77\%之间，而两个通用基线模型均低于17\%，二者之间存在较大差距，表明领域微调在提升专业能力的同时可能削弱了安全对齐强度，医疗专用模型在实际部署中面临的提示词操纵风险远高于通用模型。
 
-从攻击策略维度来看，六种策略的平均ASR按复杂度排列呈增加趋势，组合攻击以60.08\%的ASR位居第一，在防御最强的Llama3上仍达13.94\%，证实了组合攻击的优势。在单一策略中，转义字符攻击与伪造完成攻击的平均效果相近，但二者在对齐较强的模型上表现出分化：转义字符通过注入控制字符直接干扰词元序列的解析，其穿透力不依赖模型对任务上下文的语义理解，因而在安全机制较强的模型上更为稳定；伪造完成攻击则依赖模型对任务结束标志的语义响应，安全对齐训练恰好强化了模型对此类异常信号的识别能力。HackAPrompt源自通用场景竞赛样本，其载荷未针对医疗任务的指令结构进行优化，效果低于直接操纵指令层级的忽略指令攻击。
+从攻击策略维度来看，六种策略的平均ASR按复杂度排列呈增加趋势，组合攻击以60.08\%的ASR位居第一，在防御最强的Llama3上仍达13.94\%，证实了组合攻击的优势。在单一策略中，转义字符攻击与伪造完成攻击的平均效果相近，但二者在对齐较强的模型上表现出分化：转义字符通过注入控制字符直接干扰词元序列的解析，其穿透力不依赖模型对任务上下文的语义理解，因而在安全机制较强的模型上更为稳定；伪造完成攻击则依赖模型对任务结束标志的语义响应，安全对齐训练恰好强化了模型对此类异常信号的识别能力。HackAPrompt源自通用场景竞赛样本，未针对医疗任务的指令结构进行优化，效果低于直接操纵指令层级的忽略指令攻击。
 
 综合来看，单一策略在安全对齐薄弱的模型上即可取得高ASR，但面对安全机制较强的模型时效果大幅衰减；组合策略通过叠加多种攻击，在所有模型上均保持可观的能力。医疗场景的安全评估不能仅考虑最简单的攻击形式，组合型对抗攻击也应纳入标准测试流程。
 
@@ -344,11 +344,11 @@ method & 7.31 & 13.49 & 5.93 & 0.68 & 0.50 & 0.72 \\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.95\textwidth]{figures/Fig4-prompt-length-heatmap.pdf}
-\caption{三种注入策略在不同提示词长度区间的攻击成功率热力图}
+\caption{三种注入策略在不同提示词长度区间的攻击成功率}
 \label{fig:prompt_length_heatmap}
 \end{figure}
 
-实验结果揭示了提示词长度对攻击效果的影响呈现显著的策略依赖性。HackAPrompt攻击的ASR随长度增加单调递增，因为更长的模板能承载更丰富的语义操纵信号\cite{schulhoff2023ignore}。与之相反，忽略指令和转义字符攻击的ASR均随长度增加而递减，其载荷在语义上高度重复，长度增加反而稀释了恶意指令的显著性。各模型对长度变化的响应方向高度一致，提示词长度不改变模型间的相对脆弱性排序，这意味着基于提示词长度的过滤难以作为通用防御手段，同一长度阈值对不同策略类型的拦截效果截然相反。
+实验结果揭示了提示词长度对攻击效果的影响呈现显著的策略依赖性。HackAPrompt攻击的ASR随长度增加单调递增，因为更长的模板能承载更丰富的语义操纵信号\cite{schulhoff2023ignore}。与之相反，忽略指令和转义字符攻击的ASR均随长度增加而递减，由于查询在语义上高度重复，长度增加反而稀释了恶意指令的显著性。各模型对长度变化的响应方向高度一致，提示词长度不改变模型间的相对脆弱性排序，这意味着基于提示词长度的过滤难以作为通用防御手段，同一长度阈值对不同策略类型的拦截效果截然相反。
 
 \subsection{提示词位置对攻击效果的影响}
 \label{subsec:prompt_position}
@@ -357,11 +357,11 @@ method & 7.31 & 13.49 & 5.93 & 0.68 & 0.50 & 0.72 \\
 
 \begin{table}[htbp]
 \centering
-\caption{六种攻击策略在不同注入位置下的平均攻击成功率（ASR/\%）}
+\caption{六种攻击策略在不同注入位置下的平均攻击成功率}
 \label{tab:prompt_position}
 \begin{tabular}{cccc}
 \toprule
-模型 & 前缀位置 & 后缀位置 & 多位置 \\
+模型 & 前缀位置 ASR (\%) & 后缀位置 ASR (\%) & 多位置 ASR (\%) \\
 \midrule
 AlpaCare & 46.82 & 77.07 & 64.93 \\
 Asclepius & 39.74 & 69.97 & 61.58 \\
@@ -385,7 +385,7 @@ Llama3 & 5.27 & 9.31 & 11.85 \\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\textwidth]{figures/Fig4-attack-frequency.pdf}
-\caption{六种攻击策略在不同注入频率下的平均攻击成功率趋势（ASR/\%）}
+\caption{六种攻击策略在不同注入频率下的平均攻击成功率趋势}
 \label{fig:attack_frequency}
 \end{figure}
 
@@ -471,11 +471,11 @@ HackAPrompt & 0.67 & 0.63 & 0.62 & 0.71 & 0.66 & 0.73 \\
 
 \begin{table}[htbp]
 \centering
-\caption{越狱攻击的跨样本泛化ASR（\%）}
+\caption{越狱攻击的跨样本泛化 ASR}
 \label{tab:cross_sample}
 \begin{tabular}{ccc}
 \toprule
-模型 & HarmfulQA & ToxicQA \\
+模型 & HarmfulQA ASR (\%) & ToxicQA ASR (\%) \\
 \midrule
 AlpaCare & 75.40 & 63.08 \\
 Asclepius & 9.37 & 7.82 \\
