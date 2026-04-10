@@ -1,0 +1,76 @@
+{
+  "completed_keys": [
+    "su2021roformer",
+    "touvron2023llama",
+    "touvron2023llama2",
+    "devlin2018bert",
+    "vaswani2017attention"
+  ],
+  "results": [
+    {
+      "key": "vaswani2017attention",
+      "line": 7,
+      "status": "not_found",
+      "local_title": "Attention is All You Need"
+    },
+    {
+      "key": "su2021roformer",
+      "line": 17,
+      "status": "mismatch",
+      "local_title": "RoFormer: Enhanced Transformer with Rotary Position Embedding",
+      "dblp_title": "RoFormer: Enhanced transformer with Rotary Position Embedding",
+      "similarity": 1.0,
+      "diffs": [
+        {
+          "field": "year",
+          "local": "2021",
+          "dblp": "2024"
+        },
+        {
+          "field": "doi (missing in local)",
+          "local": "(none)",
+          "dblp": "10.1016/J.NEUCOM.2023.127063"
+        }
+      ],
+      "dblp_bibtex": null
+    },
+    {
+      "key": "devlin2018bert",
+      "line": 24,
+      "status": "not_found",
+      "local_title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"
+    },
+    {
+      "key": "touvron2023llama",
+      "line": 33,
+      "status": "mismatch",
+      "local_title": "LLaMA: Open and Efficient Foundation Language Models",
+      "dblp_title": "LLaMA: Open and Efficient Foundation Language Models",
+      "similarity": 1.0,
+      "diffs": [
+        {
+          "field": "doi (missing in local)",
+          "local": "(none)",
+          "dblp": "10.48550/ARXIV.2302.13971"
+        }
+      ],
+      "dblp_bibtex": "@article{DBLP:journals/corr/abs-2302-13971,\n  author       = {Hugo Touvron and\n                  Thibaut Lavril and\n                  Gautier Izacard and\n                  Xavier Martinet and\n                  Marie{-}Anne Lachaux and\n                  Timoth{\\'{e}}e Lacroix and\n                  Baptiste Rozi{\\`{e}}re and\n                  Naman Goyal and\n                  Eric Hambro and\n                  Faisal Azhar and\n                  Aur{\\'{e}}lien Rodriguez and\n                  Armand Joulin and\n                  Edouard Grave and\n                  Guillaume Lample},\n  title        = {LLaMA: Open and Efficient Foundation Language Models},\n  journal      = {CoRR},\n  volume       = {abs/2302.13971},\n  year         = {2023},\n  url          = {https://doi.org/10.48550/arXiv.2302.13971},\n  doi          = {10.48550/ARXIV.2302.13971},\n  eprinttype    = {arXiv},\n  eprint       = {2302.13971},\n  timestamp    = {Tue, 11 Feb 2025 12:43:02 +0100},\n  biburl       = {https://dblp.org/rec/journals/corr/abs-2302-13971.bib},\n  bibsource    = {dblp computer science bibliography, https://dblp.org}\n}\n\n"
+    },
+    {
+      "key": "touvron2023llama2",
+      "line": 40,
+      "status": "mismatch",
+      "local_title": "Llama 2: Open Foundation and Fine-Tuned Chat Models",
+      "dblp_title": "Llama 2: Open Foundation and Fine-Tuned Chat Models",
+      "similarity": 1.0,
+      "diffs": [
+        {
+          "field": "doi (missing in local)",
+          "local": "(none)",
+          "dblp": "10.48550/ARXIV.2307.09288"
+        }
+      ],
+      "dblp_bibtex": "@article{DBLP:journals/corr/abs-2307-09288,\n  author       = {Hugo Touvron and\n                  Louis Martin and\n                  Kevin Stone and\n                  Peter Albert and\n                  Amjad Almahairi and\n                  Yasmine Babaei and\n                  Nikolay Bashlykov and\n                  Soumya Batra and\n                  Prajjwal Bhargava and\n                  Shruti Bhosale and\n                  Dan Bikel and\n                  Lukas Blecher and\n                  Cristian Canton{-}Ferrer and\n                  Moya Chen and\n                  Guillem Cucurull and\n                  David Esiobu and\n                  Jude Fernandes and\n                  Jeremy Fu and\n                  Wenyin Fu and\n                  Brian Fuller and\n                  Cynthia Gao and\n                  Vedanuj Goswami and\n                  Naman Goyal and\n                  Anthony Hartshorn and\n                  Saghar Hosseini and\n                  Rui Hou and\n                  Hakan Inan and\n                  Marcin Kardas and\n                  Viktor Kerkez and\n                  Madian Khabsa and\n                  Isabel Kloumann and\n                  Artem Korenev and\n                  Punit Singh Koura and\n                  Marie{-}Anne Lachaux and\n                  Thibaut Lavril and\n                  Jenya Lee and\n                  Diana Liskovich and\n                  Yinghai Lu and\n                  Yuning Mao and\n                  Xavier Martinet and\n                  Todor Mihaylov and\n                  Pushkar Mishra and\n                  Igor Molybog and\n                  Yixin Nie and\n                  Andrew Poulton and\n                  Jeremy Reizenstein and\n                  Rashi Rungta and\n                  Kalyan Saladi and\n                  Alan Schelten and\n                  Ruan Silva and\n                  Eric Michael Smith and\n                  Ranjan Subramanian and\n                  Xiaoqing Ellen Tan and\n                  Binh Tang and\n                  Ross Taylor and\n                  Adina Williams and\n                  Jian Xiang Kuan and\n                  Puxin Xu and\n                  Zheng Yan and\n                  Iliyan Zarov and\n                  Yuchen Zhang and\n                  Angela Fan and\n                  Melanie Kambadur and\n                  Sharan Narang and\n                  Aur{\\'{e}}lien Rodriguez and\n                  Robert Stojnic and\n                  Sergey Edunov and\n                  Thomas Scialom},\n  title        = {Llama 2: Open Foundation and Fine-Tuned Chat Models},\n  journal      = {CoRR},\n  volume       = {abs/2307.09288},\n  year         = {2023},\n  url          = {https://doi.org/10.48550/arXiv.2307.09288},\n  doi          = {10.48550/ARXIV.2307.09288},\n  eprinttype    = {arXiv},\n  eprint       = {2307.09288},\n  timestamp    = {Tue, 11 Feb 2025 12:43:02 +0100},\n  biburl       = {https://dblp.org/rec/journals/corr/abs-2307-09288.bib},\n  bibsource    = {dblp computer science bibliography, https://dblp.org}\n}\n\n"
+    }
+  ]
+}

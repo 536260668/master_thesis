@@ -16,3 +16,4 @@
 # OS files
 .DS_Store
 Thumbs.db
+scripts/check_ref/Get-Bibtex-from-Google-Scholar/
