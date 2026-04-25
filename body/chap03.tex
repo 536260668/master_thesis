@@ -63,7 +63,7 @@ O_i = f_i(State_i, Context_i) = f_i(State_i, \mathbf{Q}, O_{i-1})
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.95\textwidth]{pic/pic3-2.pdf}
-    \caption{MLSE框架系统架构}\label{fig:mlse_architecture}
+    \caption{MLSE框架整体架构}\label{fig:mlse_architecture}
 \end{figure}
 
 模型集成层位于框架的最底层，承担待测医疗大语言模型的统一管理与调度职责。该层的核心设计理念是屏蔽不同来源模型之间的差异，为上层组件提供标准化的推理服务接口。通过模型量化与统一服务封装，该层将不同架构、不同来源的医疗大模型转化为接口一致的推理服务，使得上层的智能体交互层和应用评估层无需感知底层模型的具体差异。当新模型发布时，只需经由该层完成适配即可复用现有评估流程，无需修改上层逻辑。
